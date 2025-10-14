@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import ColorShiftText from './effects/ColorShiftText.jsx';
 
 const galleryImages = [
   'https://images.unsplash.com/photo-1523580846011-d3a5bc25702b?auto=format&fit=crop&w=900&q=80',
@@ -13,11 +14,16 @@ const galleryImages = [
 
 const Gallery = () => (
   <section id="gallery" className="relative bg-[#05060c] py-24">
-    <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,0,230,0.15),transparent_60%)]" />
+    <div className="pointer-events-none absolute inset-0 overflow-hidden">
+      <span className="absolute left-10 top-0 h-48 w-48 rounded-full bg-neon-pink/15 blur-3xl" />
+      <span className="absolute bottom-8 right-6 h-40 w-40 rounded-full bg-electric-blue/15 blur-3xl" />
+    </div>
     <div className="relative mx-auto max-w-7xl px-6">
       <div className="flex flex-col items-start gap-4 md:flex-row md:items-end md:justify-between">
         <div>
-          <h2 className="font-headline text-4xl text-white sm:text-5xl">Neon Memory Vault</h2>
+          <h2 className="font-headline text-4xl text-white sm:text-5xl">
+            <ColorShiftText>Neon Memory Vault</ColorShiftText>
+          </h2>
           <p className="mt-4 max-w-2xl text-white/70">Snapshots from previous chaos editions & concept art for what’s brewing in 2025.</p>
         </div>
         <motion.a
@@ -48,7 +54,7 @@ const Gallery = () => (
               whileHover={{ scale: 1.1 }}
               transition={{ duration: 0.6 }}
             />
-            <div className="pointer-events-none absolute inset-0 rounded-[28px] border border-white/10 bg-gradient-to-t from-black/70 to-transparent opacity-0 transition hover:opacity-100" />
+            <div className="pointer-events-none absolute inset-0 rounded-[28px] border border-white/10 bg-black/60 opacity-0 transition hover:opacity-100" />
           </motion.div>
         ))}
       </div>

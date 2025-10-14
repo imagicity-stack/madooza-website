@@ -1,9 +1,11 @@
 import { motion } from 'framer-motion';
 
 const About = () => (
-  <section id="about" className="relative z-10 border-t border-white/10 bg-black/60 py-24">
-    <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,255,255,0.12),transparent_60%)]" />
-    <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20" />
+  <section id="about" className="relative z-10 border-t border-white/10 bg-black/70 py-24">
+    <div className="pointer-events-none absolute inset-0 overflow-hidden">
+      <span className="absolute -top-10 right-10 h-40 w-40 rounded-full bg-electric-blue/20 blur-3xl" />
+      <span className="absolute bottom-0 left-6 h-52 w-52 rounded-full bg-neon-pink/20 blur-3xl" />
+    </div>
 
     <div className="relative mx-auto flex max-w-7xl flex-col gap-16 px-6 lg:flex-row lg:items-center">
       <motion.div
@@ -43,11 +45,14 @@ const About = () => (
         transition={{ duration: 0.8, delay: 0.1 }}
       >
         <motion.div
-          className="relative mx-auto aspect-square w-full max-w-md rounded-[40px] border border-white/20 bg-gradient-to-br from-black via-[#140017] to-[#001f2b] p-10 shadow-neon"
+          className="relative mx-auto aspect-square w-full max-w-md rounded-[40px] border border-white/20 bg-black/80 p-10 shadow-neon"
           animate={{ rotateX: [0, 8, -6, 0], rotateY: [0, -12, 10, 0], rotateZ: [0, 2, -2, 0] }}
           transition={{ duration: 16, repeat: Infinity, ease: 'easeInOut' }}
         >
-          <div className="absolute inset-4 rounded-[32px] border border-white/10 bg-madooza-gradient opacity-50 blur-2xl" />
+          <div
+            className="absolute inset-5 rounded-[32px] border border-white/10 opacity-60"
+            style={{ boxShadow: '0 0 50px rgba(255, 0, 230, 0.18)', backgroundColor: 'rgba(0, 255, 255, 0.08)' }}
+          />
           <div className="relative flex h-full flex-col justify-between">
             <motion.div
               className="rounded-3xl border border-white/20 bg-white/10 p-6 text-center"

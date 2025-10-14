@@ -1,46 +1,54 @@
 import { motion } from 'framer-motion';
 import { RiTeamFill, RiBrushFill, RiRestaurant2Fill } from 'react-icons/ri';
 import { GiBallerinaShoes, GiMicrophone } from 'react-icons/gi';
+import ColorShiftText from './effects/ColorShiftText.jsx';
+import NeonSparkles from './effects/NeonSparkles.jsx';
 
 const events = [
   {
     title: 'Cosplay Multiverse',
     icon: <RiTeamFill className="h-10 w-10" />,
     tagline: 'Suit up, glitch out, and own the neon catwalk.',
-    color: 'from-[#FF00E6]/40 to-transparent',
+    accent: '#FF00E6',
   },
   {
     title: 'Dance Battle Nexus',
     icon: <GiBallerinaShoes className="h-10 w-10" />,
     tagline: 'Crew vs crew, sync vs chaos — amplified beats only.',
-    color: 'from-[#00FFFF]/40 to-transparent',
+    accent: '#00FFFF',
   },
   {
     title: 'Art Arena',
     icon: <RiBrushFill className="h-10 w-10" />,
     tagline: 'Graffiti drones, live murals, and pixel-spray throwdowns.',
-    color: 'from-[#D0FF00]/40 to-transparent',
+    accent: '#D0FF00',
   },
   {
     title: 'Food & Fun Street',
     icon: <RiRestaurant2Fill className="h-10 w-10" />,
     tagline: 'Cyber snacks, bubble tea chemistry, and midnight ramen.',
-    color: 'from-[#FF00E6]/40 to-transparent',
+    accent: '#FF00E6',
   },
   {
     title: 'Creator Workshops',
     icon: <GiMicrophone className="h-10 w-10" />,
     tagline: 'Storyboarding, beat labs, cosplay craft, and streaming hacks.',
-    color: 'from-[#00FFFF]/40 to-transparent',
+    accent: '#00FFFF',
   },
 ];
 
 const Events = () => (
   <section id="events" className="relative border-y border-white/10 bg-[#06060a] py-24">
-    <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,0,230,0.18),transparent_60%)]" />
+    <div className="pointer-events-none absolute inset-0 overflow-hidden">
+      <span className="absolute -top-12 left-10 h-44 w-44 rounded-full bg-neon-pink/15 blur-3xl" />
+      <span className="absolute bottom-6 right-8 h-52 w-52 rounded-full bg-cyber-lime/20 blur-3xl" />
+    </div>
     <div className="relative mx-auto flex max-w-7xl flex-col gap-12 px-6">
+      <NeonSparkles className="absolute inset-0 -z-10" count={20} />
       <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-        <h2 className="font-headline text-4xl text-white sm:text-5xl">Event Hyperdrive</h2>
+        <h2 className="font-headline text-4xl text-white sm:text-5xl">
+          <ColorShiftText>Event Hyperdrive</ColorShiftText>
+        </h2>
         <p className="max-w-xl text-white/70">Neon decks of competitions, collabs, and curated chaos. Scroll sideways to preview the madness.</p>
       </div>
 
@@ -56,7 +64,10 @@ const Events = () => (
             transition={{ duration: 0.6, delay: index * 0.05 }}
             whileHover={{ y: -12 }}
           >
-            <div className={`absolute inset-0 rounded-[32px] bg-gradient-to-br ${event.color} opacity-40`} />
+            <div
+              className="absolute inset-0 rounded-[32px] opacity-30"
+              style={{ backgroundColor: `${event.accent}26` }}
+            />
             <div className="relative z-10 flex h-full flex-col justify-between gap-6">
               <div className="flex items-center gap-4 text-cyber-lime">
                 <div className="flex h-16 w-16 items-center justify-center rounded-2xl border border-white/20 bg-black/60 text-neon-pink shadow-neon">

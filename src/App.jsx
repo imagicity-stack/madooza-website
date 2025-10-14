@@ -7,7 +7,6 @@ import Stalls from './components/Stalls.jsx';
 import Gallery from './components/Gallery.jsx';
 import Schedule from './components/Schedule.jsx';
 import Footer from './components/Footer.jsx';
-import CursorGlow from './components/CursorGlow.jsx';
 import FloatingRegister from './components/FloatingRegister.jsx';
 import AudioToggle from './components/AudioToggle.jsx';
 
@@ -27,7 +26,6 @@ const App = () => {
 
   return (
     <div className="relative overflow-hidden">
-      <CursorGlow />
       <AnimatePresence>{isAudioReady && <AudioToggle audio={audio} />}</AnimatePresence>
       <Hero onAudioReady={handleAudioReady} />
       <About />

@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import ColorShiftText from './effects/ColorShiftText.jsx';
 
 const highlights = [
   {
@@ -21,7 +22,10 @@ const highlights = [
 
 const Schedule = () => (
   <section id="schedule" className="relative border-y border-white/10 bg-black/80 py-24">
-    <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,255,255,0.14),transparent_65%)]" />
+    <div className="pointer-events-none absolute inset-0 overflow-hidden">
+      <span className="absolute left-12 top-6 h-48 w-48 rounded-full bg-electric-blue/15 blur-3xl" />
+      <span className="absolute bottom-10 right-8 h-60 w-60 rounded-full bg-cyber-lime/15 blur-3xl" />
+    </div>
     <div className="relative mx-auto max-w-7xl px-6">
       <div className="flex flex-col gap-10 lg:flex-row">
         <motion.div
@@ -31,7 +35,9 @@ const Schedule = () => (
           viewport={{ once: true, margin: '-120px' }}
           transition={{ duration: 0.8 }}
         >
-          <h2 className="font-headline text-4xl text-white">Venue Intel</h2>
+          <h2 className="font-headline text-4xl text-white">
+            <ColorShiftText className="text-4xl">Venue Intel</ColorShiftText>
+          </h2>
           <p className="mt-4 text-white/70">Mount Litera Zee School, Hazaribagh — transformed into a neon megaverse with luminous pathways and immersive domes.</p>
           <div className="mt-6 overflow-hidden rounded-[30px] border border-white/10">
             <iframe
@@ -55,7 +61,9 @@ const Schedule = () => (
           transition={{ duration: 0.8, delay: 0.1 }}
         >
           <div className="timeline relative rounded-[32px] border border-white/10 bg-white/5 p-10 backdrop-blur-xl">
-            <h3 className="font-headline text-3xl text-neon-pink">Schedule Timeline</h3>
+            <h3 className="font-headline text-3xl text-neon-pink">
+              <ColorShiftText className="text-3xl">Schedule Timeline</ColorShiftText>
+            </h3>
             <div className="mt-10 space-y-12">
               {highlights.map((day) => (
                 <div key={day.day}>

@@ -1,26 +1,28 @@
 import { useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
+import ColorShiftText from './effects/ColorShiftText.jsx';
+import NeonSparkles from './effects/NeonSparkles.jsx';
 
 const stalls = [
   {
     title: 'Neon Merch Labs',
     features: ['Custom art drops', 'Augmented reality posters', 'Holographic sticker packs'],
-    accent: 'from-[#FF00E6]/40 to-transparent',
+    accent: '#FF00E6',
   },
   {
     title: 'Food Reactor',
     features: ['Glow bubble tea', 'Cyber ramen stalls', 'Molecular candy bar'],
-    accent: 'from-[#00FFFF]/40 to-transparent',
+    accent: '#00FFFF',
   },
   {
     title: 'Indie Artist Alley',
     features: ['Live commissions', 'Chill-out sketch lounge', 'Instant NFT minting booth'],
-    accent: 'from-[#D0FF00]/40 to-transparent',
+    accent: '#D0FF00',
   },
   {
     title: 'Gaming Spire',
     features: ['LAN tournaments', 'Retro arcade glitchcade', 'VR showdown pods'],
-    accent: 'from-[#FF00E6]/30 to-transparent',
+    accent: '#FF00E6',
   },
 ];
 
@@ -104,11 +106,17 @@ const Stalls = () => {
 
   return (
     <section id="tickets" className="relative border-b border-white/10 bg-black/70 py-24">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom,rgba(208,255,0,0.12),transparent_60%)]" />
+      <div className="pointer-events-none absolute inset-0 overflow-hidden">
+        <span className="absolute -bottom-10 left-0 h-52 w-52 rounded-full bg-cyber-lime/20 blur-3xl" />
+        <span className="absolute -top-16 right-16 h-48 w-48 rounded-full bg-electric-blue/20 blur-3xl" />
+      </div>
+      <NeonSparkles className="absolute inset-0 -z-10" count={18} />
       <div className="relative mx-auto flex max-w-7xl flex-col gap-12 px-6">
         <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
           <div>
-            <h2 className="font-headline text-4xl text-white sm:text-5xl">Stalls & Sponsorships</h2>
+            <h2 className="font-headline text-4xl text-white sm:text-5xl">
+              <ColorShiftText>Stalls &amp; Sponsorships</ColorShiftText>
+            </h2>
             <p className="mt-4 max-w-2xl text-white/70">
               Plug into the festival grid with immersive stalls or sponsor tiers designed for brands who dare to glow.
             </p>
@@ -135,7 +143,10 @@ const Stalls = () => {
               transition={{ duration: 0.6 }}
               whileHover={{ y: -10 }}
             >
-              <div className={`absolute inset-0 bg-gradient-to-br ${stall.accent} opacity-30`} />
+              <div
+                className="absolute inset-0 opacity-30"
+                style={{ backgroundColor: `${stall.accent}26` }}
+              />
               <div className="relative z-10 space-y-4">
                 <h3 className="font-headline text-2xl text-white">{stall.title}</h3>
                 <ul className="space-y-2 text-sm text-white/70">
@@ -152,7 +163,9 @@ const Stalls = () => {
         </div>
 
         <div className="glass-panel border border-white/10 p-10">
-          <h3 className="font-headline text-2xl text-neon-pink">Sponsorship Tiers</h3>
+          <h3 className="font-headline text-2xl text-neon-pink">
+            <ColorShiftText className="text-2xl">Sponsorship Tiers</ColorShiftText>
+          </h3>
           <div className="mt-8 grid gap-6 md:grid-cols-3">
             {tiers.map((tier) => (
               <div key={tier.name} className="rounded-[28px] border border-white/10 bg-black/60 p-6">

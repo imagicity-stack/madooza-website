@@ -10,17 +10,13 @@ export default {
         'deep-black': '#0A0A0A',
       },
       fontFamily: {
-        headline: ['"Orbitron"', 'sans-serif'],
-        body: ['"Inter"', 'sans-serif'],
+        headline: ['"Bungee"', 'cursive'],
+        body: ['"Changa"', 'sans-serif'],
       },
       boxShadow: {
         neon: '0 0 30px rgba(255, 0, 230, 0.35)',
         'neon-blue': '0 0 40px rgba(0, 255, 255, 0.35)',
         'neon-lime': '0 0 40px rgba(208, 255, 0, 0.35)',
-      },
-      backgroundImage: {
-        'madooza-gradient': 'linear-gradient(90deg, #FF00E6, #00FFFF, #D0FF00)',
-        'madooza-radial': 'radial-gradient(circle at top, rgba(255, 0, 230, 0.4), transparent 60%), radial-gradient(circle at bottom, rgba(0, 255, 255, 0.25), transparent 55%)',
       },
       animation: {
         pulseGlow: 'pulseGlow 3s ease-in-out infinite',

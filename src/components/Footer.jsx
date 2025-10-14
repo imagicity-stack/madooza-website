@@ -3,8 +3,10 @@ import { FaInstagram, FaYoutube, FaThreads } from 'react-icons/fa6';
 
 const Footer = () => (
   <footer className="relative overflow-hidden border-t border-white/10 bg-[#040409] py-20">
-    <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,0,230,0.12),transparent_60%)]" />
-    <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20" />
+    <div className="pointer-events-none absolute inset-0 overflow-hidden">
+      <span className="absolute left-8 top-4 h-40 w-40 rounded-full bg-neon-pink/18 blur-3xl" />
+      <span className="absolute bottom-4 right-10 h-48 w-48 rounded-full bg-electric-blue/18 blur-3xl" />
+    </div>
 
     <div className="relative mx-auto flex max-w-7xl flex-col gap-16 px-6 lg:flex-row lg:justify-between">
       <div className="space-y-6 lg:max-w-sm">

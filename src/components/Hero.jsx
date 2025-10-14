@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import { gsap } from 'gsap';
+import ColorShiftText from './effects/ColorShiftText.jsx';
+import NeonSparkles from './effects/NeonSparkles.jsx';
 
 const TARGET_DATE = new Date('2025-02-15T09:00:00+05:30');
 
@@ -51,20 +53,17 @@ const Hero = ({ onAudioReady }) => {
   useEffect(() => {
     if (!heroRef.current) return;
     const ctx = gsap.context(() => {
-      gsap.to('.glitch-line', {
-        xPercent: () => gsap.utils.random(-20, 20),
-        yPercent: () => gsap.utils.random(-10, 10),
-        opacity: () => gsap.utils.random(0.1, 0.4),
-        duration: () => gsap.utils.random(1.2, 2.4),
+      gsap.to('.hero-orbits span', {
+        rotate: () => gsap.utils.random(-180, 180),
+        duration: () => gsap.utils.random(20, 32),
         repeat: -1,
         yoyo: true,
         ease: 'sine.inOut',
       });
-      gsap.to('.hero-particles span', {
-        y: () => gsap.utils.random(-20, 20),
-        x: () => gsap.utils.random(-20, 20),
-        scale: () => gsap.utils.random(0.8, 1.2),
-        duration: () => gsap.utils.random(3, 6),
+      gsap.to('.hero-blobs span', {
+        xPercent: () => gsap.utils.random(-10, 10),
+        yPercent: () => gsap.utils.random(-12, 12),
+        duration: () => gsap.utils.random(8, 14),
         repeat: -1,
         yoyo: true,
         ease: 'sine.inOut',
@@ -86,28 +85,58 @@ const Hero = ({ onAudioReady }) => {
     [timeLeft]
   );
 
+  const blobConfigs = useMemo(
+    () => [
+      { top: '8%', left: '12%', size: 220, color: '#FF00E6' },
+      { top: '65%', left: '8%', size: 160, color: '#00FFFF' },
+      { top: '20%', left: '68%', size: 200, color: '#D0FF00' },
+      { top: '70%', left: '70%', size: 180, color: '#FF00E6' },
+    ],
+    []
+  );
+
+  const orbitConfigs = useMemo(
+    () =>
+      Array.from({ length: 7 }).map((_, index) => ({
+        size: 120 + index * 35,
+        borderColor: index % 2 === 0 ? 'rgba(255, 0, 230, 0.3)' : 'rgba(0, 255, 255, 0.3)',
+      })),
+    []
+  );
+
   return (
     <section ref={heroRef} className="relative min-h-screen overflow-hidden pb-24 pt-32" id="home">
-      <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top,rgba(255,0,230,0.3),transparent_60%),radial-gradient(circle_at_bottom,rgba(0,255,255,0.25),transparent_55%)]" />
-      <div className="absolute inset-0 -z-10 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-30" />
-      <div className="absolute inset-0 -z-10 glitch-overlay">
-        {[...Array(5)].map((_, index) => (
-          <span key={index} className="glitch-line" />
-        ))}
-      </div>
-      <div className="absolute inset-0 -z-10 hero-particles">
-        {[...Array(12)].map((_, index) => (
-          <span
-            key={index}
-            className="absolute h-2 w-2 rounded-full"
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              background: index % 2 === 0 ? '#FF00E6' : '#00FFFF',
-              boxShadow: '0 0 15px rgba(255, 0, 230, 0.7)',
-            }}
-          />
-        ))}
+      <div className="absolute inset-0 -z-10">
+        <div className="hero-blobs absolute inset-0">
+          {blobConfigs.map((blob, index) => (
+            <span
+              key={`blob-${blob.top}-${index}`}
+              className="absolute rounded-full blur-3xl"
+              style={{
+                top: blob.top,
+                left: blob.left,
+                width: blob.size,
+                height: blob.size,
+                backgroundColor: `${blob.color}33`,
+              }}
+            />
+          ))}
+        </div>
+        <div className="hero-orbits pointer-events-none absolute inset-0 flex items-center justify-center">
+          {orbitConfigs.map((orbit, index) => (
+            <span
+              key={`orbit-${index}`}
+              className="absolute rounded-full border"
+              style={{
+                width: orbit.size,
+                height: orbit.size,
+                borderColor: orbit.borderColor,
+                opacity: 0.6,
+              }}
+            />
+          ))}
+        </div>
+        <NeonSparkles className="absolute inset-0" count={28} />
       </div>
 
       <div className="relative z-10 mx-auto flex max-w-7xl flex-col gap-14 px-6 lg:flex-row lg:items-center lg:gap-16">
@@ -128,7 +157,7 @@ const Hero = ({ onAudioReady }) => {
             animate={{ scale: 1, opacity: 1 }}
             transition={{ duration: 0.9, ease: 'easeOut', delay: 0.2 }}
           >
-            <span className="bg-madooza-gradient bg-clip-text text-transparent">Madooza 2025</span>
+            <ColorShiftText className="drop-shadow-[0_0_20px_rgba(255,0,230,0.45)]">Madooza 2025</ColorShiftText>
             <br />
             Hazaribagh’s Ultimate Pop-Culture Explosion
           </motion.h1>

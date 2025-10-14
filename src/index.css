@@ -1,18 +1,15 @@
+@import url('https://fonts.googleapis.com/css2?family=Bungee&family=Changa:wght@400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Orbitron:wght@500;700;900&display=swap');
-
 :root {
   color-scheme: dark;
 }
 
 body {
   @apply bg-deep-black text-white font-body antialiased;
-  background-image: radial-gradient(circle at 20% 20%, rgba(255, 0, 230, 0.12), transparent 45%),
-    radial-gradient(circle at 80% 10%, rgba(0, 255, 255, 0.18), transparent 50%),
-    radial-gradient(circle at 50% 80%, rgba(208, 255, 0, 0.12), transparent 55%);
+  background-color: #0a0a0a;
   min-height: 100vh;
 }
 
@@ -21,7 +18,7 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, rgba(255, 0, 230, 0.8), rgba(0, 255, 255, 0.8));
+  background: #ff00e6;
   border-radius: 9999px;
 }
 
@@ -32,11 +29,6 @@ body {
 .glass-panel {
   @apply bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl;
   box-shadow: 0 0 50px rgba(255, 0, 230, 0.1);
-}
-
-.glitch-overlay span {
-  @apply absolute inset-0 mix-blend-screen opacity-30;
-  background: linear-gradient(90deg, rgba(255, 0, 230, 0.3), transparent, rgba(0, 255, 255, 0.3));
 }
 
 .neon-border {
@@ -51,21 +43,15 @@ textarea.glow-input {
 
 button.glow-button {
   @apply relative overflow-hidden rounded-full px-8 py-3 font-semibold uppercase tracking-[0.3em] text-xs text-deep-black;
-  background: linear-gradient(90deg, #ff00e6, #00ffff, #d0ff00);
+  background-color: #ff00e6;
+  color: #0a0a0a;
   box-shadow: 0 0 40px rgba(255, 0, 230, 0.35);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease, color 0.3s ease;
 }
 
-button.glow-button::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(120deg, rgba(255, 255, 255, 0.2), transparent 70%);
-  transform: translateX(-100%);
-  transition: transform 0.6s ease;
-}
-
-button.glow-button:hover::after {
-  transform: translateX(100%);
+button.glow-button:hover {
+  background-color: #00ffff;
+  box-shadow: 0 0 40px rgba(0, 255, 255, 0.3);
 }
 
 .card-hover:hover {
@@ -79,7 +65,7 @@ button.glow-button:hover::after {
   top: 0;
   bottom: 0;
   width: 4px;
-  background: linear-gradient(180deg, rgba(255, 0, 230, 0.8), rgba(0, 255, 255, 0.8));
+  background: #ff00e6;
   transform: translateX(-50%);
   box-shadow: 0 0 20px rgba(255, 0, 230, 0.5);
 }
