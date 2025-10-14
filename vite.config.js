@@ -5,7 +5,10 @@ import { webcrypto } from 'node:crypto';
 // Ensure Web Crypto APIs are available when Vite/Tailwind execute in Node.
 if (!globalThis.crypto) {
   globalThis.crypto = webcrypto;
-} else if (!globalThis.crypto.getRandomValues && webcrypto?.getRandomValues) {
+} else if (
+  typeof globalThis.crypto.getRandomValues !== 'function' &&
+  typeof webcrypto?.getRandomValues === 'function'
+) {
   globalThis.crypto.getRandomValues = webcrypto.getRandomValues.bind(webcrypto);
 }
 
