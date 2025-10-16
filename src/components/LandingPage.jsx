@@ -2,7 +2,6 @@ import { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { FiInstagram, FiYoutube, FiFacebook, FiArrowRight } from 'react-icons/fi';
-import ElectricBorder from './effects/ElectricBorder.jsx';
 import Dither from './effects/Dither.jsx';
 import ScrollStack, { ScrollStackItem } from './effects/ScrollStack.jsx';
 import Shuffle from './effects/Shuffle.jsx';
@@ -152,14 +151,7 @@ const LandingPage = ({ onNavigate }) => {
       </header>
 
       <section id="about" ref={(el) => (sectionsRef.current[0] = el)} className="section-shell">
-        <ElectricBorder
-          className="section-electric-wrap"
-          color="#1fb8ff"
-          speed={1.1}
-          chaos={0.55}
-          thickness={2.6}
-          style={{ borderRadius: 36 }}
-        >
+        <div className="section-frame">
           <div className="section-content">
             <h2 className="section-title animate-in">About Madooza</h2>
             <p className="section-subtitle animate-in">
@@ -175,18 +167,11 @@ const LandingPage = ({ onNavigate }) => {
               noise in a Tier-3 city.
             </p>
           </div>
-        </ElectricBorder>
+        </div>
       </section>
 
       <section id="involve" ref={(el) => (sectionsRef.current[1] = el)} className="section-shell">
-        <ElectricBorder
-          className="section-electric-wrap"
-          color="#ff4f6d"
-          speed={1.2}
-          chaos={0.7}
-          thickness={2.8}
-          style={{ borderRadius: 40 }}
-        >
+        <div className="section-frame">
           <div className="section-content">
             <h2 className="section-title animate-in">Involve With Us</h2>
             <p className="section-subtitle animate-in">
@@ -240,18 +225,11 @@ const LandingPage = ({ onNavigate }) => {
               </ScrollStack>
             </div>
           </div>
-        </ElectricBorder>
+        </div>
       </section>
 
       <section id="guests" ref={(el) => (sectionsRef.current[2] = el)} className="section-shell">
-        <ElectricBorder
-          className="section-electric-wrap"
-          color="#19e2a0"
-          speed={1.25}
-          chaos={0.6}
-          thickness={2.4}
-          style={{ borderRadius: 34 }}
-        >
+        <div className="section-frame">
           <div className="section-content">
             <h2 className="section-title animate-in">Guests</h2>
             <p className="section-subtitle animate-in">To be revealed soon.</p>
@@ -267,18 +245,11 @@ const LandingPage = ({ onNavigate }) => {
               </div>
             </div>
           </div>
-        </ElectricBorder>
+        </div>
       </section>
 
       <section id="partners" ref={(el) => (sectionsRef.current[3] = el)} className="section-shell">
-        <ElectricBorder
-          className="section-electric-wrap"
-          color="#f7b500"
-          speed={1.05}
-          chaos={0.5}
-          thickness={2.2}
-          style={{ borderRadius: 34 }}
-        >
+        <div className="section-frame">
           <div className="section-content">
             <h2 className="section-title animate-in">Partners</h2>
             <p className="section-subtitle animate-in">Coming soon.</p>
@@ -289,18 +260,11 @@ const LandingPage = ({ onNavigate }) => {
               <div className="placeholder-box animate-in" />
             </div>
           </div>
-        </ElectricBorder>
+        </div>
       </section>
 
       <section id="contact" ref={(el) => (sectionsRef.current[4] = el)} className="section-shell">
-        <ElectricBorder
-          className="section-electric-wrap"
-          color="#1fb8ff"
-          speed={1.15}
-          chaos={0.6}
-          thickness={2.5}
-          style={{ borderRadius: 36 }}
-        >
+        <div className="section-frame">
           <div className="section-content contact-grid">
             <div>
               <h2 className="section-title animate-in">Contact Us</h2>
@@ -326,7 +290,7 @@ const LandingPage = ({ onNavigate }) => {
               </button>
             </form>
           </div>
-        </ElectricBorder>
+        </div>
       </section>
 
       <footer>

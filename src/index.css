@@ -404,6 +404,20 @@ body::after {
   z-index: -1;
 }
 
+.section-frame {
+  width: min(1120px, 92vw);
+  margin: 0 auto;
+  border-radius: clamp(1.8rem, 4vw, 2.6rem);
+  background: var(--surface);
+  border: 1px solid rgba(154, 208, 245, 0.18);
+  padding: clamp(2.6rem, 6vw, 3.4rem);
+  position: relative;
+  box-shadow: 0 36px 120px rgba(3, 7, 18, 0.45);
+  backdrop-filter: blur(4px);
+  overflow: hidden;
+  z-index: 1;
+}
+
 .section-title {
   font-family: 'Syne', 'Sora', sans-serif;
   font-size: clamp(2.5rem, 4vw, 3.4rem);
@@ -416,23 +430,6 @@ body::after {
   color: var(--text-muted);
   font-size: 1.05rem;
   line-height: 1.85;
-}
-
-.section-electric-wrap {
-  display: block;
-  width: min(1120px, 92vw);
-  margin: 0 auto;
-  border-radius: inherit;
-}
-
-.section-electric-wrap .section-content {
-  background: var(--surface);
-  border-radius: inherit;
-  border: 1px solid rgba(154, 208, 245, 0.18);
-  padding: clamp(2.6rem, 6vw, 3.4rem);
-  position: relative;
-  z-index: 1;
-  box-shadow: 0 36px 120px rgba(3, 7, 18, 0.45);
 }
 
 .section-content {

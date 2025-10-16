@@ -63,6 +63,8 @@
     box-shadow 0.3s ease;
   box-shadow: 0 0 0.5px 1.5px transparent;
   color: white;
+  display: inline-flex;
+  align-items: center;
 }
 
 .gooey-nav-container nav ul li a {
@@ -78,7 +80,8 @@
   content: '';
   position: absolute;
   inset: 0;
-  border-radius: 10px;
+  border-radius: inherit;
+  transform-origin: center;
   background: white;
   opacity: 0;
   transform: scale(0);
