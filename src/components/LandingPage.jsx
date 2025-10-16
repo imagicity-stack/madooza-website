@@ -13,7 +13,6 @@ if (typeof window !== 'undefined' && gsap.core.globals().ScrollTrigger !== Scrol
 const LandingPage = ({ onNavigate }) => {
   const pageRef = useRef(null);
   const sectionsRef = useRef([]);
-  const shuffleRef = useRef(null);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -48,37 +47,6 @@ const LandingPage = ({ onNavigate }) => {
         );
       });
 
-      if (shuffleRef.current) {
-        const tiles = shuffleRef.current.querySelectorAll('.shuffle-tile');
-        const tl = gsap.timeline({ repeat: -1, repeatDelay: 1.5 });
-        tl.to(tiles, {
-          rotate: (index) => (index % 2 === 0 ? 15 : -15),
-          yPercent: (index) => (index % 3) * 8 - 12,
-          scale: 1.12,
-          opacity: 0.9,
-          duration: 1.4,
-          ease: 'expo.out',
-          stagger: {
-            each: 0.045,
-            from: 'random',
-          },
-        }).to(
-          tiles,
-          {
-            rotate: 0,
-            yPercent: 0,
-            scale: 1,
-            opacity: 0.65,
-            duration: 1.1,
-            ease: 'power3.inOut',
-            stagger: {
-              each: 0.03,
-              from: 'edges',
-            },
-          },
-          '>-0.65'
-        );
-      }
     }, pageRef);
 
     return () => ctx.revert();
@@ -101,11 +69,6 @@ const LandingPage = ({ onNavigate }) => {
       <header className="hero" id="hero">
         <div className="hero-background" aria-hidden="true">
           <div className="hero-noise" />
-          <div className="shuffle-cluster" ref={shuffleRef}>
-            {Array.from({ length: 30 }).map((_, index) => (
-              <span key={`shuffle-${index}`} className="shuffle-tile" />
-            ))}
-          </div>
         </div>
         <div className="container hero-content">
           <p className="tagline animate-in">Hazaribagh · 2025 · Imagicity</p>
@@ -179,16 +142,7 @@ const LandingPage = ({ onNavigate }) => {
               the madness worth it.
             </p>
             <div className="stack-wrapper animate-in">
-              <ScrollStack
-                className="involve-stack"
-                useWindowScroll
-                itemDistance={140}
-                itemScale={0.06}
-                itemStackDistance={55}
-                stackPosition="32%"
-                scaleEndPosition="18%"
-                baseScale={0.82}
-              >
+              <ScrollStack className="involve-stack" useWindowScroll>
                 <ScrollStackItem itemClassName="stall-card">
                   <span className="stack-tagline">Signature marketplace arena</span>
                   <h3>Put Up Your Stall</h3>
