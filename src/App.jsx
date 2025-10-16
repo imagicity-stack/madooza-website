@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import LandingPage from './components/LandingPage.jsx';
 import FormPage from './components/FormPage.jsx';
+import PaymentPage from './components/PaymentPage.jsx';
 
 const sectionIds = ['hero', 'about', 'involve', 'guests', 'partners', 'contact'];
 
@@ -63,6 +64,8 @@ const App = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [pendingScroll, setPendingScroll] = useState(null);
   const [activeSection, setActiveSection] = useState('hero');
+  const [paymentSession, setPaymentSession] = useState(null);
+  const [formMemory, setFormMemory] = useState({});
 
   useEffect(() => {
     const handlePopState = () => {
@@ -128,6 +131,12 @@ const App = () => {
     setMenuOpen(false);
   };
 
+  const beginPayment = ({ origin, details, heading, payment }) => {
+    setFormMemory((prev) => ({ ...prev, [origin]: details }));
+    setPaymentSession({ origin, details, heading, payment, status: 'pending' });
+    navigate('/payments');
+  };
+
   const goToSection = (id) => {
     if (currentPath !== '/') {
       setPendingScroll(id);
@@ -157,6 +166,30 @@ const App = () => {
       return <LandingPage onNavigate={navigate} activeSection={activeSection} />;
     }
 
+    if (currentPath === '/payments') {
+      if (!paymentSession) {
+        navigate('/');
+        return null;
+      }
+
+      return (
+        <PaymentPage
+          key="payment"
+          session={paymentSession}
+          onBack={() => {
+            navigate(paymentSession.origin || '/');
+          }}
+          onComplete={() => {
+            setPaymentSession((prev) => (prev ? { ...prev, status: 'success' } : prev));
+          }}
+          onReset={() => {
+            setPaymentSession(null);
+            navigate('/');
+          }}
+        />
+      );
+    }
+
     if (forms[currentPath]) {
       const { heading, description, fields, cta, payment } = forms[currentPath];
       return (
@@ -168,6 +201,10 @@ const App = () => {
           cta={cta}
           payment={payment}
           onBack={() => navigate('/')}
+          onPayment={
+            payment ? (payload) => beginPayment({ ...payload, origin: currentPath }) : undefined
+          }
+          initialValues={formMemory[currentPath]}
         />
       );
     }
@@ -178,37 +215,50 @@ const App = () => {
 
   return (
     <div>
+      <svg className="gooey-filter" aria-hidden="true">
+        <defs>
+          <filter id="gooey">
+            <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur" />
+            <feColorMatrix
+              in="blur"
+              mode="matrix"
+              values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 25 -10"
+            />
+          </filter>
+        </defs>
+      </svg>
       <nav className="navbar">
         <div className="container">
           <div className="navbar-inner">
-            <div style={{ display: 'flex', flexDirection: 'column' }}>
-              <strong style={{ fontSize: '1.2rem', letterSpacing: '0.24em' }}>MADOOZA</strong>
-              <span style={{ fontSize: '0.7rem', letterSpacing: '0.4em', color: 'var(--text-muted)' }}>
-                The Sound of Pure Madness
-              </span>
+            <div className="brand-mark">
+              <span className="brand-top">MADOOZA</span>
+              <span className="brand-sub">The Sound of Pure Madness</span>
             </div>
-            <div className="nav-links">
-              {navItems.map((item) => (
-                <button
-                  key={item.target}
-                  type="button"
-                  className={activeSection === item.target ? 'active' : ''}
-                  onClick={() => goToSection(item.target)}
-                >
-                  {item.label}
+            <div className="gooey-nav" data-active={menuOpen}>
+              <div className="gooey-track" style={{ filter: 'url(#gooey)' }}>
+                {navItems.map((item) => (
+                  <button
+                    key={item.target}
+                    type="button"
+                    className={activeSection === item.target ? 'active' : ''}
+                    onClick={() => goToSection(item.target)}
+                  >
+                    <span>{item.label}</span>
+                  </button>
+                ))}
+                <button type="button" className="ticket" onClick={() => navigate('/tickets')}>
+                  <span>Buy Ticket – ₹20</span>
                 </button>
-              ))}
-              <button type="button" className="btn" onClick={() => navigate('/tickets')}>
-                Buy Ticket – ₹20
-              </button>
+              </div>
             </div>
             <button
               type="button"
-              className="menu-toggle"
+              className={`menu-toggle ${menuOpen ? 'open' : ''}`}
               aria-label="Toggle navigation"
               onClick={() => setMenuOpen((prev) => !prev)}
             >
-              ☰
+              <span />
+              <span />
             </button>
           </div>
           {menuOpen && (

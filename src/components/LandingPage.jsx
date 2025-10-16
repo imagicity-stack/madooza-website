@@ -10,6 +10,7 @@ if (typeof window !== 'undefined' && gsap.core.globals().ScrollTrigger !== Scrol
 const LandingPage = ({ onNavigate }) => {
   const heroTitleRef = useRef(null);
   const sectionsRef = useRef([]);
+  const shuffleRef = useRef(null);
 
   const titleLetters = useMemo(
     () => 'Madooza – The Sound of Pure Madness.'.split('').map((char, index) => ({
@@ -54,6 +55,38 @@ const LandingPage = ({ onNavigate }) => {
           }
         );
       });
+
+      if (shuffleRef.current) {
+        const tiles = shuffleRef.current.querySelectorAll('.shuffle-tile');
+        const tl = gsap.timeline({ repeat: -1, repeatDelay: 1.5 });
+        tl.to(tiles, {
+          rotate: (index) => (index % 2 === 0 ? 15 : -15),
+          yPercent: (index) => (index % 3) * 8 - 12,
+          scale: 1.12,
+          opacity: 0.9,
+          duration: 1.4,
+          ease: 'expo.out',
+          stagger: {
+            each: 0.045,
+            from: 'random',
+          },
+        }).to(
+          tiles,
+          {
+            rotate: 0,
+            yPercent: 0,
+            scale: 1,
+            opacity: 0.65,
+            duration: 1.1,
+            ease: 'power3.inOut',
+            stagger: {
+              each: 0.03,
+              from: 'edges',
+            },
+          },
+          '>-0.65'
+        );
+      }
     }, heroTitleRef);
 
     return () => ctx.revert();
@@ -63,9 +96,12 @@ const LandingPage = ({ onNavigate }) => {
     <div>
       <header className="hero" id="hero">
         <div className="hero-background" aria-hidden="true">
-          <div className="hero-shape shape-1" />
-          <div className="hero-shape shape-2" />
-          <div className="hero-shape shape-3" />
+          <div className="hero-noise" />
+          <div className="shuffle-cluster" ref={shuffleRef}>
+            {Array.from({ length: 30 }).map((_, index) => (
+              <span key={`shuffle-${index}`} className="shuffle-tile" />
+            ))}
+          </div>
         </div>
         <div className="container hero-content">
           <p className="tagline animate-in">Hazaribagh · 2025 · Imagicity</p>
@@ -88,10 +124,25 @@ const LandingPage = ({ onNavigate }) => {
             Buy Ticket – ₹20
             <FiArrowRight />
           </button>
+          <div className="hero-social animate-in">
+            <a href="https://instagram.com" target="_blank" rel="noreferrer">
+              <FiInstagram />
+            </a>
+            <a href="https://youtube.com" target="_blank" rel="noreferrer">
+              <FiYoutube />
+            </a>
+            <a href="https://facebook.com" target="_blank" rel="noreferrer">
+              <FiFacebook />
+            </a>
+          </div>
         </div>
       </header>
 
-      <section id="about" ref={(el) => (sectionsRef.current[0] = el)}>
+      <section
+        id="about"
+        ref={(el) => (sectionsRef.current[0] = el)}
+        className="section-shell electric-border"
+      >
         <div className="container">
           <h2 className="section-title animate-in">About Madooza</h2>
           <p className="section-subtitle animate-in">
@@ -109,7 +160,11 @@ const LandingPage = ({ onNavigate }) => {
         </div>
       </section>
 
-      <section id="involve" ref={(el) => (sectionsRef.current[1] = el)}>
+      <section
+        id="involve"
+        ref={(el) => (sectionsRef.current[1] = el)}
+        className="section-shell electric-border"
+      >
         <div className="container">
           <h2 className="section-title animate-in">Involve With Us</h2>
           <p className="section-subtitle animate-in">
@@ -117,7 +172,7 @@ const LandingPage = ({ onNavigate }) => {
             the madness worth it.
           </p>
           <div className="card-grid" style={{ marginTop: '2rem' }}>
-            <article className="card animate-in">
+            <article className="card animate-in electric-border">
               <h3>Have Your Own Stall</h3>
               <p>
                 Lock in a high-energy stall space that spotlights your brand to thousands of curious
@@ -127,7 +182,7 @@ const LandingPage = ({ onNavigate }) => {
                 Apply – ₹2500
               </button>
             </article>
-            <article className="card animate-in">
+            <article className="card animate-in electric-border">
               <h3>Become a Sponsor</h3>
               <p>
                 Plug your brand into the heart of Madooza and collaborate on premium, high-impact
@@ -137,7 +192,7 @@ const LandingPage = ({ onNavigate }) => {
                 Partner With Us
               </button>
             </article>
-            <article className="card animate-in">
+            <article className="card animate-in electric-border">
               <h3>Become a Volunteer</h3>
               <p>
                 Join the dream team that keeps the madness flowing. Gain backstage access and
@@ -151,19 +206,25 @@ const LandingPage = ({ onNavigate }) => {
         </div>
       </section>
 
-      <section id="guests" ref={(el) => (sectionsRef.current[2] = el)}>
+      <section id="guests" ref={(el) => (sectionsRef.current[2] = el)} className="section-shell">
         <div className="container">
           <h2 className="section-title animate-in">Guests</h2>
           <p className="section-subtitle animate-in">To be revealed soon.</p>
           <div className="guests-grid">
-            <div className="guest-frame animate-in">Guest</div>
-            <div className="guest-frame animate-in">Guest</div>
-            <div className="guest-frame animate-in">Guest</div>
+            <div className="guest-frame animate-in" data-pulse>
+              <span>Guest</span>
+            </div>
+            <div className="guest-frame animate-in" data-pulse>
+              <span>Guest</span>
+            </div>
+            <div className="guest-frame animate-in" data-pulse>
+              <span>Guest</span>
+            </div>
           </div>
         </div>
       </section>
 
-      <section id="partners" ref={(el) => (sectionsRef.current[3] = el)}>
+      <section id="partners" ref={(el) => (sectionsRef.current[3] = el)} className="section-shell">
         <div className="container">
           <h2 className="section-title animate-in">Partners</h2>
           <p className="section-subtitle animate-in">Coming soon.</p>
@@ -176,16 +237,27 @@ const LandingPage = ({ onNavigate }) => {
         </div>
       </section>
 
-      <section id="contact" ref={(el) => (sectionsRef.current[4] = el)}>
-        <div className="container">
-          <h2 className="section-title animate-in">Contact Us</h2>
-          <p className="section-subtitle animate-in">
-            Contact us for more details. Email us anytime at{' '}
-            <a href="mailto:info@madooza.com" style={{ color: 'var(--aqua-blue)' }}>
-              info@madooza.com
-            </a>
-            .
-          </p>
+      <section
+        id="contact"
+        ref={(el) => (sectionsRef.current[4] = el)}
+        className="section-shell electric-border"
+      >
+        <div className="container contact-grid">
+          <div>
+            <h2 className="section-title animate-in">Contact Us</h2>
+            <p className="section-subtitle animate-in">
+              Contact us for more details. Email us anytime at{' '}
+              <a href="mailto:info@madooza.com" className="link-pill">
+                info@madooza.com
+              </a>
+              .
+            </p>
+            <div className="contact-bubbles animate-in">
+              <span>Venue Support</span>
+              <span>Creator Collaborations</span>
+              <span>Press &amp; Media</span>
+            </div>
+          </div>
           <form className="contact-form" style={{ marginTop: '2rem' }}>
             <input className="animate-in" type="text" placeholder="Name" required />
             <input className="animate-in" type="email" placeholder="Email" required />
@@ -199,15 +271,15 @@ const LandingPage = ({ onNavigate }) => {
 
       <footer>
         <div className="container footer-content">
-          <p>© 2025 Madooza | Powered by Imagicity</p>
-          <div className="social-links" aria-label="Social media links">
-            <a href="https://instagram.com" aria-label="Instagram">
+          <span>© 2025 Madooza | Powered by Imagicity</span>
+          <div className="footer-icons">
+            <a href="https://instagram.com" target="_blank" rel="noreferrer">
               <FiInstagram />
             </a>
-            <a href="https://youtube.com" aria-label="YouTube">
+            <a href="https://youtube.com" target="_blank" rel="noreferrer">
               <FiYoutube />
             </a>
-            <a href="https://facebook.com" aria-label="Facebook">
+            <a href="https://facebook.com" target="_blank" rel="noreferrer">
               <FiFacebook />
             </a>
           </div>

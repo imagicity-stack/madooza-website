@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { FiCheckCircle, FiArrowLeft, FiArrowRight } from 'react-icons/fi';
+import { useEffect, useMemo, useState } from 'react';
+import { FiArrowLeft, FiArrowRight } from 'react-icons/fi';
 
 const FormPage = ({
   heading,
@@ -8,30 +8,61 @@ const FormPage = ({
   cta,
   onBack,
   payment,
+  onPayment,
+  initialValues,
 }) => {
-  const [formState, setFormState] = useState(
-    fields.reduce((acc, field) => ({ ...acc, [field.name]: '' }), {})
+  const computedInitialState = useMemo(
+    () =>
+      fields.reduce(
+        (acc, field) => ({
+          ...acc,
+          [field.name]: initialValues?.[field.name] ?? '',
+        }),
+        {}
+      ),
+    [fields, initialValues]
   );
-  const [isPaid, setIsPaid] = useState(false);
 
+  const [formState, setFormState] = useState(computedInitialState);
+
+  useEffect(() => {
+    setFormState(computedInitialState);
+  }, [computedInitialState]);
   const handleChange = (event, name) => {
     setFormState((prev) => ({ ...prev, [name]: event.target.value }));
   };
 
+  const isPaymentFlow = Boolean(payment);
+
+  const allFieldsComplete = useMemo(
+    () =>
+      fields.every((field) => {
+        const value = formState[field.name];
+        return field.required ? value && value.toString().trim().length > 0 : true;
+      }),
+    [fields, formState]
+  );
+
   const handleSubmit = (event) => {
     event.preventDefault();
-    if (payment && !isPaid) {
-      alert('Please complete the payment to proceed.');
-      return;
-    }
+    if (isPaymentFlow) return;
     alert(`${heading} submitted!`);
   };
 
   const handlePay = () => {
-    setIsPaid(true);
-    setTimeout(() => {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }, 150);
+    if (!isPaymentFlow) return;
+    if (!allFieldsComplete) {
+      alert('Please fill all required details before proceeding to payment.');
+      return;
+    }
+
+    if (typeof onPayment === 'function') {
+      onPayment({
+        details: formState,
+        heading,
+        payment,
+      });
+    }
   };
 
   return (
@@ -87,13 +118,15 @@ const FormPage = ({
                 />
               );
             })}
-            <button type="submit" className="btn" style={{ justifySelf: 'flex-start' }}>
-              {cta}
-              <FiArrowRight />
-            </button>
+            {!isPaymentFlow && (
+              <button type="submit" className="btn" style={{ justifySelf: 'flex-start' }}>
+                {cta}
+                <FiArrowRight />
+              </button>
+            )}
           </form>
 
-          {payment && (
+          {isPaymentFlow && (
             <div className="payment-box">
               <h2>Secure Payment</h2>
               <p style={{ color: 'var(--text-muted)', lineHeight: 1.6 }}>
@@ -105,14 +138,11 @@ const FormPage = ({
                 type="button"
                 onClick={handlePay}
                 style={{ marginTop: '1rem' }}
+                disabled={!allFieldsComplete}
               >
-                Pay ₹{payment.amount}
+                Proceed to Payment – ₹{payment.amount}
+                <FiArrowRight />
               </button>
-              {isPaid && (
-                <div className="success-banner">
-                  <FiCheckCircle /> {payment.successText || 'Payment Complete'}
-                </div>
-              )}
             </div>
           )}
         </div>
