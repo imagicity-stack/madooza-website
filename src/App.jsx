@@ -36,6 +36,45 @@ const involveItems = [
   },
 ];
 
+const eventTiles = [
+  {
+    title: 'Food Stalls 🍜',
+    copy: 'Gourmet chaos from local chefs, cloud kitchens, and pop-up innovators.',
+    color: '#1A163C',
+    hover: '#FF6A00',
+  },
+  {
+    title: 'Cosplay Corner 🎭',
+    copy: 'Anime, gaming, and desi folklore mash-ups under neon lights.',
+    color: '#13263F',
+    hover: '#00CFFF',
+  },
+  {
+    title: 'Dance Arena 💃',
+    copy: 'Street battles, K-pop covers, and freestyle crews bringing the heat.',
+    color: '#2A1239',
+    hover: '#E0007F',
+  },
+  {
+    title: 'DJ Night 🎧',
+    copy: 'Bass-heavy sets from regional selectors and secret guest performers.',
+    color: '#102B33',
+    hover: '#9DFFFF',
+  },
+  {
+    title: 'Art & Exhibition 🎨',
+    copy: 'Immersive installations, live murals, and digital art drops.',
+    color: '#211A36',
+    hover: '#CFFF47',
+  },
+  {
+    title: 'Local Brands Market 🛍️',
+    copy: 'Limited-edition merch and craft from Hazaribagh’s boldest makers.',
+    color: '#1B2838',
+    hover: '#FF6A00',
+  },
+];
+
 const modalConfigs = {
   tickets: {
     heading: 'Buy Ticket',
@@ -248,18 +287,17 @@ const App = () => {
               </a>
             ))}
           </div>
-          <button className="neon-button neon-glow nav-ticket" type="button" onClick={() => openModal('tickets')}>
+          <button className="neon-button nav-ticket" type="button" onClick={() => openModal('tickets')}>
             Buy Ticket ₹20
           </button>
         </div>
       </nav>
 
       <header id="hero" className="hero-section parallax">
-        <div className="hero-overlay animated-gradient" />
         <div className="hero-content">
           <h1 className="hero-title">MADOOZA – THE SOUND OF PURE MADNESS</h1>
           <p className="hero-subtext">Hazaribagh\'s first youth cultural carnival.</p>
-          <button className="neon-button neon-glow button-pulse" type="button" onClick={() => openModal('tickets')}>
+          <button className="neon-button button-pulse" type="button" onClick={() => openModal('tickets')}>
             Book Your Pass
           </button>
         </div>
@@ -271,7 +309,7 @@ const App = () => {
       </section>
 
       <main>
-        <section id="about" className="section fade-section">
+        <section id="about" className="section fade-section section-about">
           <div className="section-heading">
             <h2>About Madooza</h2>
             <span className="section-accent" />
@@ -285,39 +323,18 @@ const App = () => {
           </p>
         </section>
 
-        <section id="events" className="section fade-section">
+        <section id="events" className="section fade-section section-events">
           <div className="section-heading">
             <h2>Events</h2>
             <span className="section-accent" />
           </div>
           <div className="event-grid">
-            {[
-              {
-                title: 'Food Stalls 🍜',
-                copy: 'Gourmet chaos from local chefs, cloud kitchens, and pop-up innovators.',
-              },
-              {
-                title: 'Cosplay Corner 🎭',
-                copy: 'Anime, gaming, and desi folklore mash-ups under neon lights.',
-              },
-              {
-                title: 'Dance Arena 💃',
-                copy: 'Street battles, K-pop covers, and freestyle crews bringing the heat.',
-              },
-              {
-                title: 'DJ Night 🎧',
-                copy: 'Bass-heavy sets from regional selectors and secret guest performers.',
-              },
-              {
-                title: 'Art & Exhibition 🎨',
-                copy: 'Immersive installations, live murals, and digital art drops.',
-              },
-              {
-                title: 'Local Brands Market 🛍️',
-                copy: 'Limited-edition merch and craft from Hazaribagh’s boldest makers.',
-              },
-            ].map((item) => (
-              <article key={item.title} className="tile neon-glow">
+            {eventTiles.map((item) => (
+              <article
+                key={item.title}
+                className="tile"
+                style={{ '--tile-color': item.color, '--tile-hover': item.hover }}
+              >
                 <h3>{item.title}</h3>
                 <p>{item.copy}</p>
               </article>
@@ -325,14 +342,14 @@ const App = () => {
           </div>
         </section>
 
-        <section id="involve" className="section fade-section">
+        <section id="involve" className="section fade-section section-involve">
           <div className="section-heading">
             <h2>Involve With Us</h2>
             <span className="section-accent" />
           </div>
           <div className="involve-grid">
             {involveItems.map((item) => (
-              <article key={item.id} className={`involve-card ${item.accent} neon-glow`}>
+              <article key={item.id} className={`involve-card ${item.accent}`}>
                 <div className="card-body">
                   <h3>{item.title}</h3>
                   <p>{item.copy}</p>
@@ -345,7 +362,7 @@ const App = () => {
           </div>
         </section>
 
-        <section id="guests" className="section fade-section">
+        <section id="guests" className="section fade-section section-guests">
           <div className="section-heading">
             <h2>Guests</h2>
             <span className="section-accent" />
@@ -353,13 +370,16 @@ const App = () => {
           <div className="guest-grid">
             {[1, 2, 3].map((slot) => (
               <div key={slot} className="guest-card">
+                <div className="guest-image-frame">
+                  <img src="https://placehold.co/260x260?text=Guest+Image" alt="Guest reveal placeholder" />
+                </div>
                 <span className="guest-placeholder">To Be Revealed Soon</span>
               </div>
             ))}
           </div>
         </section>
 
-        <section id="partners" className="section fade-section">
+        <section id="partners" className="section fade-section section-partners">
           <div className="section-heading">
             <h2>Partners</h2>
             <span className="section-accent" />
@@ -372,39 +392,55 @@ const App = () => {
           </div>
         </section>
 
-        <section id="contact" className="section fade-section">
-          <div className="section-heading">
-            <h2>Contact Us</h2>
-            <span className="section-accent" />
+        <section id="contact" className="section fade-section section-contact">
+          <div className="contact-layout">
+            <div className="contact-text">
+              <div className="section-heading">
+                <h2>Contact Us</h2>
+                <span className="section-accent" />
+              </div>
+              <p className="lead">Contact us for more details.</p>
+              <p className="contact-email">info@madooza.com</p>
+            </div>
+            <form className="contact-form">
+              <label>
+                <span>Name</span>
+                <input type="text" name="name" required />
+              </label>
+              <label>
+                <span>Email</span>
+                <input type="email" name="email" required />
+              </label>
+              <label className="full">
+                <span>Message</span>
+                <textarea name="message" rows={4} required />
+              </label>
+              <button className="neon-button" type="submit">
+                Send Message
+              </button>
+            </form>
           </div>
-          <p className="lead center">Contact us for more details.</p>
-          <form className="contact-form">
-            <label>
-              <span>Name</span>
-              <input type="text" name="name" required />
-            </label>
-            <label>
-              <span>Email</span>
-              <input type="email" name="email" required />
-            </label>
-            <label className="full">
-              <span>Message</span>
-              <textarea name="message" rows={4} required />
-            </label>
-            <button className="neon-button neon-glow" type="submit">
-              Send Message
-            </button>
-          </form>
-          <p className="contact-email">info@madooza.com</p>
         </section>
       </main>
 
       <footer className="site-footer">
         <p>© 2025 MADOOZA | Organized by IMAGICITY</p>
         <div className="footer-socials">
-          <a href="https://instagram.com" aria-label="Instagram">IG</a>
-          <a href="https://facebook.com" aria-label="Facebook">FB</a>
-          <a href="mailto:info@madooza.com" aria-label="Email">Mail</a>
+          <a href="https://instagram.com" aria-label="Instagram">
+            <svg viewBox="0 0 24 24" role="img" aria-hidden="true">
+              <path d="M7 3h10a4 4 0 0 1 4 4v10a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V7a4 4 0 0 1 4-4zm0 2a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2H7zm5 3.5A3.5 3.5 0 1 1 8.5 12 3.5 3.5 0 0 1 12 8.5zm0 2A1.5 1.5 0 1 0 13.5 12 1.5 1.5 0 0 0 12 10.5zm5.25-3.75a1 1 0 1 1-1 1 1 1 0 0 1 1-1z" />
+            </svg>
+          </a>
+          <a href="https://facebook.com" aria-label="Facebook">
+            <svg viewBox="0 0 24 24" role="img" aria-hidden="true">
+              <path d="M13.5 9H15V6h-1.5C11.57 6 10 7.57 10 9.5V11H8v3h2v7h3v-7h2.25l.75-3H13v-1.5A.5.5 0 0 1 13.5 9Z" />
+            </svg>
+          </a>
+          <a href="mailto:info@madooza.com" aria-label="Email">
+            <svg viewBox="0 0 24 24" role="img" aria-hidden="true">
+              <path d="M4 5h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2zm0 2v.21l8 5.33 8-5.33V7H4zm16 10V9.79l-7.47 4.98a1 1 0 0 1-1.06 0L4 9.79V17h16z" />
+            </svg>
+          </a>
         </div>
       </footer>
 
