@@ -1,0 +1,134 @@
+.scroll-stack-scroller {
+  position: relative;
+  width: 100%;
+  height: 620px;
+  overflow-y: auto;
+  overflow-x: visible;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+  transform: translateZ(0);
+  will-change: scroll-position;
+}
+
+.scroll-stack-scroller.use-window {
+  height: auto;
+  overflow: visible;
+}
+
+.scroll-stack-inner {
+  padding: 12vh 0 45vh;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
+}
+
+.scroll-stack-card {
+  position: relative;
+  height: clamp(18rem, 38vh, 22rem);
+  width: 100%;
+  margin: 0 auto;
+  border-radius: 38px;
+  padding: clamp(2.4rem, 6vw, 3.6rem);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 0 45px 120px rgba(3, 7, 18, 0.45);
+  transform-origin: top center;
+  color: #030712;
+}
+
+.scroll-stack-card h3 {
+  font-family: 'Syne', 'Sora', sans-serif;
+  font-size: clamp(2.2rem, 4vw, 2.8rem);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+}
+
+.scroll-stack-card p {
+  font-family: 'Sora', sans-serif;
+  font-size: 1rem;
+  line-height: 1.7;
+  max-width: 540px;
+}
+
+.scroll-stack-card .stack-btn {
+  align-self: flex-start;
+  margin-top: 2.2rem;
+  background: rgba(3, 7, 18, 0.9);
+  color: #f7fbff;
+  box-shadow: 0 18px 45px rgba(3, 7, 18, 0.4);
+  border: none;
+}
+
+.scroll-stack-card .stack-btn:hover {
+  background: rgba(3, 7, 18, 0.85);
+  color: #f7fbff;
+}
+
+.scroll-stack-card .stack-tagline {
+  font-family: 'Sora', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.32em;
+  font-size: 0.72rem;
+  margin-bottom: 1.2rem;
+}
+
+.scroll-stack-card.stall-card {
+  background: var(--red);
+  color: #090c1a;
+}
+
+.scroll-stack-card.stall-card .stack-btn {
+  background: #090c1a;
+}
+
+.scroll-stack-card.volunteer-card {
+  background: var(--dark-yellow);
+  color: #1a1405;
+}
+
+.scroll-stack-card.volunteer-card .stack-btn {
+  background: #1a1405;
+}
+
+.scroll-stack-card.sponsor-card {
+  background: var(--aqua-blue);
+  color: #04101f;
+}
+
+.scroll-stack-card.sponsor-card .stack-btn {
+  background: #04101f;
+}
+
+.scroll-stack-end {
+  width: 100%;
+  height: 1px;
+}
+
+@media (max-width: 768px) {
+  .scroll-stack-scroller {
+    height: auto;
+    overflow: visible;
+  }
+
+  .scroll-stack-inner {
+    padding: 8vh 0 30vh;
+    gap: 3rem;
+  }
+
+  .scroll-stack-card {
+    border-radius: 28px;
+    padding: 2.4rem;
+    height: auto;
+    min-height: 20rem;
+  }
+
+  .scroll-stack-card .stack-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
