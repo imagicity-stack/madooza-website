@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@500;600;700;800&family=Sora:wght@400;500;600;700&display=swap');
 
 :root {
   --dark-yellow: #f7b500;
@@ -14,6 +14,10 @@
   --text-muted: rgba(225, 243, 255, 0.78);
   --electric: linear-gradient(125deg, rgba(31, 184, 255, 0.8), rgba(255, 79, 109, 0.9));
   --electric-border: linear-gradient(120deg, rgba(247, 181, 0, 0.95), rgba(25, 226, 160, 0.95));
+  --color-1: #1fb8ff;
+  --color-2: #19e2a0;
+  --color-3: #ff4f6d;
+  --color-4: #f7b500;
 }
 
 * {
@@ -30,7 +34,7 @@ body {
     radial-gradient(circle at 50% 120%, rgba(255, 79, 109, 0.16), transparent 50%),
     var(--deep-navy);
   color: var(--text-light);
-  font-family: 'Space Grotesk', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: 'Sora', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   scroll-behavior: smooth;
 }
 
@@ -133,9 +137,9 @@ body::after {
   position: sticky;
   top: 0;
   z-index: 20;
-  backdrop-filter: blur(14px);
+  backdrop-filter: blur(18px);
   background: rgba(5, 11, 26, 0.82);
-  border-bottom: 1px solid rgba(154, 208, 245, 0.08);
+  border-bottom: 1px solid rgba(154, 208, 245, 0.12);
 }
 
 .navbar .container {
@@ -156,90 +160,51 @@ body::after {
 }
 
 .brand-top {
-  font-family: 'Clash Display', 'Space Grotesk', sans-serif;
-  font-size: 1.4rem;
-  letter-spacing: 0.32em;
+  font-family: 'Syne', 'Sora', sans-serif;
+  font-size: 1.5rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
 }
 
 .brand-sub {
-  font-size: 0.68rem;
+  font-family: 'Sora', sans-serif;
+  font-size: 0.7rem;
   text-transform: uppercase;
   letter-spacing: 0.4em;
   color: var(--text-muted);
 }
 
-.gooey-filter {
-  width: 0;
-  height: 0;
-  position: absolute;
-}
-
-.gooey-nav {
+.nav-center {
   flex: 1;
   display: flex;
   justify-content: center;
+  position: relative;
 }
 
-.gooey-track {
-  display: inline-flex;
+.nav-actions {
+  display: flex;
   align-items: center;
-  gap: 0.4rem;
-  padding: 0.6rem 0.7rem;
-  border-radius: 999px;
-  background: rgba(15, 28, 60, 0.82);
-  position: relative;
+  gap: 1rem;
 }
 
-.gooey-track button {
-  position: relative;
-  padding: 0.7rem 1.3rem;
+.ghost-ticket {
+  padding: 0.75rem 1.6rem;
   border-radius: 999px;
-  border: none;
-  background: rgba(5, 11, 26, 0.6);
+  border: 1.6px solid rgba(154, 208, 245, 0.45);
+  background: rgba(11, 22, 45, 0.55);
   color: var(--pale-blue);
-  font-weight: 500;
-  letter-spacing: 0.06em;
+  font-family: 'Syne', 'Sora', sans-serif;
+  font-weight: 600;
   text-transform: uppercase;
-  transition: transform 0.35s ease, color 0.35s ease, background 0.35s ease;
+  letter-spacing: 0.2em;
+  transition: color 0.35s ease, border-color 0.35s ease, background 0.35s ease, box-shadow 0.35s ease;
 }
 
-.gooey-track button span {
-  position: relative;
-  z-index: 2;
-}
-
-.gooey-track button::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background: linear-gradient(120deg, rgba(247, 181, 0, 0.92), rgba(31, 184, 255, 0.92));
-  transform: scale(0.2);
-  opacity: 0;
-  transition: opacity 0.35s ease, transform 0.35s ease;
-  z-index: 1;
-}
-
-.gooey-track button.active,
-.gooey-track button:hover {
+.ghost-ticket:hover {
+  background: var(--aqua-blue);
   color: var(--ink);
-  transform: translateY(-3px);
-}
-
-.gooey-track button.active::before,
-.gooey-track button:hover::before {
-  opacity: 1;
-  transform: scale(1);
-}
-
-.gooey-track .ticket {
-  background: rgba(255, 79, 109, 0.9);
-  color: var(--ink);
-  font-weight: 700;
-}
-
-.gooey-track .ticket:hover {
-  background: rgba(247, 181, 0, 0.95);
+  border-color: rgba(25, 226, 160, 0.65);
+  box-shadow: 0 18px 30px rgba(31, 184, 255, 0.35);
 }
 
 .menu-toggle {
@@ -345,7 +310,7 @@ body::after {
 }
 
 .hero-title {
-  font-family: 'Clash Display', 'Space Grotesk', sans-serif;
+  font-family: 'Syne', 'Sora', sans-serif;
   font-size: clamp(2.8rem, 6vw, 5.8rem);
   line-height: 1.05;
   text-transform: uppercase;
@@ -426,7 +391,7 @@ body::after {
 }
 
 .section-title {
-  font-family: 'Clash Display', 'Space Grotesk', sans-serif;
+  font-family: 'Syne', 'Sora', sans-serif;
   font-size: clamp(2.5rem, 4vw, 3.4rem);
   text-transform: uppercase;
   letter-spacing: 0.14em;
@@ -439,13 +404,13 @@ body::after {
   line-height: 1.85;
 }
 
-.electric-border {
+.section-electric {
   position: relative;
   border-radius: 28px;
 }
 
-.electric-border::before,
-.electric-border::after {
+.section-electric::before,
+.section-electric::after {
   content: '';
   position: absolute;
   inset: -1px;
@@ -456,7 +421,7 @@ body::after {
   filter: blur(0);
 }
 
-.electric-border::after {
+.section-electric::after {
   inset: -8px;
   background: var(--electric);
   opacity: 0.35;
@@ -464,8 +429,8 @@ body::after {
   animation: electric 2.8s linear infinite;
 }
 
-.section-shell.electric-border > .container,
-.card.electric-border,
+.section-shell.section-electric > .container,
+.card.section-electric,
 .contact-grid,
 .payment-card,
 .form-shell {
@@ -483,12 +448,12 @@ body::after {
   gap: 1.6rem;
 }
 
-.card.electric-border {
+.card.section-electric {
   padding: 2rem 1.6rem;
   transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.35s ease;
 }
 
-.card.electric-border:hover {
+.card.section-electric:hover {
   transform: translateY(-12px) scale(1.02);
   box-shadow: 0 32px 60px rgba(5, 11, 26, 0.55);
 }
@@ -496,7 +461,7 @@ body::after {
 .card h3 {
   font-size: 1.5rem;
   margin-bottom: 1.1rem;
-  font-family: 'Clash Display', 'Space Grotesk', sans-serif;
+  font-family: 'Syne', 'Sora', sans-serif;
 }
 
 .card p {
@@ -675,7 +640,7 @@ footer {
 }
 
 .form-shell h1 {
-  font-family: 'Clash Display', 'Space Grotesk', sans-serif;
+  font-family: 'Syne', 'Sora', sans-serif;
   font-size: clamp(2.4rem, 4vw, 3.4rem);
   letter-spacing: 0.08em;
 }
@@ -742,7 +707,7 @@ footer {
 }
 
 .payment-header h1 {
-  font-family: 'Clash Display', 'Space Grotesk', sans-serif;
+  font-family: 'Syne', 'Sora', sans-serif;
   font-size: clamp(2.4rem, 4vw, 3.3rem);
   text-transform: uppercase;
   letter-spacing: 0.12em;
@@ -825,7 +790,7 @@ footer {
 
 .payment-card .amount strong {
   font-size: 2.6rem;
-  font-family: 'Clash Display', 'Space Grotesk', sans-serif;
+  font-family: 'Syne', 'Sora', sans-serif;
 }
 
 .success-panel {
@@ -850,7 +815,7 @@ footer {
 
 .success-panel h2 {
   font-size: 1.8rem;
-  font-family: 'Clash Display', 'Space Grotesk', sans-serif;
+  font-family: 'Syne', 'Sora', sans-serif;
 }
 
 .success-panel p {
@@ -923,7 +888,11 @@ footer {
 }
 
 @media (max-width: 1024px) {
-  .gooey-nav {
+  .nav-center {
+    display: none;
+  }
+
+  .ghost-ticket {
     display: none;
   }
 

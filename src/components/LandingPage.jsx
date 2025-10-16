@@ -1,39 +1,30 @@
-import { useEffect, useMemo, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { FiInstagram, FiYoutube, FiFacebook, FiArrowRight } from 'react-icons/fi';
+import ElectricBorder from './effects/ElectricBorder.jsx';
+import Shuffle from './effects/Shuffle.jsx';
 
 if (typeof window !== 'undefined' && gsap.core.globals().ScrollTrigger !== ScrollTrigger) {
   gsap.registerPlugin(ScrollTrigger);
 }
 
 const LandingPage = ({ onNavigate }) => {
-  const heroTitleRef = useRef(null);
+  const pageRef = useRef(null);
   const sectionsRef = useRef([]);
   const shuffleRef = useRef(null);
 
-  const titleLetters = useMemo(
-    () => 'Madooza – The Sound of Pure Madness.'.split('').map((char, index) => ({
-      char,
-      key: `${char}-${index}`,
-    })),
-    []
-  );
-
   useEffect(() => {
-    if (!heroTitleRef.current) return;
-
     const ctx = gsap.context(() => {
       gsap.fromTo(
-        '.hero-title span',
-        { y: 90, opacity: 0, rotateX: 65 },
+        '.hero .animate-in',
+        { y: 60, opacity: 0 },
         {
           y: 0,
           opacity: 1,
-          rotateX: 0,
-          ease: 'back.out(1.8)',
-          stagger: 0.035,
-          duration: 0.9,
+          duration: 1,
+          ease: 'power3.out',
+          stagger: 0.12,
         }
       );
 
@@ -87,13 +78,13 @@ const LandingPage = ({ onNavigate }) => {
           '>-0.65'
         );
       }
-    }, heroTitleRef);
+    }, pageRef);
 
     return () => ctx.revert();
   }, []);
 
   return (
-    <div>
+    <div ref={pageRef}>
       <header className="hero" id="hero">
         <div className="hero-background" aria-hidden="true">
           <div className="hero-noise" />
@@ -105,11 +96,19 @@ const LandingPage = ({ onNavigate }) => {
         </div>
         <div className="container hero-content">
           <p className="tagline animate-in">Hazaribagh · 2025 · Imagicity</p>
-          <h1 className="hero-title" ref={heroTitleRef}>
-            {titleLetters.map(({ char, key }) => (
-              <span key={key}>{char === ' ' ? '\u00A0' : char}</span>
-            ))}
-          </h1>
+          <Shuffle
+            text="Madooza – The Sound of Pure Madness."
+            tag="h1"
+            className="hero-title"
+            shuffleDirection="right"
+            duration={0.45}
+            shuffleTimes={2}
+            animationMode="evenodd"
+            stagger={0.04}
+            triggerOnce
+            triggerOnHover
+            textAlign="left"
+          />
           <p className="hero-subtitle animate-in">
             Dive into an explosive collision of art, food, music, and ideas. Madooza brings the
             city's boldest creators and dreamers together for a night that feels premium, raw, and
@@ -141,7 +140,7 @@ const LandingPage = ({ onNavigate }) => {
       <section
         id="about"
         ref={(el) => (sectionsRef.current[0] = el)}
-        className="section-shell electric-border"
+        className="section-shell section-electric"
       >
         <div className="container">
           <h2 className="section-title animate-in">About Madooza</h2>
@@ -163,7 +162,7 @@ const LandingPage = ({ onNavigate }) => {
       <section
         id="involve"
         ref={(el) => (sectionsRef.current[1] = el)}
-        className="section-shell electric-border"
+        className="section-shell section-electric"
       >
         <div className="container">
           <h2 className="section-title animate-in">Involve With Us</h2>
@@ -172,36 +171,42 @@ const LandingPage = ({ onNavigate }) => {
             the madness worth it.
           </p>
           <div className="card-grid" style={{ marginTop: '2rem' }}>
-            <article className="card animate-in electric-border">
-              <h3>Have Your Own Stall</h3>
-              <p>
-                Lock in a high-energy stall space that spotlights your brand to thousands of curious
-                attendees.
-              </p>
-              <button className="btn" style={{ marginTop: '1.6rem' }} onClick={() => onNavigate('/stall')}>
-                Apply – ₹2500
-              </button>
-            </article>
-            <article className="card animate-in electric-border">
-              <h3>Become a Sponsor</h3>
-              <p>
-                Plug your brand into the heart of Madooza and collaborate on premium, high-impact
-                experiences.
-              </p>
-              <button className="btn" style={{ marginTop: '1.6rem' }} onClick={() => onNavigate('/sponsor')}>
-                Partner With Us
-              </button>
-            </article>
-            <article className="card animate-in electric-border">
-              <h3>Become a Volunteer</h3>
-              <p>
-                Join the dream team that keeps the madness flowing. Gain backstage access and
-                hands-on experience.
-              </p>
-              <button className="btn" style={{ marginTop: '1.6rem' }} onClick={() => onNavigate('/volunteer')}>
-                Join The Crew
-              </button>
-            </article>
+            <ElectricBorder color="#7df9ff" speed={1.4} chaos={0.65} thickness={2.4} style={{ borderRadius: 22 }}>
+              <article className="card animate-in">
+                <h3>Have Your Own Stall</h3>
+                <p>
+                  Lock in a high-energy stall space that spotlights your brand to thousands of curious
+                  attendees.
+                </p>
+                <button className="btn" style={{ marginTop: '1.6rem' }} onClick={() => onNavigate('/stall')}>
+                  Apply – ₹2500
+                </button>
+              </article>
+            </ElectricBorder>
+            <ElectricBorder color="#ff4f6d" speed={1.1} chaos={0.75} thickness={2.2} style={{ borderRadius: 22 }}>
+              <article className="card animate-in">
+                <h3>Become a Sponsor</h3>
+                <p>
+                  Plug your brand into the heart of Madooza and collaborate on premium, high-impact
+                  experiences.
+                </p>
+                <button className="btn" style={{ marginTop: '1.6rem' }} onClick={() => onNavigate('/sponsor')}>
+                  Partner With Us
+                </button>
+              </article>
+            </ElectricBorder>
+            <ElectricBorder color="#19e2a0" speed={1.3} chaos={0.6} thickness={2.2} style={{ borderRadius: 22 }}>
+              <article className="card animate-in">
+                <h3>Become a Volunteer</h3>
+                <p>
+                  Join the dream team that keeps the madness flowing. Gain backstage access and
+                  hands-on experience.
+                </p>
+                <button className="btn" style={{ marginTop: '1.6rem' }} onClick={() => onNavigate('/volunteer')}>
+                  Join The Crew
+                </button>
+              </article>
+            </ElectricBorder>
           </div>
         </div>
       </section>
@@ -240,7 +245,7 @@ const LandingPage = ({ onNavigate }) => {
       <section
         id="contact"
         ref={(el) => (sectionsRef.current[4] = el)}
-        className="section-shell electric-border"
+        className="section-shell section-electric"
       >
         <div className="container contact-grid">
           <div>

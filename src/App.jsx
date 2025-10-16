@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import LandingPage from './components/LandingPage.jsx';
 import FormPage from './components/FormPage.jsx';
 import PaymentPage from './components/PaymentPage.jsx';
+import GooeyNav from './components/effects/GooeyNav.jsx';
 
 const sectionIds = ['hero', 'about', 'involve', 'guests', 'partners', 'contact'];
 
@@ -147,6 +148,7 @@ const App = () => {
         element.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
     }
+    setMenuOpen(false);
   };
 
   const navItems = useMemo(
@@ -213,20 +215,23 @@ const App = () => {
     return null;
   };
 
+  const activeIndex = useMemo(
+    () => navItems.findIndex((item) => item.target === activeSection),
+    [navItems, activeSection]
+  );
+
+  const gooeyNavItems = useMemo(
+    () =>
+      navItems.map((item) => ({
+        label: item.label,
+        href: `#${item.target}`,
+        target: item.target,
+      })),
+    [navItems]
+  );
+
   return (
     <div>
-      <svg className="gooey-filter" aria-hidden="true">
-        <defs>
-          <filter id="gooey">
-            <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur" />
-            <feColorMatrix
-              in="blur"
-              mode="matrix"
-              values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 25 -10"
-            />
-          </filter>
-        </defs>
-      </svg>
       <nav className="navbar">
         <div className="container">
           <div className="navbar-inner">
@@ -234,32 +239,38 @@ const App = () => {
               <span className="brand-top">MADOOZA</span>
               <span className="brand-sub">The Sound of Pure Madness</span>
             </div>
-            <div className="gooey-nav" data-active={menuOpen}>
-              <div className="gooey-track" style={{ filter: 'url(#gooey)' }}>
-                {navItems.map((item) => (
-                  <button
-                    key={item.target}
-                    type="button"
-                    className={activeSection === item.target ? 'active' : ''}
-                    onClick={() => goToSection(item.target)}
-                  >
-                    <span>{item.label}</span>
-                  </button>
-                ))}
-                <button type="button" className="ticket" onClick={() => navigate('/tickets')}>
-                  <span>Buy Ticket – ₹20</span>
-                </button>
-              </div>
+            <div className="nav-center">
+              <GooeyNav
+                items={gooeyNavItems}
+                particleCount={18}
+                particleDistances={[90, 14]}
+                particleR={120}
+                initialActiveIndex={0}
+                activeIndex={activeIndex < 0 ? 0 : activeIndex}
+                animationTime={650}
+                timeVariance={360}
+                colors={[1, 2, 3, 1, 4, 2, 3, 1]}
+                onSelect={(item) => {
+                  if (item?.target) {
+                    goToSection(item.target);
+                  }
+                }}
+              />
             </div>
-            <button
-              type="button"
-              className={`menu-toggle ${menuOpen ? 'open' : ''}`}
-              aria-label="Toggle navigation"
-              onClick={() => setMenuOpen((prev) => !prev)}
-            >
-              <span />
-              <span />
-            </button>
+            <div className="nav-actions">
+              <button type="button" className="ghost-ticket" onClick={() => navigate('/tickets')}>
+                Buy Ticket – ₹20
+              </button>
+              <button
+                type="button"
+                className={`menu-toggle ${menuOpen ? 'open' : ''}`}
+                aria-label="Toggle navigation"
+                onClick={() => setMenuOpen((prev) => !prev)}
+              >
+                <span />
+                <span />
+              </button>
+            </div>
           </div>
           {menuOpen && (
             <div className="mobile-menu">
