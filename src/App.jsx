@@ -1,292 +1,414 @@
 import { useEffect, useMemo, useState } from 'react';
-import LandingPage from './components/LandingPage.jsx';
-import FormPage from './components/FormPage.jsx';
-import PaymentPage from './components/PaymentPage.jsx';
-import GooeyNav from './components/effects/GooeyNav.jsx';
 
-const sectionIds = ['hero', 'about', 'involve', 'guests', 'partners', 'contact'];
+const involveItems = [
+  {
+    id: 'sponsor',
+    title: 'Become a Sponsor',
+    copy:
+      'Plug your brand into the city\'s loudest youth stage. Let\'s craft neon-drenched experiences that your audiences will never forget.',
+    accent: 'card-blue',
+    cta: 'Sponsor Us',
+  },
+  {
+    id: 'stall',
+    title: 'Book a Stall',
+    copy:
+      'Serve flavours, merch, or mad art. Claim your premium stall and feed the frenzy of thousands hunting for something fresh.',
+    accent: 'card-orange',
+    cta: 'Book Stall',
+    payment: 2500,
+  },
+  {
+    id: 'volunteer',
+    title: 'Volunteer',
+    copy:
+      'Run the backstage chaos. Work with artists, DJs, and creators while keeping the madness on beat.',
+    accent: 'card-magenta',
+    cta: 'Join Crew',
+  },
+  {
+    id: 'partner',
+    title: 'Partner with Imagicity',
+    copy:
+      'Co-create stages, workshops, and collabs that push Hazaribagh into the spotlight. We\'re open to wild ideas.',
+    accent: 'card-cyan',
+    cta: 'Partner Up',
+  },
+];
 
-const forms = {
-  '/tickets': {
+const modalConfigs = {
+  tickets: {
     heading: 'Buy Ticket',
-    description:
-      'Grab your pass to the wildest creative showcase in Hazaribagh. Fill in your details and secure your ₹20 ticket.',
-    cta: 'Submit Details',
-    payment: { amount: 20, successText: 'Ticket Booked' },
+    blurb:
+      'Lock your pass to MADOOZA and dive into neon nights, food explosions, and genre-bending performances.',
+    payment: 20,
     fields: [
-      { name: 'name', placeholder: 'Name', type: 'text', required: true },
-      { name: 'email', placeholder: 'Email', type: 'email', required: true },
-      { name: 'phone', placeholder: 'Phone', type: 'tel', required: true },
+      { name: 'name', label: 'Full Name', type: 'text', required: true },
+      { name: 'email', label: 'Email', type: 'email', required: true },
+      { name: 'phone', label: 'Phone', type: 'tel', required: true },
     ],
   },
-  '/stall': {
-    heading: 'Book Your Stall',
-    description:
-      'Claim a premium stall to showcase your brand, art, or culinary magic. Limited slots to keep the experience elevated.',
-    cta: 'Submit Application',
-    payment: { amount: 2500, successText: 'Stall Reserved' },
+  stall: {
+    heading: 'Book a Stall',
+    blurb:
+      'Tell us what you\'re bringing to the chaos and confirm your ₹2500 slot. Only the boldest experiences make it in.',
+    payment: 2500,
     fields: [
-      { name: 'brand', placeholder: 'Brand / Project Name', type: 'text', required: true },
-      { name: 'contact', placeholder: 'Primary Contact Name', type: 'text', required: true },
-      { name: 'email', placeholder: 'Email', type: 'email', required: true },
-      { name: 'phone', placeholder: 'Phone', type: 'tel', required: true },
-      { name: 'description', placeholder: 'What will you showcase?', type: 'textarea', required: true },
+      { name: 'brand', label: 'Brand / Project', type: 'text', required: true },
+      { name: 'contact', label: 'Primary Contact', type: 'text', required: true },
+      { name: 'email', label: 'Email', type: 'email', required: true },
+      { name: 'phone', label: 'Phone', type: 'tel', required: true },
+      { name: 'concept', label: 'What are you showcasing?', type: 'textarea', required: true },
     ],
   },
-  '/sponsor': {
+  sponsor: {
     heading: 'Become a Sponsor',
-    description:
-      'Let’s collaborate on unforgettable experiences. Tell us about your brand and we’ll curate the right partnership tier.',
-    cta: 'Share Interest',
+    blurb:
+      'Drop your details and let\'s design a sponsorship tier that electrifies young Hazaribagh.',
     fields: [
-      { name: 'brand', placeholder: 'Brand Name', type: 'text', required: true },
-      { name: 'contact', placeholder: 'Contact Person', type: 'text', required: true },
-      { name: 'email', placeholder: 'Email', type: 'email', required: true },
-      { name: 'phone', placeholder: 'Phone', type: 'tel', required: true },
-      { name: 'goals', placeholder: 'Partnership goals', type: 'textarea', required: true },
+      { name: 'brand', label: 'Brand Name', type: 'text', required: true },
+      { name: 'contact', label: 'Contact Person', type: 'text', required: true },
+      { name: 'email', label: 'Email', type: 'email', required: true },
+      { name: 'phone', label: 'Phone', type: 'tel', required: true },
+      { name: 'goals', label: 'Collaboration Goals', type: 'textarea', required: false },
     ],
   },
-  '/volunteer': {
-    heading: 'Become a Volunteer',
-    description:
-      'Step into the core team and help us orchestrate the madness. Tell us how you want to contribute.',
-    cta: 'Sign Up',
+  volunteer: {
+    heading: 'Volunteer with MADOOZA',
+    blurb:
+      'Fill this in and we\'ll loop you into crew briefings, rehearsals, and creative missions.',
     fields: [
-      { name: 'name', placeholder: 'Full Name', type: 'text', required: true },
-      { name: 'email', placeholder: 'Email', type: 'email', required: true },
-      { name: 'phone', placeholder: 'Phone', type: 'tel', required: true },
-      { name: 'skills', placeholder: 'Skills / Interests', type: 'textarea', required: true },
+      { name: 'name', label: 'Full Name', type: 'text', required: true },
+      { name: 'email', label: 'Email', type: 'email', required: true },
+      { name: 'phone', label: 'Phone', type: 'tel', required: true },
+      { name: 'skills', label: 'Skills / Interests', type: 'textarea', required: true },
+    ],
+  },
+  partner: {
+    heading: 'Partner with Imagicity',
+    blurb:
+      'Let\'s co-design experiences, hackathons, or pop-ups. Drop your idea and we\'ll reach out.',
+    fields: [
+      { name: 'org', label: 'Organisation / Collective', type: 'text', required: true },
+      { name: 'contact', label: 'Contact Person', type: 'text', required: true },
+      { name: 'email', label: 'Email', type: 'email', required: true },
+      { name: 'phone', label: 'Phone', type: 'tel', required: true },
+      { name: 'proposal', label: 'Collab Idea', type: 'textarea', required: true },
     ],
   },
 };
 
 const App = () => {
-  const [currentPath, setCurrentPath] = useState(() => window.location.pathname || '/');
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [pendingScroll, setPendingScroll] = useState(null);
-  const [activeSection, setActiveSection] = useState('hero');
-  const [paymentSession, setPaymentSession] = useState(null);
-  const [formMemory, setFormMemory] = useState({});
+  const [activeModal, setActiveModal] = useState(null);
+  const [formValues, setFormValues] = useState({});
+  const [paymentState, setPaymentState] = useState({});
 
   useEffect(() => {
-    const handlePopState = () => {
-      setCurrentPath(window.location.pathname || '/');
-      setMenuOpen(false);
-    };
+    const sections = document.querySelectorAll('.fade-section');
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+          }
+        });
+      },
+      { threshold: 0.2 }
+    );
 
-    window.addEventListener('popstate', handlePopState);
-    return () => window.removeEventListener('popstate', handlePopState);
+    sections.forEach((sec) => observer.observe(sec));
+    return () => observer.disconnect();
   }, []);
 
   useEffect(() => {
-    if (currentPath !== '/') return undefined;
-
-    const observers = [];
-
-    sectionIds.forEach((id) => {
-      const element = document.getElementById(id);
-      if (!element) return;
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              setActiveSection(id);
-            }
-          });
-        },
-        {
-          threshold: 0.4,
-        }
-      );
-      observer.observe(element);
-      observers.push({ observer, element });
-    });
-
-    return () => {
-      observers.forEach(({ observer, element }) => observer.unobserve(element));
+    const handleKey = (event) => {
+      if (event.key === 'Escape') {
+        setActiveModal(null);
+      }
     };
-  }, [currentPath]);
+    window.addEventListener('keydown', handleKey);
+    return () => window.removeEventListener('keydown', handleKey);
+  }, []);
 
-  useEffect(() => {
-    if (pendingScroll && currentPath === '/') {
-      const element = document.getElementById(pendingScroll);
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        setPendingScroll(null);
-      }
-    }
-  }, [pendingScroll, currentPath]);
-
-  useEffect(() => {
-    if (currentPath !== '/' && typeof window !== 'undefined') {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-  }, [currentPath]);
-
-  const navigate = (path) => {
-    const safePath = path.startsWith('/') ? path : `/${path}`;
-    if (window.location.pathname !== safePath) {
-      window.history.pushState({}, '', safePath);
-    }
-    setCurrentPath(safePath);
-    setMenuOpen(false);
+  const openModal = (id) => {
+    setActiveModal(id);
+    setPaymentState((prev) => ({ ...prev, [id]: 'idle' }));
   };
 
-  const beginPayment = ({ origin, details, heading, payment }) => {
-    setFormMemory((prev) => ({ ...prev, [origin]: details }));
-    setPaymentSession({ origin, details, heading, payment, status: 'pending' });
-    navigate('/payments');
+  const closeModal = () => {
+    setActiveModal(null);
   };
 
-  const goToSection = (id) => {
-    if (currentPath !== '/') {
-      setPendingScroll(id);
-      navigate('/');
+  const handleInputChange = (modalId, fieldName, value) => {
+    setFormValues((prev) => ({
+      ...prev,
+      [modalId]: { ...prev[modalId], [fieldName]: value },
+    }));
+  };
+
+  const handleSubmit = (modalId, event) => {
+    event.preventDefault();
+    if (!modalId) return;
+    if (modalConfigs[modalId]?.payment) {
+      setPaymentState((prev) => ({ ...prev, [modalId]: 'processing' }));
+      setTimeout(() => {
+        setPaymentState((prev) => ({ ...prev, [modalId]: 'success' }));
+      }, 1400);
     } else {
-      const element = document.getElementById(id);
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
+      setPaymentState((prev) => ({ ...prev, [modalId]: 'success' }));
     }
-    setMenuOpen(false);
   };
 
-  const navItems = useMemo(
+  const navLinks = useMemo(
     () => [
-      { label: 'Home', target: 'hero' },
-      { label: 'About', target: 'about' },
-      { label: 'Involve', target: 'involve' },
-      { label: 'Guests', target: 'guests' },
-      { label: 'Partners', target: 'partners' },
-      { label: 'Contact', target: 'contact' },
+      { href: '#about', label: 'About' },
+      { href: '#events', label: 'Events' },
+      { href: '#involve', label: 'Involve' },
+      { href: '#partners', label: 'Partners' },
+      { href: '#contact', label: 'Contact' },
     ],
     []
   );
 
-  const renderPage = () => {
-    if (currentPath === '/') {
-      return <LandingPage onNavigate={navigate} activeSection={activeSection} />;
-    }
+  const renderModal = () => {
+    if (!activeModal) return null;
+    const config = modalConfigs[activeModal];
+    if (!config) return null;
+    const status = paymentState[activeModal] || 'idle';
 
-    if (currentPath === '/payments') {
-      if (!paymentSession) {
-        navigate('/');
-        return null;
-      }
-
-      return (
-        <PaymentPage
-          key="payment"
-          session={paymentSession}
-          onBack={() => {
-            navigate(paymentSession.origin || '/');
-          }}
-          onComplete={() => {
-            setPaymentSession((prev) => (prev ? { ...prev, status: 'success' } : prev));
-          }}
-          onReset={() => {
-            setPaymentSession(null);
-            navigate('/');
-          }}
-        />
-      );
-    }
-
-    if (forms[currentPath]) {
-      const { heading, description, fields, cta, payment } = forms[currentPath];
-      return (
-        <FormPage
-          key={currentPath}
-          heading={heading}
-          description={description}
-          fields={fields}
-          cta={cta}
-          payment={payment}
-          onBack={() => navigate('/')}
-          onPayment={
-            payment ? (payload) => beginPayment({ ...payload, origin: currentPath }) : undefined
-          }
-          initialValues={formMemory[currentPath]}
-        />
-      );
-    }
-
-    navigate('/');
-    return null;
-  };
-
-  const activeIndex = useMemo(
-    () => navItems.findIndex((item) => item.target === activeSection),
-    [navItems, activeSection]
-  );
-
-  const gooeyNavItems = useMemo(
-    () =>
-      navItems.map((item) => ({
-        label: item.label,
-        href: `#${item.target}`,
-        target: item.target,
-      })),
-    [navItems]
-  );
-
-  return (
-    <div>
-      <nav className="navbar">
-        <div className="container">
-          <div className="navbar-inner">
-            <div className="brand-mark">
-              <span className="brand-top">MADOOZA</span>
-              <span className="brand-sub">The Sound of Pure Madness</span>
-            </div>
-            <div className="nav-center">
-              <GooeyNav
-                items={gooeyNavItems}
-                particleCount={18}
-                particleDistances={[90, 14]}
-                particleR={120}
-                initialActiveIndex={0}
-                activeIndex={activeIndex < 0 ? 0 : activeIndex}
-                animationTime={650}
-                timeVariance={360}
-                colors={[1, 2, 3, 1, 4, 2, 3, 1]}
-                onSelect={(item) => {
-                  if (item?.target) {
-                    goToSection(item.target);
-                  }
-                }}
-              />
-            </div>
-            <div className="nav-actions">
-              <button type="button" className="ghost-ticket" onClick={() => navigate('/tickets')}>
-                Buy Ticket – ₹20
-              </button>
-              <button
-                type="button"
-                className={`menu-toggle ${menuOpen ? 'open' : ''}`}
-                aria-label="Toggle navigation"
-                onClick={() => setMenuOpen((prev) => !prev)}
-              >
-                <span />
-                <span />
+    return (
+      <div className="modal-backdrop" role="dialog" aria-modal="true">
+        <div className="modal-card">
+          <button className="modal-close" type="button" onClick={closeModal} aria-label="Close form">
+            ×
+          </button>
+          <h3>{config.heading}</h3>
+          <p className="modal-blurb">{config.blurb}</p>
+          {status === 'success' ? (
+            <div className="modal-success">
+              <h4>We\'ve got your details!</h4>
+              <p>Our crew will reach out shortly with the next steps. Stay tuned for the madness.</p>
+              <button className="neon-button" type="button" onClick={closeModal}>
+                Close
               </button>
             </div>
-          </div>
-          {menuOpen && (
-            <div className="mobile-menu">
-              {navItems.map((item) => (
-                <button key={item.target} type="button" onClick={() => goToSection(item.target)}>
-                  {item.label}
-                </button>
+          ) : (
+            <form className="modal-form" onSubmit={(event) => handleSubmit(activeModal, event)}>
+              {config.fields.map((field) => (
+                <label key={field.name}>
+                  <span>{field.label}</span>
+                  {field.type === 'textarea' ? (
+                    <textarea
+                      required={field.required}
+                      value={formValues[activeModal]?.[field.name] || ''}
+                      onChange={(event) => handleInputChange(activeModal, field.name, event.target.value)}
+                      rows={4}
+                    />
+                  ) : (
+                    <input
+                      type={field.type}
+                      required={field.required}
+                      value={formValues[activeModal]?.[field.name] || ''}
+                      onChange={(event) => handleInputChange(activeModal, field.name, event.target.value)}
+                    />
+                  )}
+                </label>
               ))}
-              <button type="button" onClick={() => navigate('/tickets')}>
-                Buy Ticket – ₹20
-              </button>
-            </div>
+              {config.payment ? (
+                <button
+                  className={`neon-button button-pulse ${status === 'processing' ? 'is-loading' : ''}`}
+                  type="submit"
+                  disabled={status === 'processing'}
+                >
+                  {status === 'processing' ? 'Processing Payment…' : `Pay ₹${config.payment}`}
+                </button>
+              ) : (
+                <button className="neon-button" type="submit">
+                  Submit Details
+                </button>
+              )}
+            </form>
           )}
         </div>
+      </div>
+    );
+  };
+
+  return (
+    <div className="app-shell">
+      <nav className="navbar">
+        <div className="nav-inner">
+          <a className="logo" href="#hero">
+            MADOOZA
+          </a>
+          <div className="nav-links">
+            {navLinks.map((link) => (
+              <a key={link.href} href={link.href} className="nav-link">
+                {link.label}
+              </a>
+            ))}
+          </div>
+          <button className="neon-button neon-glow nav-ticket" type="button" onClick={() => openModal('tickets')}>
+            Buy Ticket ₹20
+          </button>
+        </div>
       </nav>
-      <main>{renderPage()}</main>
+
+      <header id="hero" className="hero-section parallax">
+        <div className="hero-overlay animated-gradient" />
+        <div className="hero-content">
+          <h1 className="hero-title">MADOOZA – THE SOUND OF PURE MADNESS</h1>
+          <p className="hero-subtext">Hazaribagh\'s first youth cultural carnival.</p>
+          <button className="neon-button neon-glow button-pulse" type="button" onClick={() => openModal('tickets')}>
+            Book Your Pass
+          </button>
+        </div>
+      </header>
+
+      <section className="ticker" aria-hidden="true">
+        <div className="item">Food · Art · Dance · Cosplay · Music · Street Culture · Neon Nights</div>
+        <div className="item">Food · Art · Dance · Cosplay · Music · Street Culture · Neon Nights</div>
+      </section>
+
+      <main>
+        <section id="about" className="section fade-section">
+          <div className="section-heading">
+            <h2>About Madooza</h2>
+            <span className="section-accent" />
+          </div>
+          <p className="lead">
+            Madooza is not just another fest — it’s Hazaribagh’s first creative explosion where art, food, music, and ideas
+            collide. Conceptualized and organized by IMAGICITY, Madooza gives local creators, brands, and students a platform
+            that feels premium yet rooted. From vibrant food stalls to live exhibitions, performances, and interactive zones,
+            every corner of Madooza is designed to spark curiosity and collaboration. It’s where creativity meets opportunity —
+            for entrepreneurs, artists, and dreamers ready to make noise in a Tier-3 city.
+          </p>
+        </section>
+
+        <section id="events" className="section fade-section">
+          <div className="section-heading">
+            <h2>Events</h2>
+            <span className="section-accent" />
+          </div>
+          <div className="event-grid">
+            {[
+              {
+                title: 'Food Stalls 🍜',
+                copy: 'Gourmet chaos from local chefs, cloud kitchens, and pop-up innovators.',
+              },
+              {
+                title: 'Cosplay Corner 🎭',
+                copy: 'Anime, gaming, and desi folklore mash-ups under neon lights.',
+              },
+              {
+                title: 'Dance Arena 💃',
+                copy: 'Street battles, K-pop covers, and freestyle crews bringing the heat.',
+              },
+              {
+                title: 'DJ Night 🎧',
+                copy: 'Bass-heavy sets from regional selectors and secret guest performers.',
+              },
+              {
+                title: 'Art & Exhibition 🎨',
+                copy: 'Immersive installations, live murals, and digital art drops.',
+              },
+              {
+                title: 'Local Brands Market 🛍️',
+                copy: 'Limited-edition merch and craft from Hazaribagh’s boldest makers.',
+              },
+            ].map((item) => (
+              <article key={item.title} className="tile neon-glow">
+                <h3>{item.title}</h3>
+                <p>{item.copy}</p>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section id="involve" className="section fade-section">
+          <div className="section-heading">
+            <h2>Involve With Us</h2>
+            <span className="section-accent" />
+          </div>
+          <div className="involve-grid">
+            {involveItems.map((item) => (
+              <article key={item.id} className={`involve-card ${item.accent} neon-glow`}>
+                <div className="card-body">
+                  <h3>{item.title}</h3>
+                  <p>{item.copy}</p>
+                </div>
+                <button className="card-button" type="button" onClick={() => openModal(item.id)}>
+                  {item.cta}
+                </button>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section id="guests" className="section fade-section">
+          <div className="section-heading">
+            <h2>Guests</h2>
+            <span className="section-accent" />
+          </div>
+          <div className="guest-grid">
+            {[1, 2, 3].map((slot) => (
+              <div key={slot} className="guest-card">
+                <span className="guest-placeholder">To Be Revealed Soon</span>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section id="partners" className="section fade-section">
+          <div className="section-heading">
+            <h2>Partners</h2>
+            <span className="section-accent" />
+          </div>
+          <p className="lead center">Coming Soon.</p>
+          <div className="partners-grid">
+            {[1, 2, 3, 4].map((slot) => (
+              <div key={slot} className="partner-placeholder" aria-hidden="true" />
+            ))}
+          </div>
+        </section>
+
+        <section id="contact" className="section fade-section">
+          <div className="section-heading">
+            <h2>Contact Us</h2>
+            <span className="section-accent" />
+          </div>
+          <p className="lead center">Contact us for more details.</p>
+          <form className="contact-form">
+            <label>
+              <span>Name</span>
+              <input type="text" name="name" required />
+            </label>
+            <label>
+              <span>Email</span>
+              <input type="email" name="email" required />
+            </label>
+            <label className="full">
+              <span>Message</span>
+              <textarea name="message" rows={4} required />
+            </label>
+            <button className="neon-button neon-glow" type="submit">
+              Send Message
+            </button>
+          </form>
+          <p className="contact-email">info@madooza.com</p>
+        </section>
+      </main>
+
+      <footer className="site-footer">
+        <p>© 2025 MADOOZA | Organized by IMAGICITY</p>
+        <div className="footer-socials">
+          <a href="https://instagram.com" aria-label="Instagram">IG</a>
+          <a href="https://facebook.com" aria-label="Facebook">FB</a>
+          <a href="mailto:info@madooza.com" aria-label="Email">Mail</a>
+        </div>
+      </footer>
+
+      {renderModal()}
     </div>
   );
 };
