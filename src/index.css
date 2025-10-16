@@ -72,6 +72,20 @@ body::after {
   margin: 0 auto;
 }
 
+.landing-page {
+  position: relative;
+  z-index: 0;
+}
+
+.dither-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: -4;
+  opacity: 0.85;
+  pointer-events: none;
+  mix-blend-mode: lighten;
+}
+
 .btn {
   display: inline-flex;
   align-items: center;
@@ -404,70 +418,43 @@ body::after {
   line-height: 1.85;
 }
 
-.section-electric {
-  position: relative;
-  border-radius: 28px;
-}
-
-.section-electric::before,
-.section-electric::after {
-  content: '';
-  position: absolute;
-  inset: -1px;
+.section-electric-wrap {
+  display: block;
+  width: min(1120px, 92vw);
+  margin: 0 auto;
   border-radius: inherit;
-  background: var(--electric-border);
-  opacity: 0.72;
-  z-index: -2;
-  filter: blur(0);
 }
 
-.section-electric::after {
-  inset: -8px;
-  background: var(--electric);
-  opacity: 0.35;
-  filter: blur(18px);
-  animation: electric 2.8s linear infinite;
-}
-
-.section-shell.section-electric > .container,
-.card.section-electric,
-.contact-grid,
-.payment-card,
-.form-shell {
+.section-electric-wrap .section-content {
   background: var(--surface);
   border-radius: inherit;
   border: 1px solid rgba(154, 208, 245, 0.18);
-  padding: clamp(2.2rem, 5vw, 3rem);
+  padding: clamp(2.6rem, 6vw, 3.4rem);
   position: relative;
   z-index: 1;
+  box-shadow: 0 36px 120px rgba(3, 7, 18, 0.45);
 }
 
-.card-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 1.6rem;
+.section-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
 }
 
-.card.section-electric {
-  padding: 2rem 1.6rem;
-  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.35s ease;
+.section-content .section-subtitle {
+  max-width: 760px;
 }
 
-.card.section-electric:hover {
-  transform: translateY(-12px) scale(1.02);
-  box-shadow: 0 32px 60px rgba(5, 11, 26, 0.55);
+.section-content .section-subtitle + .section-subtitle {
+  margin-top: 0.6rem;
 }
 
-.card h3 {
-  font-size: 1.5rem;
-  margin-bottom: 1.1rem;
-  font-family: 'Syne', 'Sora', sans-serif;
+.stack-wrapper {
+  margin-top: clamp(2.4rem, 6vw, 3.6rem);
 }
 
-.card p {
-  color: var(--text-muted);
-  line-height: 1.7;
-  font-size: 1rem;
+.involve-stack {
+  width: 100%;
 }
 
 .guests-grid {
