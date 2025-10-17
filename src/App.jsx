@@ -1,4 +1,5 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import CosplayPage from './pages/CosplayPage';
 
 const involveItems = [
   {
@@ -17,6 +18,15 @@ const involveItems = [
     accent: 'card-orange',
     cta: 'Book Stall',
     payment: 2500,
+  },
+  {
+    id: 'cosplay-card',
+    title: 'Join the Cosplay Arena',
+    copy:
+      'Unleash your alter ego in neon lights. Walk the grounds in character and face off in the MAD Parade showdown.',
+    accent: 'card-violet',
+    cta: 'Explore Cosplay Arena',
+    navigateTo: 'cosplay',
   },
   {
     id: 'volunteer',
@@ -75,6 +85,133 @@ const eventTiles = [
   },
 ];
 
+const HomeSections = ({ openModal, onNavigate }) => (
+  <>
+    <section id="about" className="section fade-section section-about">
+      <div className="section-heading">
+        <h2>About Madooza</h2>
+        <span className="section-accent" />
+      </div>
+      <p className="lead">
+        Madooza is not just another fest — it’s Hazaribagh’s first creative explosion where art, food, music, and ideas collide.
+        Conceptualized and organized by IMAGICITY, Madooza gives local creators, brands, and students a platform that feels
+        premium yet rooted. From vibrant food stalls to live exhibitions, performances, and interactive zones, every corner of
+        Madooza is designed to spark curiosity and collaboration. It’s where creativity meets opportunity — for entrepreneurs,
+        artists, and dreamers ready to make noise in a Tier-3 city.
+      </p>
+    </section>
+
+    <section id="events" className="section fade-section section-events">
+      <div className="section-heading">
+        <h2>Events</h2>
+        <span className="section-accent" />
+      </div>
+      <div className="event-grid">
+        {eventTiles.map((item) => (
+          <article
+            key={item.title}
+            className="tile"
+            style={{ '--tile-color': item.color, '--tile-hover': item.hover }}
+          >
+            <h3>{item.title}</h3>
+            <p>{item.copy}</p>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <section id="involve" className="section fade-section section-involve">
+      <div className="section-heading">
+        <h2>Involve With Us</h2>
+        <span className="section-accent" />
+      </div>
+      <div className="involve-grid">
+        {involveItems.map((item) => (
+          <article key={item.id} className={`involve-card ${item.accent}`}>
+            <div className="card-body">
+              <h3>{item.title}</h3>
+              <p>{item.copy}</p>
+            </div>
+            <button
+              className="card-button"
+              type="button"
+              onClick={() => {
+                if (item.navigateTo) {
+                  onNavigate(item.navigateTo);
+                } else {
+                  openModal(item.id);
+                }
+              }}
+            >
+              {item.cta}
+            </button>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <section id="guests" className="section fade-section section-guests">
+      <div className="section-heading">
+        <h2>Guests</h2>
+        <span className="section-accent" />
+      </div>
+      <div className="guest-grid">
+        {[1, 2, 3].map((slot) => (
+          <div key={slot} className="guest-card">
+            <div className="guest-image-frame">
+              <img src="https://placehold.co/260x260?text=Guest+Image" alt="Guest reveal placeholder" />
+            </div>
+            <span className="guest-placeholder">To Be Revealed Soon</span>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section id="partners" className="section fade-section section-partners">
+      <div className="section-heading">
+        <h2>Partners</h2>
+        <span className="section-accent" />
+      </div>
+      <p className="lead center">Coming Soon.</p>
+      <div className="partners-grid">
+        {[1, 2, 3, 4].map((slot) => (
+          <div key={slot} className="partner-placeholder" aria-hidden="true" />
+        ))}
+      </div>
+    </section>
+
+    <section id="contact" className="section fade-section section-contact">
+      <div className="contact-layout">
+        <div className="contact-text">
+          <div className="section-heading">
+            <h2>Contact Us</h2>
+            <span className="section-accent" />
+          </div>
+          <p className="lead">Contact us for more details.</p>
+          <p className="contact-email">info@madooza.com</p>
+        </div>
+        <form className="contact-form">
+          <label>
+            <span>Name</span>
+            <input type="text" name="name" required />
+          </label>
+          <label>
+            <span>Email</span>
+            <input type="email" name="email" required />
+          </label>
+          <label className="full">
+            <span>Message</span>
+            <textarea name="message" rows={4} required />
+          </label>
+          <button className="neon-button" type="submit">
+            Send Message
+          </button>
+        </form>
+      </div>
+    </section>
+  </>
+);
+
 const modalConfigs = {
   tickets: {
     heading: 'Buy Ticket',
@@ -90,7 +227,7 @@ const modalConfigs = {
   stall: {
     heading: 'Book a Stall',
     blurb:
-      'Tell us what you\'re bringing to the chaos and confirm your ₹2500 slot. Only the boldest experiences make it in.',
+      "Tell us what you're bringing to the chaos and confirm your ₹2500 slot. Only the boldest experiences make it in.",
     payment: 2500,
     fields: [
       { name: 'brand', label: 'Brand / Project', type: 'text', required: true },
@@ -103,7 +240,7 @@ const modalConfigs = {
   sponsor: {
     heading: 'Become a Sponsor',
     blurb:
-      'Drop your details and let\'s design a sponsorship tier that electrifies young Hazaribagh.',
+      "Drop your details and let's design a sponsorship tier that electrifies young Hazaribagh.",
     fields: [
       { name: 'brand', label: 'Brand Name', type: 'text', required: true },
       { name: 'contact', label: 'Contact Person', type: 'text', required: true },
@@ -115,7 +252,7 @@ const modalConfigs = {
   volunteer: {
     heading: 'Volunteer with MADOOZA',
     blurb:
-      'Fill this in and we\'ll loop you into crew briefings, rehearsals, and creative missions.',
+      "Fill this in and we'll loop you into crew briefings, rehearsals, and creative missions.",
     fields: [
       { name: 'name', label: 'Full Name', type: 'text', required: true },
       { name: 'email', label: 'Email', type: 'email', required: true },
@@ -126,7 +263,7 @@ const modalConfigs = {
   partner: {
     heading: 'Partner with Imagicity',
     blurb:
-      'Let\'s co-design experiences, hackathons, or pop-ups. Drop your idea and we\'ll reach out.',
+      "Let's co-design experiences, hackathons, or pop-ups. Drop your idea and we'll reach out.",
     fields: [
       { name: 'org', label: 'Organisation / Collective', type: 'text', required: true },
       { name: 'contact', label: 'Contact Person', type: 'text', required: true },
@@ -135,12 +272,107 @@ const modalConfigs = {
       { name: 'proposal', label: 'Collab Idea', type: 'textarea', required: true },
     ],
   },
+  cosplayRegistration: {
+    heading: 'Cosplay Arena Registration',
+    blurb:
+      'Secure your slot in the MADOOZA Cosplay Arena. ₹299 gets you parade access, pro photography, and a shot at neon glory.',
+    payment: 299,
+    fields: [
+      { name: 'stageName', label: 'Performer / Stage Name', type: 'text', required: true },
+      { name: 'email', label: 'Email', type: 'email', required: true },
+      { name: 'phone', label: 'Phone', type: 'tel', required: true },
+      { name: 'character', label: 'Character / Concept', type: 'text', required: true },
+      { name: 'universe', label: 'Source (Anime / Game / Film / Original)', type: 'text', required: false },
+    ],
+  },
+};
+
+const getInitialView = () => {
+  if (typeof window === 'undefined') {
+    return 'home';
+  }
+  const params = new URLSearchParams(window.location.search);
+  return params.get('view') === 'cosplay' ? 'cosplay' : 'home';
 };
 
 const App = () => {
+  const [currentView, setCurrentView] = useState(getInitialView);
   const [activeModal, setActiveModal] = useState(null);
   const [formValues, setFormValues] = useState({});
   const [paymentState, setPaymentState] = useState({});
+  const isCosplayView = currentView === 'cosplay';
+
+  useEffect(() => {
+    const handlePopState = () => {
+      setCurrentView(getInitialView());
+    };
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
+
+  const updateView = useCallback((view, hash) => {
+    if (typeof window === 'undefined') return;
+    const params = new URLSearchParams(window.location.search);
+    if (view === 'cosplay') {
+      params.set('view', 'cosplay');
+    } else {
+      params.delete('view');
+    }
+
+    const basePath = window.location.pathname.split('?')[0];
+    const queryString = params.toString();
+    const nextUrl = `${basePath}${queryString ? `?${queryString}` : ''}${hash || ''}`;
+
+    window.history.pushState({ view }, '', nextUrl);
+    setCurrentView(view);
+
+    if (view === 'home') {
+      if (hash) {
+        setTimeout(() => {
+          const target = document.querySelector(hash);
+          target?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 160);
+      } else {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    } else {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    if (currentView === 'cosplay') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else if (window.location.hash && currentView === 'home') {
+      const target = document.querySelector(window.location.hash);
+      if (target) {
+        setTimeout(() => {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 120);
+      }
+    }
+  }, [currentView]);
+
+  const handleNavClick = useCallback(
+    (event, hash) => {
+      event.preventDefault();
+      updateView('home', hash);
+    },
+    [updateView]
+  );
+
+  const handleLogoClick = useCallback(
+    (event) => {
+      event.preventDefault();
+      updateView('home', '#hero');
+    },
+    [updateView]
+  );
+
+  const handleCosplayNavigate = useCallback(() => {
+    updateView('cosplay');
+  }, [updateView]);
 
   useEffect(() => {
     const sections = document.querySelectorAll('.fade-section');
@@ -157,7 +389,7 @@ const App = () => {
 
     sections.forEach((sec) => observer.observe(sec));
     return () => observer.disconnect();
-  }, []);
+  }, [currentView]);
 
   useEffect(() => {
     const handleKey = (event) => {
@@ -277,15 +509,23 @@ const App = () => {
     <div className="app-shell">
       <nav className="navbar">
         <div className="nav-inner">
-          <a className="logo" href="#hero">
+          <a className="logo" href="/" onClick={handleLogoClick}>
             MADOOZA
           </a>
           <div className="nav-links">
             {navLinks.map((link) => (
-              <a key={link.href} href={link.href} className="nav-link">
+              <a
+                key={link.href}
+                href={link.href}
+                className="nav-link"
+                onClick={(event) => handleNavClick(event, link.href)}
+              >
                 {link.label}
               </a>
             ))}
+            <a href="?view=cosplay" className="nav-link" onClick={(event) => { event.preventDefault(); handleCosplayNavigate(); }}>
+              Cosplay
+            </a>
           </div>
           <button className="neon-button nav-ticket" type="button" onClick={() => openModal('tickets')}>
             Buy Ticket ₹20
@@ -293,15 +533,17 @@ const App = () => {
         </div>
       </nav>
 
-      <header id="hero" className="hero-section parallax">
-        <div className="hero-content">
-          <h1 className="hero-title">MADOOZA – THE SOUND OF PURE MADNESS</h1>
-          <p className="hero-subtext">Hazaribagh\'s first youth cultural carnival.</p>
-          <button className="neon-button button-pulse" type="button" onClick={() => openModal('tickets')}>
-            Book Your Pass
-          </button>
-        </div>
-      </header>
+      {!isCosplayView && (
+        <header id="hero" className="hero-section parallax">
+          <div className="hero-content">
+            <h1 className="hero-title">MADOOZA – THE SOUND OF PURE MADNESS</h1>
+            <p className="hero-subtext">Hazaribagh's first youth cultural carnival.</p>
+            <button className="neon-button button-pulse" type="button" onClick={() => openModal('tickets')}>
+              Book Your Pass
+            </button>
+          </div>
+        </header>
+      )}
 
       <section className="ticker" aria-hidden="true">
         <div className="item">Food · Art · Dance · Cosplay · Music · Street Culture · Neon Nights</div>
@@ -309,118 +551,11 @@ const App = () => {
       </section>
 
       <main>
-        <section id="about" className="section fade-section section-about">
-          <div className="section-heading">
-            <h2>About Madooza</h2>
-            <span className="section-accent" />
-          </div>
-          <p className="lead">
-            Madooza is not just another fest — it’s Hazaribagh’s first creative explosion where art, food, music, and ideas
-            collide. Conceptualized and organized by IMAGICITY, Madooza gives local creators, brands, and students a platform
-            that feels premium yet rooted. From vibrant food stalls to live exhibitions, performances, and interactive zones,
-            every corner of Madooza is designed to spark curiosity and collaboration. It’s where creativity meets opportunity —
-            for entrepreneurs, artists, and dreamers ready to make noise in a Tier-3 city.
-          </p>
-        </section>
-
-        <section id="events" className="section fade-section section-events">
-          <div className="section-heading">
-            <h2>Events</h2>
-            <span className="section-accent" />
-          </div>
-          <div className="event-grid">
-            {eventTiles.map((item) => (
-              <article
-                key={item.title}
-                className="tile"
-                style={{ '--tile-color': item.color, '--tile-hover': item.hover }}
-              >
-                <h3>{item.title}</h3>
-                <p>{item.copy}</p>
-              </article>
-            ))}
-          </div>
-        </section>
-
-        <section id="involve" className="section fade-section section-involve">
-          <div className="section-heading">
-            <h2>Involve With Us</h2>
-            <span className="section-accent" />
-          </div>
-          <div className="involve-grid">
-            {involveItems.map((item) => (
-              <article key={item.id} className={`involve-card ${item.accent}`}>
-                <div className="card-body">
-                  <h3>{item.title}</h3>
-                  <p>{item.copy}</p>
-                </div>
-                <button className="card-button" type="button" onClick={() => openModal(item.id)}>
-                  {item.cta}
-                </button>
-              </article>
-            ))}
-          </div>
-        </section>
-
-        <section id="guests" className="section fade-section section-guests">
-          <div className="section-heading">
-            <h2>Guests</h2>
-            <span className="section-accent" />
-          </div>
-          <div className="guest-grid">
-            {[1, 2, 3].map((slot) => (
-              <div key={slot} className="guest-card">
-                <div className="guest-image-frame">
-                  <img src="https://placehold.co/260x260?text=Guest+Image" alt="Guest reveal placeholder" />
-                </div>
-                <span className="guest-placeholder">To Be Revealed Soon</span>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        <section id="partners" className="section fade-section section-partners">
-          <div className="section-heading">
-            <h2>Partners</h2>
-            <span className="section-accent" />
-          </div>
-          <p className="lead center">Coming Soon.</p>
-          <div className="partners-grid">
-            {[1, 2, 3, 4].map((slot) => (
-              <div key={slot} className="partner-placeholder" aria-hidden="true" />
-            ))}
-          </div>
-        </section>
-
-        <section id="contact" className="section fade-section section-contact">
-          <div className="contact-layout">
-            <div className="contact-text">
-              <div className="section-heading">
-                <h2>Contact Us</h2>
-                <span className="section-accent" />
-              </div>
-              <p className="lead">Contact us for more details.</p>
-              <p className="contact-email">info@madooza.com</p>
-            </div>
-            <form className="contact-form">
-              <label>
-                <span>Name</span>
-                <input type="text" name="name" required />
-              </label>
-              <label>
-                <span>Email</span>
-                <input type="email" name="email" required />
-              </label>
-              <label className="full">
-                <span>Message</span>
-                <textarea name="message" rows={4} required />
-              </label>
-              <button className="neon-button" type="submit">
-                Send Message
-              </button>
-            </form>
-          </div>
-        </section>
+        {isCosplayView ? (
+          <CosplayPage onBack={() => updateView('home')} onProceed={() => openModal('cosplayRegistration')} />
+        ) : (
+          <HomeSections openModal={openModal} onNavigate={handleCosplayNavigate} />
+        )}
       </main>
 
       <footer className="site-footer">
