@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import CosplayPage from './pages/CosplayPage';
+import ScrollStack, { ScrollStackItem } from './ScrollStack';
 
 const involveItems = [
   {
@@ -119,20 +120,30 @@ const HomeSections = ({ openModal, onNavigate }) => (
           Six immersive worlds across the MADOOZA grounds — dive into every colour-drenched experience.
         </p>
       </div>
-      <div className="festival-grid">
+      <ScrollStack
+        className="festival-scroll-stack"
+        itemDistance={null}
+        itemScale={0.05}
+        itemStackDistance={50}
+        stackPosition="25%"
+        scaleEndPosition="12%"
+        baseScale={0.85}
+        useWindowScroll
+      >
         {festivalColumns.map((item) => (
-          <article
-            key={item.id}
-            className="festival-card"
-            style={{ '--festival-bg': item.color, '--festival-text': item.textColor }}
-          >
-            <div className="festival-content">
-              <span className="festival-tag">{item.title}</span>
-              <p>{item.copy}</p>
+          <ScrollStackItem key={item.id} itemClassName="festival-stack-card">
+            <div
+              className="festival-stack-surface"
+              style={{ '--festival-bg': item.color, '--festival-text': item.textColor }}
+            >
+              <div className="festival-stack-content">
+                <span className="festival-stack-tag">{item.title}</span>
+                <p>{item.copy}</p>
+              </div>
             </div>
-          </article>
+          </ScrollStackItem>
         ))}
-      </div>
+      </ScrollStack>
     </section>
 
     <section id="involve" className="section fade-section section-involve">
