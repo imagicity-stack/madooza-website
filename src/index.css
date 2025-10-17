@@ -293,105 +293,196 @@ p {
   text-align: center;
 }
 
-/* Festival scroll stack */
+/* Festival carousel */
 .festival-heading {
   gap: 1.25rem;
 }
 
 .section-festivals {
-  padding-bottom: 0;
+  padding-bottom: clamp(4rem, 10vw, 6.5rem);
 }
 
-.festival-scroll-stack {
-  height: auto;
-  overflow: visible;
+.festival-carousel {
+  margin-top: clamp(2rem, 6vw, 4rem);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1.5rem, 4vw, 2.5rem);
 }
 
-.festival-scroll-stack .scroll-stack-inner {
-  padding: clamp(10vh, 16vh, 20vh) 0 clamp(40vh, 55vh, 60vh);
-}
-
-.festival-scroll-stack .scroll-stack-card {
-  margin: 0;
-  padding: 0;
-  height: auto;
-  min-height: clamp(24rem, 70vh, 38rem);
-  border-radius: 0;
-  box-shadow: none;
-}
-
-.festival-scroll-stack .scroll-stack-card:not(:last-child) {
-  margin-bottom: clamp(4rem, 12vh, 9rem);
-}
-
-.festival-stack-surface {
+.festival-carousel-viewport {
   width: 100%;
-  height: 100%;
-  background: var(--festival-bg, #1d1453);
-  color: var(--festival-text, #0b1026);
+  overflow: hidden;
+  border-radius: clamp(1.75rem, 4vw, 3rem);
+  position: relative;
+  box-shadow: 0 45px 90px rgba(0, 0, 0, 0.35);
+}
+
+.festival-carousel-track {
+  display: flex;
+  width: 100%;
+  transition: transform 0.75s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.festival-carousel-slide {
+  position: relative;
+  min-width: 100%;
   display: flex;
   align-items: center;
-  justify-content: center;
-  padding: clamp(3rem, 9vw, 6.5rem);
-  position: relative;
+  justify-content: flex-start;
+  padding: clamp(3rem, 10vw, 6rem) clamp(2.5rem, 9vw, 5rem);
+  background: var(--festival-slide-bg, #1d1453);
+  color: var(--festival-slide-text, #0b1026);
   overflow: hidden;
 }
 
-.festival-stack-surface::after {
-  content: '';
+.festival-carousel-overlay {
   position: absolute;
   inset: 0;
   background: radial-gradient(circle at 15% 15%, rgba(255, 255, 255, 0.35), transparent 55%),
     radial-gradient(circle at 75% 0%, rgba(255, 255, 255, 0.25), transparent 60%);
-  opacity: 0.7;
-  pointer-events: none;
   mix-blend-mode: screen;
+  opacity: 0.75;
+  pointer-events: none;
 }
 
-.festival-stack-content {
+.festival-carousel-content {
   position: relative;
   z-index: 1;
-  max-width: min(60ch, 80vw);
   display: flex;
   flex-direction: column;
-  gap: clamp(1rem, 2.6vw, 2rem);
+  gap: clamp(1.25rem, 3vw, 2rem);
+  max-width: min(60ch, 78vw);
 }
 
-.festival-stack-tag {
-  font-size: clamp(2.5rem, 6vw, 4.5rem);
+.festival-carousel-count {
+  font-size: clamp(2.2rem, 5vw, 4.2rem);
   font-weight: 800;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
-  letter-spacing: 0.22em;
 }
 
-.festival-stack-content p {
-  font-size: clamp(1.05rem, 2vw, 1.4rem);
-  font-weight: 500;
+.festival-carousel-content h3 {
+  font-size: clamp(2rem, 4.4vw, 3.4rem);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.festival-carousel-content p {
+  font-size: clamp(1.05rem, 2vw, 1.35rem);
   line-height: 1.6;
-  max-width: 32ch;
+  font-weight: 500;
+  max-width: 36ch;
+}
+
+.festival-carousel-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+}
+
+.festival-carousel-nav {
+  background: transparent;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  color: #ffffff;
+  padding: 0.75rem 1.75rem;
+  border-radius: 999px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
+}
+
+.festival-carousel-nav:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.7);
+  transform: translateY(-2px);
+}
+
+.festival-carousel-nav:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.festival-carousel-progress {
+  flex: 1;
+  position: relative;
+  height: 4px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+  overflow: hidden;
+}
+
+.festival-carousel-progress-bar {
+  position: absolute;
+  inset: 0;
+  width: 0;
+  background: linear-gradient(90deg, #ff6a00, #ff3b5c);
+  transition: width 0.6s ease;
+}
+
+.festival-carousel-dots {
+  display: flex;
+  justify-content: center;
+  gap: 0.75rem;
+}
+
+.festival-carousel-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: transform 0.3s ease, background 0.3s ease;
+}
+
+.festival-carousel-dot.is-active {
+  background: #ff6a00;
+  transform: scale(1.3);
+}
+
+.festival-carousel-dot:focus-visible {
+  outline: 2px solid #ff6a00;
+  outline-offset: 2px;
 }
 
 @media (max-width: 960px) {
-  .festival-scroll-stack .scroll-stack-card {
-    min-height: clamp(26rem, 85vh, 40rem);
+  .festival-carousel-slide {
+    padding: clamp(2.5rem, 12vw, 5rem) clamp(2rem, 8vw, 4rem);
+    min-height: clamp(24rem, 70vh, 38rem);
   }
 
-  .festival-stack-content {
-    align-items: flex-start;
+  .festival-carousel-controls {
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .festival-carousel-progress {
+    order: 3;
+    flex: 0 0 100%;
   }
 }
 
 @media (max-width: 640px) {
-  .festival-scroll-stack .scroll-stack-inner {
-    padding: clamp(8vh, 12vh, 14vh) 0 clamp(30vh, 45vh, 55vh);
+  .festival-carousel {
+    gap: 1.75rem;
   }
 
-  .festival-stack-surface {
-    padding: clamp(2.5rem, 12vw, 4rem);
+  .festival-carousel-slide {
+    border-radius: clamp(1.25rem, 4vw, 2rem);
+    padding: clamp(2rem, 10vw, 3.5rem) clamp(1.75rem, 8vw, 3rem);
   }
 
-  .festival-stack-tag {
-    letter-spacing: 0.18em;
+  .festival-carousel-nav {
+    padding: 0.65rem 1.4rem;
+    font-size: 0.75rem;
+  }
+
+  .festival-carousel-count {
+    letter-spacing: 0.14em;
   }
 }
 
