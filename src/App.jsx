@@ -46,42 +46,48 @@ const involveItems = [
   },
 ];
 
-const eventTiles = [
+const festivalColumns = [
   {
-    title: 'Food Stalls 🍜',
-    copy: 'Gourmet chaos from local chefs, cloud kitchens, and pop-up innovators.',
-    color: '#1A163C',
-    hover: '#FF6A00',
+    id: 'gaming',
+    title: 'Gaming',
+    copy: 'LAN battles, retro revival, VR chaos — welcome to the arena.',
+    color: '#ff3b5c',
+    textColor: '#0b0616',
   },
   {
-    title: 'Cosplay Corner 🎭',
-    copy: 'Anime, gaming, and desi folklore mash-ups under neon lights.',
-    color: '#13263F',
-    hover: '#00CFFF',
+    id: 'expo',
+    title: 'Expo',
+    copy: 'Hands-on showcases from bold startups, makers, and brand labs.',
+    color: '#b2ff1c',
+    textColor: '#0b0616',
   },
   {
-    title: 'Dance Arena 💃',
-    copy: 'Street battles, K-pop covers, and freestyle crews bringing the heat.',
-    color: '#2A1239',
-    hover: '#E0007F',
+    id: 'creators',
+    title: 'Creators',
+    copy: 'Content studios, live podcasts, collab challenges & creator drops.',
+    color: '#ff9f1c',
+    textColor: '#0b0616',
   },
   {
-    title: 'DJ Night 🎧',
-    copy: 'Bass-heavy sets from regional selectors and secret guest performers.',
-    color: '#102B33',
-    hover: '#9DFFFF',
+    id: 'cosplay',
+    title: 'Cosplay',
+    copy: 'Suit up for the MAD Parade and rule the MADVERSE runway.',
+    color: '#8338ec',
+    textColor: '#ffffff',
   },
   {
-    title: 'Art & Exhibition 🎨',
-    copy: 'Immersive installations, live murals, and digital art drops.',
-    color: '#211A36',
-    hover: '#CFFF47',
+    id: 'esports',
+    title: 'Esports',
+    copy: 'Caster-led showdowns with high-stakes brackets and prize pools.',
+    color: '#00bbf9',
+    textColor: '#0b0616',
   },
   {
-    title: 'Local Brands Market 🛍️',
-    copy: 'Limited-edition merch and craft from Hazaribagh’s boldest makers.',
-    color: '#1B2838',
-    hover: '#FF6A00',
+    id: 'live-acts',
+    title: 'Live Acts',
+    copy: 'DJs, indie bands, and midnight cyphers to keep the night loud.',
+    color: '#ff4d00',
+    textColor: '#0b0616',
   },
 ];
 
@@ -103,24 +109,29 @@ const HomeSections = ({ openModal, onNavigate }) => (
       </div>
     </section>
 
-    <section id="events" className="section fade-section section-events">
-      <div className="section-inner">
+    <section id="festivals" className="section fade-section section-festivals">
+      <div className="section-inner festival-heading">
         <div className="section-heading">
-          <h2>Events</h2>
+          <h2>Festivals</h2>
           <span className="section-accent" />
         </div>
-        <div className="event-grid">
-          {eventTiles.map((item) => (
-            <article
-              key={item.title}
-              className="tile"
-              style={{ '--tile-color': item.color, '--tile-hover': item.hover }}
-            >
-              <h3>{item.title}</h3>
+        <p className="lead">
+          Six immersive worlds across the MADOOZA grounds — dive into every colour-drenched experience.
+        </p>
+      </div>
+      <div className="festival-grid">
+        {festivalColumns.map((item) => (
+          <article
+            key={item.id}
+            className="festival-card"
+            style={{ '--festival-bg': item.color, '--festival-text': item.textColor }}
+          >
+            <div className="festival-content">
+              <span className="festival-tag">{item.title}</span>
               <p>{item.copy}</p>
-            </article>
-          ))}
-        </div>
+            </div>
+          </article>
+        ))}
       </div>
     </section>
 
@@ -445,7 +456,7 @@ const App = () => {
   const navLinks = useMemo(
     () => [
       { href: '#about', label: 'About' },
-      { href: '#events', label: 'Events' },
+      { href: '#festivals', label: 'Festivals' },
       { href: '#involve', label: 'Involve' },
       { href: '#partners', label: 'Partners' },
       { href: '#contact', label: 'Contact' },
