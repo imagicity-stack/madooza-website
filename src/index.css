@@ -43,10 +43,8 @@ button {
 }
 
 main {
-  display: flex;
-  flex-direction: column;
-  gap: 6rem;
-  padding: 6rem 6vw 8rem;
+  display: block;
+  padding: 0;
 }
 
 h1,
@@ -229,15 +227,19 @@ p {
 
 /* Sections */
 .section {
+  width: 100%;
+  padding: clamp(3.5rem, 6vw, 5rem) 0;
+  background: #141228;
+  color: #ffffff;
+}
+
+.section-inner {
   max-width: 1200px;
   margin: 0 auto;
+  padding: 0 clamp(1.5rem, 6vw, 4rem);
   display: flex;
   flex-direction: column;
   gap: 2rem;
-  padding: 3.5rem 3rem;
-  border-radius: 32px;
-  background: #141228;
-  color: #ffffff;
 }
 
 .section-about {
@@ -988,8 +990,36 @@ p {
   }
 
   main {
-    padding: 4rem 6vw 6rem;
-    gap: 4rem;
+    padding: 0;
+  }
+
+  .cosplay-page > section {
+    padding-inline: clamp(1.5rem, 10vw, 4rem);
+  }
+
+  .cosplay-page > section + section {
+    margin-top: 3rem;
+  }
+
+  .cosplay-hero-block {
+    padding-block: 3.8rem;
+  }
+
+  .cosplay-section {
+    padding-block: 3rem;
+  }
+
+  .cosplay-cta {
+    padding-block: 3rem;
+  }
+
+  .cosplay-criteria {
+    grid-template-columns: 1fr;
+  }
+
+  .cta-inner {
+    flex-direction: column;
+    align-items: flex-start;
   }
 
   .cosplay-page > section {

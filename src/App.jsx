@@ -88,125 +88,137 @@ const eventTiles = [
 const HomeSections = ({ openModal, onNavigate }) => (
   <>
     <section id="about" className="section fade-section section-about">
-      <div className="section-heading">
-        <h2>About Madooza</h2>
-        <span className="section-accent" />
+      <div className="section-inner">
+        <div className="section-heading">
+          <h2>About Madooza</h2>
+          <span className="section-accent" />
+        </div>
+        <p className="lead">
+          Madooza is not just another fest — it’s Hazaribagh’s first creative explosion where art, food, music, and ideas
+          collide. Conceptualized and organized by IMAGICITY, Madooza gives local creators, brands, and students a platform
+          that feels premium yet rooted. From vibrant food stalls to live exhibitions, performances, and interactive zones,
+          every corner of Madooza is designed to spark curiosity and collaboration. It’s where creativity meets opportunity —
+          for entrepreneurs, artists, and dreamers ready to make noise in a Tier-3 city.
+        </p>
       </div>
-      <p className="lead">
-        Madooza is not just another fest — it’s Hazaribagh’s first creative explosion where art, food, music, and ideas collide.
-        Conceptualized and organized by IMAGICITY, Madooza gives local creators, brands, and students a platform that feels
-        premium yet rooted. From vibrant food stalls to live exhibitions, performances, and interactive zones, every corner of
-        Madooza is designed to spark curiosity and collaboration. It’s where creativity meets opportunity — for entrepreneurs,
-        artists, and dreamers ready to make noise in a Tier-3 city.
-      </p>
     </section>
 
     <section id="events" className="section fade-section section-events">
-      <div className="section-heading">
-        <h2>Events</h2>
-        <span className="section-accent" />
-      </div>
-      <div className="event-grid">
-        {eventTiles.map((item) => (
-          <article
-            key={item.title}
-            className="tile"
-            style={{ '--tile-color': item.color, '--tile-hover': item.hover }}
-          >
-            <h3>{item.title}</h3>
-            <p>{item.copy}</p>
-          </article>
-        ))}
+      <div className="section-inner">
+        <div className="section-heading">
+          <h2>Events</h2>
+          <span className="section-accent" />
+        </div>
+        <div className="event-grid">
+          {eventTiles.map((item) => (
+            <article
+              key={item.title}
+              className="tile"
+              style={{ '--tile-color': item.color, '--tile-hover': item.hover }}
+            >
+              <h3>{item.title}</h3>
+              <p>{item.copy}</p>
+            </article>
+          ))}
+        </div>
       </div>
     </section>
 
     <section id="involve" className="section fade-section section-involve">
-      <div className="section-heading">
-        <h2>Involve With Us</h2>
-        <span className="section-accent" />
-      </div>
-      <div className="involve-grid">
-        {involveItems.map((item) => (
-          <article key={item.id} className={`involve-card ${item.accent}`}>
-            <div className="card-body">
-              <h3>{item.title}</h3>
-              <p>{item.copy}</p>
-            </div>
-            <button
-              className="card-button"
-              type="button"
-              onClick={() => {
-                if (item.navigateTo) {
-                  onNavigate(item.navigateTo);
-                } else {
-                  openModal(item.id);
-                }
-              }}
-            >
-              {item.cta}
-            </button>
-          </article>
-        ))}
+      <div className="section-inner">
+        <div className="section-heading">
+          <h2>Involve With Us</h2>
+          <span className="section-accent" />
+        </div>
+        <div className="involve-grid">
+          {involveItems.map((item) => (
+            <article key={item.id} className={`involve-card ${item.accent}`}>
+              <div className="card-body">
+                <h3>{item.title}</h3>
+                <p>{item.copy}</p>
+              </div>
+              <button
+                className="card-button"
+                type="button"
+                onClick={() => {
+                  if (item.navigateTo) {
+                    onNavigate(item.navigateTo);
+                  } else {
+                    openModal(item.id);
+                  }
+                }}
+              >
+                {item.cta}
+              </button>
+            </article>
+          ))}
+        </div>
       </div>
     </section>
 
     <section id="guests" className="section fade-section section-guests">
-      <div className="section-heading">
-        <h2>Guests</h2>
-        <span className="section-accent" />
-      </div>
-      <div className="guest-grid">
-        {[1, 2, 3].map((slot) => (
-          <div key={slot} className="guest-card">
-            <div className="guest-image-frame">
-              <img src="https://placehold.co/260x260?text=Guest+Image" alt="Guest reveal placeholder" />
+      <div className="section-inner">
+        <div className="section-heading">
+          <h2>Guests</h2>
+          <span className="section-accent" />
+        </div>
+        <div className="guest-grid">
+          {[1, 2, 3].map((slot) => (
+            <div key={slot} className="guest-card">
+              <div className="guest-image-frame">
+                <img src="https://placehold.co/260x260?text=Guest+Image" alt="Guest reveal placeholder" />
+              </div>
+              <span className="guest-placeholder">To Be Revealed Soon</span>
             </div>
-            <span className="guest-placeholder">To Be Revealed Soon</span>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </section>
 
     <section id="partners" className="section fade-section section-partners">
-      <div className="section-heading">
-        <h2>Partners</h2>
-        <span className="section-accent" />
-      </div>
-      <p className="lead center">Coming Soon.</p>
-      <div className="partners-grid">
-        {[1, 2, 3, 4].map((slot) => (
-          <div key={slot} className="partner-placeholder" aria-hidden="true" />
-        ))}
+      <div className="section-inner">
+        <div className="section-heading">
+          <h2>Partners</h2>
+          <span className="section-accent" />
+        </div>
+        <p className="lead center">Coming Soon.</p>
+        <div className="partners-grid">
+          {[1, 2, 3, 4].map((slot) => (
+            <div key={slot} className="partner-placeholder" aria-hidden="true" />
+          ))}
+        </div>
       </div>
     </section>
 
     <section id="contact" className="section fade-section section-contact">
-      <div className="contact-layout">
-        <div className="contact-text">
-          <div className="section-heading">
-            <h2>Contact Us</h2>
-            <span className="section-accent" />
+      <div className="section-inner">
+        <div className="contact-layout">
+          <div className="contact-text">
+            <div className="section-heading">
+              <h2>Contact Us</h2>
+              <span className="section-accent" />
+            </div>
+            <p className="lead">Contact us for more details.</p>
+            <p className="contact-email">info@madooza.com</p>
           </div>
-          <p className="lead">Contact us for more details.</p>
-          <p className="contact-email">info@madooza.com</p>
+          <form className="contact-form">
+            <label>
+              <span>Name</span>
+              <input type="text" name="name" required />
+            </label>
+            <label>
+              <span>Email</span>
+              <input type="email" name="email" required />
+            </label>
+            <label className="full">
+              <span>Message</span>
+              <textarea name="message" rows={4} required />
+            </label>
+            <button className="neon-button" type="submit">
+              Send Message
+            </button>
+          </form>
         </div>
-        <form className="contact-form">
-          <label>
-            <span>Name</span>
-            <input type="text" name="name" required />
-          </label>
-          <label>
-            <span>Email</span>
-            <input type="email" name="email" required />
-          </label>
-          <label className="full">
-            <span>Message</span>
-            <textarea name="message" rows={4} required />
-          </label>
-          <button className="neon-button" type="submit">
-            Send Message
-          </button>
-        </form>
       </div>
     </section>
   </>
