@@ -1022,6 +1022,35 @@ p {
     align-items: flex-start;
   }
 
+  .cosplay-page > section {
+    padding-inline: clamp(1.5rem, 10vw, 4rem);
+  }
+
+  .cosplay-page > section + section {
+    margin-top: 3rem;
+  }
+
+  .cosplay-hero-block {
+    padding-block: 3.8rem;
+  }
+
+  .cosplay-section {
+    padding-block: 3rem;
+  }
+
+  .cosplay-cta {
+    padding-block: 3rem;
+  }
+
+  .cosplay-criteria {
+    grid-template-columns: 1fr;
+  }
+
+  .cta-inner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
   .contact-layout {
     grid-template-columns: 1fr;
   }
