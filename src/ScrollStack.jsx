@@ -77,7 +77,13 @@ const ScrollStack = ({
       ? document.querySelector('.scroll-stack-end')
       : scrollerRef.current?.querySelector('.scroll-stack-end');
 
-    const endElementTop = endElement ? getElementOffset(endElement) : 0;
+    const lastCard = cardsRef.current[cardsRef.current.length - 1];
+    const baseContainerHeight = containerHeight || (lastCard ? lastCard.offsetHeight : 0) || 1;
+    const fallbackEnd = lastCard
+      ? getElementOffset(lastCard) + lastCard.offsetHeight + baseContainerHeight * 0.25
+      : baseContainerHeight;
+
+    const endElementTop = endElement ? getElementOffset(endElement) : fallbackEnd;
 
     cardsRef.current.forEach((card, i) => {
       if (!card) return;
@@ -86,7 +92,8 @@ const ScrollStack = ({
       const triggerStart = cardTop - stackPositionPx - itemStackDistance * i;
       const triggerEnd = cardTop - scaleEndPositionPx;
       const pinStart = cardTop - stackPositionPx - itemStackDistance * i;
-      const pinEnd = endElementTop - containerHeight / 2;
+      const rawPinEnd = endElementTop - containerHeight / 2;
+      const pinEnd = Math.max(rawPinEnd, pinStart + itemStackDistance * 0.5);
 
       const scaleProgress = calculateProgress(scrollTop, triggerStart, triggerEnd);
       const targetScale = baseScale + i * itemScale;
