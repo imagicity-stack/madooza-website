@@ -293,7 +293,7 @@ p {
   text-align: center;
 }
 
-/* Festival carousel */
+/* Festival gallery */
 .festival-heading {
   gap: 1.25rem;
 }
@@ -302,187 +302,84 @@ p {
   padding-bottom: clamp(4rem, 10vw, 6.5rem);
 }
 
-.festival-carousel {
+.festival-gallery {
   margin-top: clamp(2rem, 6vw, 4rem);
   display: flex;
   flex-direction: column;
-  gap: clamp(1.5rem, 4vw, 2.5rem);
+  gap: clamp(2rem, 6vw, 3rem);
 }
 
-.festival-carousel-viewport {
+.festival-gallery-frame {
+  position: relative;
+  height: clamp(420px, 70vh, 600px);
   width: 100%;
-  overflow: hidden;
   border-radius: clamp(1.75rem, 4vw, 3rem);
-  position: relative;
-  box-shadow: 0 45px 90px rgba(0, 0, 0, 0.35);
-}
-
-.festival-carousel-track {
-  display: flex;
-  width: 100%;
-  transition: transform 0.75s cubic-bezier(0.19, 1, 0.22, 1);
-}
-
-.festival-carousel-slide {
-  position: relative;
-  min-width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  padding: clamp(3rem, 10vw, 6rem) clamp(2.5rem, 9vw, 5rem);
-  background: var(--festival-slide-bg, #1d1453);
-  color: var(--festival-slide-text, #0b1026);
   overflow: hidden;
+  box-shadow: 0 45px 90px rgba(0, 0, 0, 0.35);
+  isolation: isolate;
 }
 
-.festival-carousel-overlay {
+.festival-gallery-frame::after {
+  content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at 15% 15%, rgba(255, 255, 255, 0.35), transparent 55%),
-    radial-gradient(circle at 75% 0%, rgba(255, 255, 255, 0.25), transparent 60%);
+  pointer-events: none;
+  background: radial-gradient(circle at 12% 20%, rgba(255, 170, 0, 0.45), transparent 55%),
+    radial-gradient(circle at 78% 0%, rgba(98, 0, 255, 0.4), transparent 60%),
+    radial-gradient(circle at 50% 95%, rgba(0, 189, 249, 0.4), transparent 70%);
   mix-blend-mode: screen;
   opacity: 0.75;
-  pointer-events: none;
+  z-index: 1;
 }
 
-.festival-carousel-content {
-  position: relative;
-  z-index: 1;
+.festival-gallery-copy {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: clamp(1.5rem, 4vw, 2.75rem) clamp(1.75rem, 6vw, 3rem);
+  padding: clamp(2rem, 6vw, 3rem);
+  background: rgba(5, 16, 38, 0.7);
+  border-radius: clamp(1.5rem, 3vw, 2.5rem);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 35px 70px rgba(0, 0, 0, 0.32);
+  backdrop-filter: blur(18px);
+}
+
+.festival-gallery-copy article {
   display: flex;
   flex-direction: column;
-  gap: clamp(1.25rem, 3vw, 2rem);
-  max-width: min(60ch, 78vw);
+  gap: 0.85rem;
 }
 
-.festival-carousel-count {
-  font-size: clamp(2.2rem, 5vw, 4.2rem);
-  font-weight: 800;
+.festival-gallery-copy h3 {
+  font-size: clamp(1.2rem, 2.6vw, 1.65rem);
   letter-spacing: 0.18em;
   text-transform: uppercase;
 }
 
-.festival-carousel-content h3 {
-  font-size: clamp(2rem, 4.4vw, 3.4rem);
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-}
-
-.festival-carousel-content p {
-  font-size: clamp(1.05rem, 2vw, 1.35rem);
-  line-height: 1.6;
-  font-weight: 500;
-  max-width: 36ch;
-}
-
-.festival-carousel-controls {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1.5rem;
-}
-
-.festival-carousel-nav {
-  background: transparent;
-  border: 2px solid rgba(255, 255, 255, 0.4);
-  color: #ffffff;
-  padding: 0.75rem 1.75rem;
-  border-radius: 999px;
-  font-weight: 700;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  cursor: pointer;
-  transition: background 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
-}
-
-.festival-carousel-nav:hover:not(:disabled) {
-  background: rgba(255, 255, 255, 0.15);
-  border-color: rgba(255, 255, 255, 0.7);
-  transform: translateY(-2px);
-}
-
-.festival-carousel-nav:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
-}
-
-.festival-carousel-progress {
-  flex: 1;
-  position: relative;
-  height: 4px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.12);
-  overflow: hidden;
-}
-
-.festival-carousel-progress-bar {
-  position: absolute;
-  inset: 0;
-  width: 0;
-  background: linear-gradient(90deg, #ff6a00, #ff3b5c);
-  transition: width 0.6s ease;
-}
-
-.festival-carousel-dots {
-  display: flex;
-  justify-content: center;
-  gap: 0.75rem;
-}
-
-.festival-carousel-dot {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.3);
-  border: none;
-  padding: 0;
-  cursor: pointer;
-  transition: transform 0.3s ease, background 0.3s ease;
-}
-
-.festival-carousel-dot.is-active {
-  background: #ff6a00;
-  transform: scale(1.3);
-}
-
-.festival-carousel-dot:focus-visible {
-  outline: 2px solid #ff6a00;
-  outline-offset: 2px;
+.festival-gallery-copy p {
+  line-height: 1.65;
+  font-size: clamp(0.95rem, 2vw, 1.15rem);
+  color: rgba(255, 255, 255, 0.78);
 }
 
 @media (max-width: 960px) {
-  .festival-carousel-slide {
-    padding: clamp(2.5rem, 12vw, 5rem) clamp(2rem, 8vw, 4rem);
-    min-height: clamp(24rem, 70vh, 38rem);
+  .festival-gallery-frame {
+    height: clamp(360px, 68vh, 520px);
+    border-radius: clamp(1.25rem, 4vw, 2.25rem);
   }
 
-  .festival-carousel-controls {
-    flex-wrap: wrap;
-    gap: 1rem;
-  }
-
-  .festival-carousel-progress {
-    order: 3;
-    flex: 0 0 100%;
+  .festival-gallery-copy {
+    border-radius: clamp(1.25rem, 4vw, 2.25rem);
   }
 }
 
-@media (max-width: 640px) {
-  .festival-carousel {
-    gap: 1.75rem;
+@media (max-width: 720px) {
+  .festival-gallery {
+    gap: clamp(1.5rem, 8vw, 2.5rem);
   }
 
-  .festival-carousel-slide {
-    border-radius: clamp(1.25rem, 4vw, 2rem);
-    padding: clamp(2rem, 10vw, 3.5rem) clamp(1.75rem, 8vw, 3rem);
-  }
-
-  .festival-carousel-nav {
-    padding: 0.65rem 1.4rem;
-    font-size: 0.75rem;
-  }
-
-  .festival-carousel-count {
-    letter-spacing: 0.14em;
+  .festival-gallery-copy {
+    grid-template-columns: 1fr;
   }
 }
 

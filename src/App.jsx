@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import CosplayPage from './pages/CosplayPage';
-import FestivalCarousel from './components/FestivalCarousel';
+import CircularGallery from './components/CircularGallery';
 
 const involveItems = [
   {
@@ -47,50 +47,46 @@ const involveItems = [
   },
 ];
 
-const festivalColumns = [
+const festivalItems = [
   {
     id: 'gaming',
-    title: 'Gaming',
+    title: 'Gaming Arena',
     copy: 'LAN battles, retro revival, VR chaos — welcome to the arena.',
-    color: '#ff3b5c',
-    textColor: '#0b0616',
+    image: 'https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=1200&q=80',
   },
   {
     id: 'expo',
-    title: 'Expo',
+    title: 'Innovation Expo',
     copy: 'Hands-on showcases from bold startups, makers, and brand labs.',
-    color: '#b2ff1c',
-    textColor: '#0b0616',
+    image: 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80',
   },
   {
     id: 'creators',
-    title: 'Creators',
+    title: 'Creator Studios',
     copy: 'Content studios, live podcasts, collab challenges & creator drops.',
-    color: '#ff9f1c',
-    textColor: '#0b0616',
+    image: 'https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1200&q=80',
   },
   {
     id: 'cosplay',
-    title: 'Cosplay',
+    title: 'Cosplay Parade',
     copy: 'Suit up for the MAD Parade and rule the MADVERSE runway.',
-    color: '#8338ec',
-    textColor: '#ffffff',
+    image: 'https://images.unsplash.com/photo-1618005198919-d3d4b5a92eee?auto=format&fit=crop&w=1200&q=80',
   },
   {
     id: 'esports',
-    title: 'Esports',
+    title: 'Esports Clash',
     copy: 'Caster-led showdowns with high-stakes brackets and prize pools.',
-    color: '#00bbf9',
-    textColor: '#0b0616',
+    image: 'https://images.unsplash.com/photo-1511871893393-82e9c16b81e0?auto=format&fit=crop&w=1200&q=80',
   },
   {
     id: 'live-acts',
     title: 'Live Acts',
     copy: 'DJs, indie bands, and midnight cyphers to keep the night loud.',
-    color: '#ff4d00',
-    textColor: '#0b0616',
+    image: 'https://images.unsplash.com/photo-1464375117522-1311d6a5b81a?auto=format&fit=crop&w=1200&q=80',
   },
 ];
+
+const festivalGalleryItems = festivalItems.map((item) => ({ image: item.image, text: item.title }));
 
 const HomeSections = ({ openModal, onNavigate }) => (
   <>
@@ -120,7 +116,25 @@ const HomeSections = ({ openModal, onNavigate }) => (
           Six immersive worlds across the MADOOZA grounds — dive into every colour-drenched experience.
         </p>
       </div>
-      <FestivalCarousel items={festivalColumns} />
+      <div className="festival-gallery">
+        <div className="festival-gallery-frame">
+          <CircularGallery
+            items={festivalGalleryItems}
+            bend={3}
+            textColor="#ffffff"
+            borderRadius={0.05}
+            scrollEase={0.02}
+          />
+        </div>
+        <div className="festival-gallery-copy">
+          {festivalItems.map((item) => (
+            <article key={item.id}>
+              <h3>{item.title}</h3>
+              <p>{item.copy}</p>
+            </article>
+          ))}
+        </div>
+      </div>
     </section>
 
     <section id="involve" className="section fade-section section-involve">
