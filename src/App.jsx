@@ -4,6 +4,7 @@ import PrivacyPolicyPage from './pages/PrivacyPolicyPage';
 import TermsConditionsPage from './pages/TermsConditionsPage';
 import CancellationRefundPage from './pages/CancellationRefundPage';
 import MagicBento from './components/MagicBento';
+import StaggeredMenu from './components/StaggeredMenu';
 import Ribbons from './components/effects/Ribbons';
 
 const involveItems = [
@@ -353,7 +354,6 @@ const App = () => {
   const [activeModal, setActiveModal] = useState(null);
   const [formValues, setFormValues] = useState({});
   const [paymentState, setPaymentState] = useState({});
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const isHomeView = route.path === '/';
   const isCosplayView = route.path === '/cosplay';
   const isLegalPage = legalPaths.includes(route.path);
@@ -418,55 +418,25 @@ const App = () => {
     }
   }, [isCosplayView, isHomeView, isLegalPage, route.hash, route.path]);
 
-  const closeMenu = useCallback(() => setIsMenuOpen(false), []);
-
-  useEffect(() => {
-    if (typeof document === 'undefined') return;
-    if (!isMenuOpen) {
-      document.body.classList.remove('no-scroll');
-      return;
-    }
-    if (typeof window === 'undefined') return;
-
-    const handleKey = (event) => {
-      if (event.key === 'Escape') {
-        setIsMenuOpen(false);
-      }
-    };
-    document.body.classList.add('no-scroll');
-    window.addEventListener('keydown', handleKey);
-    return () => {
-      document.body.classList.remove('no-scroll');
-      window.removeEventListener('keydown', handleKey);
-    };
-  }, [isMenuOpen]);
-
-  useEffect(() => {
-    closeMenu();
-  }, [route.path, route.hash, closeMenu]);
-
   const handleNavClick = useCallback(
     (event, hash) => {
       event.preventDefault();
       updateView('home', hash);
-      closeMenu();
     },
-    [updateView, closeMenu]
+    [updateView]
   );
 
   const handleLogoClick = useCallback(
     (event) => {
       event.preventDefault();
       updateView('home', '#hero');
-      closeMenu();
     },
-    [updateView, closeMenu]
+    [updateView]
   );
 
   const handleCosplayNavigate = useCallback(() => {
     updateView('cosplay');
-    closeMenu();
-  }, [updateView, closeMenu]);
+  }, [updateView]);
 
   const handleLegalNavigate = useCallback(
     (event, path) => {
@@ -477,6 +447,25 @@ const App = () => {
       navigateTo(path);
     },
     [navigateTo]
+  );
+
+  const handleMenuOpen = useCallback(() => {
+    if (typeof document === 'undefined') return;
+    document.body.classList.add('no-scroll');
+  }, []);
+
+  const handleMenuClose = useCallback(() => {
+    if (typeof document === 'undefined') return;
+    document.body.classList.remove('no-scroll');
+  }, []);
+
+  useEffect(
+    () => () => {
+      if (typeof document !== 'undefined') {
+        document.body.classList.remove('no-scroll');
+      }
+    },
+    [],
   );
 
   useEffect(() => {
@@ -506,14 +495,14 @@ const App = () => {
     return () => window.removeEventListener('keydown', handleKey);
   }, []);
 
-  const openModal = (id) => {
+  const openModal = useCallback((id) => {
     setActiveModal(id);
     setPaymentState((prev) => ({ ...prev, [id]: 'idle' }));
-  };
+  }, []);
 
-  const closeModal = () => {
+  const closeModal = useCallback(() => {
     setActiveModal(null);
-  };
+  }, []);
 
   const handleInputChange = (modalId, fieldName, value) => {
     setFormValues((prev) => ({
@@ -544,6 +533,45 @@ const App = () => {
       { href: '#contact', label: 'Contact' },
     ],
     []
+  );
+
+  const mobileMenuItems = useMemo(
+    () => [
+      {
+        label: 'Home',
+        link: '#hero',
+        ariaLabel: 'Go to the hero section',
+        onClick: () => updateView('home', '#hero'),
+      },
+      ...navLinks.map((link) => ({
+        label: link.label,
+        link: link.href,
+        ariaLabel: `Jump to the ${link.label} section`,
+        onClick: () => updateView('home', link.href),
+      })),
+      {
+        label: 'Cosplay',
+        link: '/cosplay',
+        ariaLabel: 'Open the Cosplay page',
+        onClick: handleCosplayNavigate,
+      },
+      {
+        label: 'Buy Pass ₹30',
+        link: '#tickets',
+        ariaLabel: 'Open the ticket booking modal',
+        onClick: () => openModal('tickets'),
+      },
+    ],
+    [handleCosplayNavigate, navLinks, openModal, updateView],
+  );
+
+  const mobileSocialItems = useMemo(
+    () => [
+      { label: 'Instagram', link: 'https://instagram.com' },
+      { label: 'Facebook', link: 'https://facebook.com' },
+      { label: 'Email', link: 'mailto:info@madooza.com' },
+    ],
+    [],
   );
 
   const renderModal = () => {
@@ -620,6 +648,24 @@ const App = () => {
   return (
     <div className="app-shell">
       <Ribbons baseThickness={30} colors={['#FFD400']} speedMultiplier={0.5} maxAge={500} />
+      <StaggeredMenu
+        className="nav-mobile-menu"
+        position="right"
+        colors={['#FF4D6D', '#C9184A', '#FFB3C1']}
+        items={mobileMenuItems}
+        socialItems={mobileSocialItems}
+        displaySocials
+        displayItemNumbering
+        menuButtonColor="#ffffff"
+        openMenuButtonColor="#ffd400"
+        accentColor="#ffd400"
+        changeMenuColorOnOpen
+        logoUrl="/madooza-logo.svg"
+        showLogo={false}
+        isFixed
+        onMenuOpen={handleMenuOpen}
+        onMenuClose={handleMenuClose}
+      />
       <nav className="navbar">
         <div className="nav-inner">
           <a className="logo" href="/" onClick={handleLogoClick}>
@@ -647,47 +693,8 @@ const App = () => {
               Cosplay
             </a>
           </div>
-          <button
-            className={`nav-menu-button${isMenuOpen ? ' open' : ''}`}
-            type="button"
-            onClick={() => setIsMenuOpen((prev) => !prev)}
-            aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
-            aria-expanded={isMenuOpen}
-          >
-            <span />
-            <span />
-            <span />
-          </button>
         </div>
       </nav>
-
-      <div className={`side-menu${isMenuOpen ? ' open' : ''}`}>
-        <div className="side-menu-backdrop" onClick={closeMenu} role="presentation" />
-        <aside className="side-menu-panel">
-          <button className="side-menu-close" type="button" onClick={closeMenu} aria-label="Close menu">
-            ×
-          </button>
-          <nav className="side-menu-links">
-            {navLinks.map((link) => (
-              <a key={link.href} href={link.href} onClick={(event) => handleNavClick(event, link.href)}>
-                {link.label}
-              </a>
-            ))}
-            <a
-              href="/cosplay"
-              onClick={(event) => {
-                event.preventDefault();
-                handleCosplayNavigate();
-              }}
-            >
-              Cosplay
-            </a>
-          </nav>
-          <button className="side-menu-cta" type="button" onClick={() => openModal('tickets')}>
-            Buy Ticket ₹30
-          </button>
-        </aside>
-      </div>
 
       {isHomeView && (
         <header id="hero" className="hero-section parallax">
