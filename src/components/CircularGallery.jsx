@@ -1,8 +1,23 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
 import './CircularGallery.css';
 
 const OGL_URL = 'https://cdn.jsdelivr.net/npm/ogl@1.0.5/dist/ogl.umd.js';
+
+const defaultGalleryItems = [
+  { image: `https://picsum.photos/seed/1/800/600?grayscale`, text: 'Bridge' },
+  { image: `https://picsum.photos/seed/2/800/600?grayscale`, text: 'Desk Setup' },
+  { image: `https://picsum.photos/seed/3/800/600?grayscale`, text: 'Waterfall' },
+  { image: `https://picsum.photos/seed/4/800/600?grayscale`, text: 'Strawberries' },
+  { image: `https://picsum.photos/seed/5/800/600?grayscale`, text: 'Deep Diving' },
+  { image: `https://picsum.photos/seed/16/800/600?grayscale`, text: 'Train Track' },
+  { image: `https://picsum.photos/seed/17/800/600?grayscale`, text: 'Santorini' },
+  { image: `https://picsum.photos/seed/8/800/600?grayscale`, text: 'Blurry Lights' },
+  { image: `https://picsum.photos/seed/9/800/600?grayscale`, text: 'New York' },
+  { image: `https://picsum.photos/seed/10/800/600?grayscale`, text: 'Good Boy' },
+  { image: `https://picsum.photos/seed/21/800/600?grayscale`, text: 'Coastline' },
+  { image: `https://picsum.photos/seed/12/800/600?grayscale`, text: 'Palm Trees' },
+];
 
 const loadOgl = (() => {
   let promise;
@@ -195,12 +210,12 @@ class Media {
         uniform sampler2D tMap;
         uniform float uBorderRadius;
         varying vec2 vUv;
-        
+
         float roundedBoxSDF(vec2 p, vec2 b, float r) {
           vec2 d = abs(p) - b;
           return length(max(d, vec2(0.0))) + min(max(d.x, d.y), 0.0) - r;
         }
-        
+
         void main() {
           vec2 ratio = vec2(
             min((uPlaneSizes.x / uPlaneSizes.y) / (uImageSizes.x / uImageSizes.y), 1.0),
@@ -211,12 +226,12 @@ class Media {
             vUv.y * ratio.y + (1.0 - ratio.y) * 0.5
           );
           vec4 color = texture2D(tMap, uv);
-          
+
           float d = roundedBoxSDF(vUv - 0.5, vec2(0.5 - uBorderRadius), uBorderRadius);
-          
+
           float edgeSmooth = 0.002;
           float alpha = 1.0 - smoothstep(-edgeSmooth, edgeSmooth, d);
-          
+
           gl_FragColor = vec4(color.rgb, alpha);
         }
       `,
@@ -375,21 +390,7 @@ class App {
     });
   }
   createMedias(items, bend = 1, textColor, borderRadius, font) {
-    const defaultItems = [
-      { image: `https://picsum.photos/seed/1/800/600?grayscale`, text: 'Bridge' },
-      { image: `https://picsum.photos/seed/2/800/600?grayscale`, text: 'Desk Setup' },
-      { image: `https://picsum.photos/seed/3/800/600?grayscale`, text: 'Waterfall' },
-      { image: `https://picsum.photos/seed/4/800/600?grayscale`, text: 'Strawberries' },
-      { image: `https://picsum.photos/seed/5/800/600?grayscale`, text: 'Deep Diving' },
-      { image: `https://picsum.photos/seed/16/800/600?grayscale`, text: 'Train Track' },
-      { image: `https://picsum.photos/seed/17/800/600?grayscale`, text: 'Santorini' },
-      { image: `https://picsum.photos/seed/8/800/600?grayscale`, text: 'Blurry Lights' },
-      { image: `https://picsum.photos/seed/9/800/600?grayscale`, text: 'New York' },
-      { image: `https://picsum.photos/seed/10/800/600?grayscale`, text: 'Good Boy' },
-      { image: `https://picsum.photos/seed/21/800/600?grayscale`, text: 'Coastline' },
-      { image: `https://picsum.photos/seed/12/800/600?grayscale`, text: 'Palm Trees' },
-    ];
-    const galleryItems = items && items.length ? items : defaultItems;
+    const galleryItems = items && items.length ? items : defaultGalleryItems;
     this.mediasImages = galleryItems.concat(galleryItems);
     this.medias = this.mediasImages.map((data, index) => {
       return new Media({
@@ -508,37 +509,86 @@ export default function CircularGallery({
   scrollEase = 0.05,
 }) {
   const containerRef = useRef(null);
+  const [isFallback, setIsFallback] = useState(false);
+  const galleryItems = useMemo(() => (items && items.length ? items : defaultGalleryItems), [items]);
+
   useEffect(() => {
+    if (isFallback) {
+      return () => {};
+    }
     let galleryApp;
-    let cancelled = false;
+    let destroyed = false;
     const container = containerRef.current;
     if (!container) {
       return () => {};
     }
 
+    const enableFallback = () => {
+      if (!destroyed) {
+        setIsFallback(true);
+      }
+    };
+
+    const canvas = document.createElement('canvas');
+    const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+    if (!gl) {
+      enableFallback();
+      return () => {};
+    }
+
     loadOgl()
       .then((ogl) => {
-        if (!ogl || cancelled) {
+        if (!ogl || destroyed) {
           return;
         }
-        galleryApp = new App(ogl, container, {
-          items,
-          bend,
-          textColor,
-          borderRadius,
-          font,
-          scrollSpeed,
-          scrollEase,
-        });
+        try {
+          galleryApp = new App(ogl, container, {
+            items: galleryItems,
+            bend,
+            textColor,
+            borderRadius,
+            font,
+            scrollSpeed,
+            scrollEase,
+          });
+        } catch (error) {
+          console.error('CircularGallery failed to initialise', error);
+          enableFallback();
+        }
       })
       .catch((error) => {
         console.error('CircularGallery failed to initialise', error);
+        enableFallback();
       });
 
     return () => {
-      cancelled = true;
+      destroyed = true;
       galleryApp?.destroy();
     };
-  }, [items, bend, textColor, borderRadius, font, scrollSpeed, scrollEase]);
-  return <div className="circular-gallery" ref={containerRef} />;
+  }, [galleryItems, bend, textColor, borderRadius, font, scrollSpeed, scrollEase, isFallback]);
+
+  if (isFallback) {
+    return (
+      <div className="circular-gallery-wrapper">
+        <div className="circular-gallery-fallback" role="list">
+          {galleryItems.map((item) => (
+            <div
+              key={`${item.text}-${item.image}`}
+              className="circular-gallery-fallback-card"
+              role="listitem"
+              style={{ backgroundImage: `url(${item.image})` }}
+            >
+              <span>{item.text}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="circular-gallery-wrapper">
+      <div className="circular-gallery" ref={containerRef} />
+    </div>
+  );
 }
