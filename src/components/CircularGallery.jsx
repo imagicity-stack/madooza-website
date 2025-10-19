@@ -87,7 +87,7 @@ class Title {
     this.createMesh();
   }
   createMesh() {
-    const { Plane, Program, Texture } = this.ogl;
+    const { Plane, Program, Texture, Mesh } = this.ogl;
     const { texture, width, height } = createTextTexture(this.gl, Texture, this.text, this.font, this.textColor);
     const geometry = new Plane(this.gl);
     const program = new Program(this.gl, {
