@@ -3,6 +3,7 @@ import CosplayPage from './pages/CosplayPage';
 import PrivacyPolicyPage from './pages/PrivacyPolicyPage';
 import TermsConditionsPage from './pages/TermsConditionsPage';
 import CancellationRefundPage from './pages/CancellationRefundPage';
+import FestivalCarousel from './components/FestivalCarousel';
 
 const involveItems = [
   {
@@ -146,21 +147,7 @@ const HomeSections = ({ openModal, onNavigate }) => (
           Six immersive worlds across the MADOOZA grounds — dive into every colour-drenched experience.
         </p>
       </div>
-      <div className="festival-grid">
-        {festivalItems.map((item) => (
-          <article
-            key={item.id}
-            className="festival-card"
-            style={{
-              '--festival-card-bg': item.color,
-              '--festival-card-text': item.textColor,
-            }}
-          >
-            <h3>{item.title}</h3>
-            <p>{item.copy}</p>
-          </article>
-        ))}
-      </div>
+      <FestivalCarousel items={festivalItems} />
     </section>
 
     <section id="involve" className="section fade-section section-involve">
@@ -350,6 +337,7 @@ const App = () => {
   const [activeModal, setActiveModal] = useState(null);
   const [formValues, setFormValues] = useState({});
   const [paymentState, setPaymentState] = useState({});
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const isHomeView = route.path === '/';
   const isCosplayView = route.path === '/cosplay';
   const isLegalPage = legalPaths.includes(route.path);
@@ -414,25 +402,55 @@ const App = () => {
     }
   }, [isCosplayView, isHomeView, isLegalPage, route.hash, route.path]);
 
+  const closeMenu = useCallback(() => setIsMenuOpen(false), []);
+
+  useEffect(() => {
+    if (typeof document === 'undefined') return;
+    if (!isMenuOpen) {
+      document.body.classList.remove('no-scroll');
+      return;
+    }
+    if (typeof window === 'undefined') return;
+
+    const handleKey = (event) => {
+      if (event.key === 'Escape') {
+        setIsMenuOpen(false);
+      }
+    };
+    document.body.classList.add('no-scroll');
+    window.addEventListener('keydown', handleKey);
+    return () => {
+      document.body.classList.remove('no-scroll');
+      window.removeEventListener('keydown', handleKey);
+    };
+  }, [isMenuOpen]);
+
+  useEffect(() => {
+    closeMenu();
+  }, [route.path, route.hash, closeMenu]);
+
   const handleNavClick = useCallback(
     (event, hash) => {
       event.preventDefault();
       updateView('home', hash);
+      closeMenu();
     },
-    [updateView]
+    [updateView, closeMenu]
   );
 
   const handleLogoClick = useCallback(
     (event) => {
       event.preventDefault();
       updateView('home', '#hero');
+      closeMenu();
     },
-    [updateView]
+    [updateView, closeMenu]
   );
 
   const handleCosplayNavigate = useCallback(() => {
     updateView('cosplay');
-  }, [updateView]);
+    closeMenu();
+  }, [updateView, closeMenu]);
 
   const handleLegalNavigate = useCallback(
     (event, path) => {
@@ -588,9 +606,9 @@ const App = () => {
       <nav className="navbar">
         <div className="nav-inner">
           <a className="logo" href="/" onClick={handleLogoClick}>
-            MADOOZA
+            <img src="/madooza-logo.svg" alt="Madooza" />
           </a>
-          <div className="nav-links">
+          <div className="nav-links nav-links-desktop">
             {navLinks.map((link) => (
               <a
                 key={link.href}
@@ -601,15 +619,58 @@ const App = () => {
                 {link.label}
               </a>
             ))}
-            <a href="/cosplay" className="nav-link" onClick={(event) => { event.preventDefault(); handleCosplayNavigate(); }}>
+            <a
+              href="/cosplay"
+              className="nav-link"
+              onClick={(event) => {
+                event.preventDefault();
+                handleCosplayNavigate();
+              }}
+            >
               Cosplay
             </a>
           </div>
-          <button className="neon-button nav-ticket" type="button" onClick={() => openModal('tickets')}>
-            Buy Ticket ₹30
+          <button
+            className={`nav-menu-button${isMenuOpen ? ' open' : ''}`}
+            type="button"
+            onClick={() => setIsMenuOpen((prev) => !prev)}
+            aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
+            aria-expanded={isMenuOpen}
+          >
+            <span />
+            <span />
+            <span />
           </button>
         </div>
       </nav>
+
+      <div className={`side-menu${isMenuOpen ? ' open' : ''}`}>
+        <div className="side-menu-backdrop" onClick={closeMenu} role="presentation" />
+        <aside className="side-menu-panel">
+          <button className="side-menu-close" type="button" onClick={closeMenu} aria-label="Close menu">
+            ×
+          </button>
+          <nav className="side-menu-links">
+            {navLinks.map((link) => (
+              <a key={link.href} href={link.href} onClick={(event) => handleNavClick(event, link.href)}>
+                {link.label}
+              </a>
+            ))}
+            <a
+              href="/cosplay"
+              onClick={(event) => {
+                event.preventDefault();
+                handleCosplayNavigate();
+              }}
+            >
+              Cosplay
+            </a>
+          </nav>
+          <button className="side-menu-cta" type="button" onClick={() => openModal('tickets')}>
+            Buy Ticket ₹30
+          </button>
+        </aside>
+      </div>
 
       {isHomeView && (
         <header id="hero" className="hero-section parallax">

@@ -29,6 +29,10 @@ body {
   overflow-x: hidden;
 }
 
+body.no-scroll {
+  overflow: hidden;
+}
+
 a {
   color: inherit;
   text-decoration: none;
@@ -66,9 +70,9 @@ p {
   position: sticky;
   top: 0;
   z-index: 999;
-  background: rgba(0, 0, 0, 0.85);
-  backdrop-filter: blur(12px);
-  border-bottom: 1px solid rgba(0, 207, 255, 0.3);
+  background: #d6001c;
+  border-bottom: 2px solid rgba(255, 221, 0, 0.5);
+  box-shadow: 0 8px 24px rgba(214, 0, 28, 0.35);
 }
 
 .nav-inner {
@@ -82,15 +86,24 @@ p {
 }
 
 .logo {
-  font-size: 1.5rem;
-  font-weight: 800;
-  letter-spacing: 0.24em;
-  color: #00cfff;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.logo img {
+  display: block;
+  height: 48px;
+  width: auto;
 }
 
 .nav-links {
   display: flex;
   gap: 1.6rem;
+}
+
+.nav-links-desktop {
+  align-items: center;
 }
 
 .nav-link {
@@ -100,6 +113,8 @@ p {
   letter-spacing: 0.12em;
   position: relative;
   padding-bottom: 0.2rem;
+  color: #ffdd00;
+  transition: color 0.3s ease;
 }
 
 .nav-link::after {
@@ -109,7 +124,7 @@ p {
   bottom: 0;
   width: 100%;
   height: 2px;
-  background: #ff6a00;
+  background: rgba(255, 221, 0, 0.9);
   transform: scaleX(0);
   transform-origin: left;
   transition: transform 0.3s ease;
@@ -119,10 +134,48 @@ p {
   transform: scaleX(1);
 }
 
-.nav-ticket {
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.2em;
+.nav-link:hover {
+  color: #ffffff;
+}
+
+.nav-menu-button {
+  display: none;
+  flex-direction: column;
+  gap: 0.4rem;
+  width: 2.75rem;
+  height: 2.5rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.75rem;
+  border: 2px solid rgba(255, 221, 0, 0.4);
+  background: rgba(0, 0, 0, 0.15);
+  transition: border-color 0.3s ease, background 0.3s ease;
+}
+
+.nav-menu-button span {
+  display: block;
+  width: 1.6rem;
+  height: 0.18rem;
+  background: #ffdd00;
+  border-radius: 999px;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.nav-menu-button.open span:nth-child(1) {
+  transform: translateY(0.58rem) rotate(45deg);
+}
+
+.nav-menu-button.open span:nth-child(2) {
+  opacity: 0;
+}
+
+.nav-menu-button.open span:nth-child(3) {
+  transform: translateY(-0.58rem) rotate(-45deg);
+}
+
+.nav-menu-button:hover {
+  background: rgba(0, 0, 0, 0.25);
+  border-color: rgba(255, 221, 0, 0.7);
 }
 
 /* Buttons */
@@ -197,6 +250,90 @@ p {
   font-size: 1.1rem;
   max-width: 32rem;
   color: #9dffff;
+}
+
+.side-menu {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 998;
+  display: flex;
+}
+
+.side-menu-backdrop {
+  flex: 1;
+  background: rgba(5, 0, 10, 0.55);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.side-menu-panel {
+  width: min(80vw, 360px);
+  max-width: 360px;
+  background: rgba(10, 0, 20, 0.96);
+  border-left: 2px solid rgba(255, 221, 0, 0.4);
+  transform: translateX(100%);
+  transition: transform 0.35s ease;
+  padding: 3.5rem 2.5rem 2.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+  position: relative;
+}
+
+.side-menu.open {
+  pointer-events: auto;
+}
+
+.side-menu.open .side-menu-backdrop {
+  opacity: 1;
+}
+
+.side-menu.open .side-menu-panel {
+  transform: translateX(0);
+}
+
+.side-menu-close {
+  position: absolute;
+  top: 1.2rem;
+  right: 1.5rem;
+  font-size: 2rem;
+  color: #ffdd00;
+  background: none;
+}
+
+.side-menu-links {
+  display: flex;
+  flex-direction: column;
+  gap: 1.8rem;
+}
+
+.side-menu-links a {
+  font-size: 1.05rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #ffdd00;
+  transition: color 0.3s ease;
+}
+
+.side-menu-links a:hover {
+  color: #ffffff;
+}
+
+.side-menu-cta {
+  margin-top: auto;
+  padding: 0.9rem 1.6rem;
+  border-radius: 999px;
+  background: #ff6a00;
+  color: #0b1026;
+  letter-spacing: 0.18em;
+  font-weight: 700;
+  text-transform: uppercase;
+  transition: transform 0.3s ease;
+}
+
+.side-menu-cta:hover {
+  transform: translateY(-2px);
 }
 
 /* Ticker marquee */
@@ -302,11 +439,47 @@ p {
   padding-bottom: clamp(4rem, 10vw, 6.5rem);
 }
 
-.festival-grid {
+.festival-carousel {
   margin-top: clamp(2rem, 6vw, 4rem);
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: clamp(1.25rem, 4vw, 2.5rem);
+  overflow: hidden;
+  position: relative;
+}
+
+.festival-carousel::before,
+.festival-carousel::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  width: clamp(40px, 8vw, 120px);
+  height: 100%;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.festival-carousel::before {
+  left: 0;
+  background: linear-gradient(90deg, #041b3b 0%, rgba(4, 27, 59, 0) 100%);
+}
+
+.festival-carousel::after {
+  right: 0;
+  background: linear-gradient(270deg, #041b3b 0%, rgba(4, 27, 59, 0) 100%);
+}
+
+.festival-carousel-track {
+  display: flex;
+  gap: clamp(1.5rem, 4vw, 3rem);
+  width: fit-content;
+  animation: festival-scroll 30s linear infinite;
+  will-change: transform;
+}
+
+.festival-carousel:hover .festival-carousel-track {
+  animation-play-state: paused;
+}
+
+.festival-carousel:focus-within .festival-carousel-track {
+  animation-play-state: paused;
 }
 
 .festival-card {
@@ -314,7 +487,8 @@ p {
   color: var(--festival-card-text, #050505);
   border-radius: clamp(1.5rem, 4vw, 2.75rem);
   padding: clamp(2.4rem, 5vw, 3.2rem);
-  min-height: 240px;
+  min-height: 260px;
+  min-width: clamp(220px, 22vw, 320px);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -356,9 +530,50 @@ p {
   filter: brightness(1.05);
 }
 
-@media (max-width: 720px) {
-  .festival-grid {
-    gap: clamp(1rem, 6vw, 1.75rem);
+@keyframes festival-scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+@media (max-width: 960px) {
+  .festival-carousel-track {
+    animation-duration: 24s;
+  }
+
+  .festival-card {
+    min-width: clamp(220px, 70vw, 320px);
+  }
+}
+
+@media (max-width: 640px) {
+  .nav-links-desktop {
+    display: none;
+  }
+
+  .nav-menu-button {
+    display: inline-flex;
+  }
+
+  .festival-carousel {
+    margin-left: -1.5rem;
+    margin-right: -1.5rem;
+    padding-inline: 1.5rem;
+  }
+
+  .festival-card {
+    min-height: 220px;
+    padding: clamp(2rem, 8vw, 2.6rem);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .festival-carousel-track {
+    animation-duration: 1ms;
+    animation-iteration-count: 1;
   }
 }
 
