@@ -234,7 +234,8 @@
 .sm-panel-item {
   position: relative;
   color: #000;
-  font-weight: 600;
+  font-family: 'Montserrat', 'Arial Black', 'Segoe UI', sans-serif;
+  font-weight: 800;
   font-size: 3rem;
   cursor: pointer;
   line-height: 1;
@@ -242,7 +243,7 @@
   text-transform: uppercase;
   display: inline-block;
   text-decoration: none;
-  padding-right: 1.4em;
+  padding-right: 1.75em;
 }
 
 .sm-panel-item:hover {
@@ -263,10 +264,10 @@
   content: counter(smItem, decimal-leading-zero);
   position: absolute;
   top: 0.1em;
-  right: 2.6em;
+  right: 3.25em;
   font-size: 18px;
-  font-weight: 400;
-  color: var(--sm-accent, #5227ff);
+  font-weight: 700;
+  color: #ff0000;
   letter-spacing: 0;
   pointer-events: none;
   user-select: none;

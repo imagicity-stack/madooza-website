@@ -555,14 +555,8 @@ const App = () => {
         ariaLabel: 'Open the Cosplay page',
         onClick: handleCosplayNavigate,
       },
-      {
-        label: 'Buy Pass ₹30',
-        link: '#tickets',
-        ariaLabel: 'Open the ticket booking modal',
-        onClick: () => openModal('tickets'),
-      },
     ],
-    [handleCosplayNavigate, navLinks, openModal, updateView],
+    [handleCosplayNavigate, navLinks, updateView],
   );
 
   const mobileSocialItems = useMemo(
