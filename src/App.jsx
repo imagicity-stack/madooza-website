@@ -3,7 +3,8 @@ import CosplayPage from './pages/CosplayPage';
 import PrivacyPolicyPage from './pages/PrivacyPolicyPage';
 import TermsConditionsPage from './pages/TermsConditionsPage';
 import CancellationRefundPage from './pages/CancellationRefundPage';
-import FestivalCarousel from './components/FestivalCarousel';
+import MagicBento from './components/MagicBento';
+import Ribbons from './components/effects/Ribbons';
 
 const involveItems = [
   {
@@ -53,45 +54,51 @@ const involveItems = [
 const festivalItems = [
   {
     id: 'cosplay',
-    title: 'Cosplay',
+    title: 'Cosplay Arena',
+    label: 'Cosplay',
     copy: 'Suit up, embody your alter ego, and storm the MAD Parade runway.',
-    color: '#ff6b9a',
-    textColor: '#1f0014',
+    color: '#ffe066',
+    textColor: '#201500',
   },
   {
     id: 'cafe',
-    title: 'Cafe',
+    title: 'MAD Cafe',
+    label: 'Cafe',
     copy: 'Sip neon brews, dessert experiments, and collab pop-ups with local chefs.',
-    color: '#f4c76a',
-    textColor: '#291400',
+    color: '#ffd6a5',
+    textColor: '#2a1600',
   },
   {
     id: 'expo',
-    title: 'Expo',
+    title: 'Innovation Expo',
+    label: 'Expo',
     copy: 'Hands-on showcases from makers, startups, and interactive tech labs.',
-    color: '#5ec5ff',
-    textColor: '#001427',
+    color: '#bde0fe',
+    textColor: '#001b2c',
   },
   {
     id: 'exhibition',
-    title: 'Exhibition',
+    title: 'Art Exhibition',
+    label: 'Exhibition',
     copy: 'Immersive art tunnels, projection rooms, and creator installations.',
-    color: '#bba6ff',
-    textColor: '#1a0b38',
+    color: '#cdb4db',
+    textColor: '#2b1035',
   },
   {
     id: 'dj',
-    title: 'DJ',
+    title: 'DJ Nights',
+    label: 'DJ',
     copy: 'Nightfall basslines from guest DJs turning the grounds into a rave.',
-    color: '#ff8f66',
-    textColor: '#2d0700',
+    color: '#ffadad',
+    textColor: '#3a0a00',
   },
   {
     id: 'dance',
-    title: 'Dance',
+    title: 'Dance Battles',
+    label: 'Dance',
     copy: 'Crew battles, cyphers, and open-floor madness till the lights go out.',
-    color: '#5ce1b8',
-    textColor: '#002a1f',
+    color: '#caffbf',
+    textColor: '#053317',
   },
 ];
 
@@ -147,7 +154,16 @@ const HomeSections = ({ openModal, onNavigate }) => (
           Six immersive worlds across the MADOOZA grounds — dive into every colour-drenched experience.
         </p>
       </div>
-      <FestivalCarousel items={festivalItems} />
+      <div className="festival-bento-wrapper">
+        <MagicBento
+          items={festivalItems}
+          glowColor="255, 213, 0"
+          enableSpotlight
+          enableBorderGlow
+          enableTilt
+          enableMagnetism
+        />
+      </div>
     </section>
 
     <section id="involve" className="section fade-section section-involve">
@@ -603,6 +619,7 @@ const App = () => {
 
   return (
     <div className="app-shell">
+      <Ribbons baseThickness={30} colors={['#FFD400']} speedMultiplier={0.5} maxAge={500} />
       <nav className="navbar">
         <div className="nav-inner">
           <a className="logo" href="/" onClick={handleLogoClick}>
