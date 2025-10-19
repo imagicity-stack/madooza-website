@@ -234,6 +234,90 @@ p {
   color: #9dffff;
 }
 
+.side-menu {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 998;
+  display: flex;
+}
+
+.side-menu-backdrop {
+  flex: 1;
+  background: rgba(5, 0, 10, 0.55);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.side-menu-panel {
+  width: min(80vw, 360px);
+  max-width: 360px;
+  background: rgba(10, 0, 20, 0.96);
+  border-left: 2px solid rgba(255, 221, 0, 0.4);
+  transform: translateX(100%);
+  transition: transform 0.35s ease;
+  padding: 3.5rem 2.5rem 2.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+  position: relative;
+}
+
+.side-menu.open {
+  pointer-events: auto;
+}
+
+.side-menu.open .side-menu-backdrop {
+  opacity: 1;
+}
+
+.side-menu.open .side-menu-panel {
+  transform: translateX(0);
+}
+
+.side-menu-close {
+  position: absolute;
+  top: 1.2rem;
+  right: 1.5rem;
+  font-size: 2rem;
+  color: #ffdd00;
+  background: none;
+}
+
+.side-menu-links {
+  display: flex;
+  flex-direction: column;
+  gap: 1.8rem;
+}
+
+.side-menu-links a {
+  font-size: 1.05rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #ffdd00;
+  transition: color 0.3s ease;
+}
+
+.side-menu-links a:hover {
+  color: #ffffff;
+}
+
+.side-menu-cta {
+  margin-top: auto;
+  padding: 0.9rem 1.6rem;
+  border-radius: 999px;
+  background: #ff6a00;
+  color: #0b1026;
+  letter-spacing: 0.18em;
+  font-weight: 700;
+  text-transform: uppercase;
+  transition: transform 0.3s ease;
+}
+
+.side-menu-cta:hover {
+  transform: translateY(-2px);
+}
+
 /* Ticker marquee */
 .ticker {
   overflow: hidden;
