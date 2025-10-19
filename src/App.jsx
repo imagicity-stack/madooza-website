@@ -1,6 +1,5 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import CosplayPage from './pages/CosplayPage';
-import CircularGallery from './components/CircularGallery';
 import PrivacyPolicyPage from './pages/PrivacyPolicyPage';
 import TermsConditionsPage from './pages/TermsConditionsPage';
 import CancellationRefundPage from './pages/CancellationRefundPage';
@@ -52,44 +51,72 @@ const involveItems = [
 
 const festivalItems = [
   {
-    id: 'gaming',
-    title: 'Gaming Arena',
-    copy: 'LAN battles, retro revival, VR chaos — welcome to the arena.',
-    image: 'https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=1200&q=80',
+    id: 'cosplay',
+    title: 'Cosplay',
+    copy: 'Suit up, embody your alter ego, and storm the MAD Parade runway.',
+    color: '#ff6b9a',
+    textColor: '#1f0014',
+  },
+  {
+    id: 'cafe',
+    title: 'Cafe',
+    copy: 'Sip neon brews, dessert experiments, and collab pop-ups with local chefs.',
+    color: '#f4c76a',
+    textColor: '#291400',
   },
   {
     id: 'expo',
-    title: 'Innovation Expo',
-    copy: 'Hands-on showcases from bold startups, makers, and brand labs.',
-    image: 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80',
+    title: 'Expo',
+    copy: 'Hands-on showcases from makers, startups, and interactive tech labs.',
+    color: '#5ec5ff',
+    textColor: '#001427',
   },
   {
-    id: 'creators',
-    title: 'Creator Studios',
-    copy: 'Content studios, live podcasts, collab challenges & creator drops.',
-    image: 'https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1200&q=80',
+    id: 'exhibition',
+    title: 'Exhibition',
+    copy: 'Immersive art tunnels, projection rooms, and creator installations.',
+    color: '#bba6ff',
+    textColor: '#1a0b38',
   },
   {
-    id: 'cosplay',
-    title: 'Cosplay Parade',
-    copy: 'Suit up for the MAD Parade and rule the MADVERSE runway.',
-    image: 'https://images.unsplash.com/photo-1618005198919-d3d4b5a92eee?auto=format&fit=crop&w=1200&q=80',
+    id: 'dj',
+    title: 'DJ',
+    copy: 'Nightfall basslines from guest DJs turning the grounds into a rave.',
+    color: '#ff8f66',
+    textColor: '#2d0700',
   },
   {
-    id: 'esports',
-    title: 'Esports Clash',
-    copy: 'Caster-led showdowns with high-stakes brackets and prize pools.',
-    image: 'https://images.unsplash.com/photo-1511871893393-82e9c16b81e0?auto=format&fit=crop&w=1200&q=80',
-  },
-  {
-    id: 'live-acts',
-    title: 'Live Acts',
-    copy: 'DJs, indie bands, and midnight cyphers to keep the night loud.',
-    image: 'https://images.unsplash.com/photo-1464375117522-1311d6a5b81a?auto=format&fit=crop&w=1200&q=80',
+    id: 'dance',
+    title: 'Dance',
+    copy: 'Crew battles, cyphers, and open-floor madness till the lights go out.',
+    color: '#5ce1b8',
+    textColor: '#002a1f',
   },
 ];
 
-const festivalGalleryItems = festivalItems.map((item) => ({ image: item.image, text: item.title }));
+const RazorpayButton = ({ paymentButtonId }) => {
+  const containerRef = useRef(null);
+
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container || !paymentButtonId) return;
+
+    container.innerHTML = '';
+    const form = document.createElement('form');
+    const script = document.createElement('script');
+    script.src = 'https://checkout.razorpay.com/v1/payment-button.js';
+    script.async = true;
+    script.dataset.payment_button_id = paymentButtonId;
+    form.appendChild(script);
+    container.appendChild(form);
+
+    return () => {
+      container.innerHTML = '';
+    };
+  }, [paymentButtonId]);
+
+  return <div className="razorpay-button" ref={containerRef} />;
+};
 
 const HomeSections = ({ openModal, onNavigate }) => (
   <>
@@ -119,24 +146,20 @@ const HomeSections = ({ openModal, onNavigate }) => (
           Six immersive worlds across the MADOOZA grounds — dive into every colour-drenched experience.
         </p>
       </div>
-      <div className="festival-gallery">
-        <div className="festival-gallery-frame">
-          <CircularGallery
-            items={festivalGalleryItems}
-            bend={3}
-            textColor="#ffffff"
-            borderRadius={0.05}
-            scrollEase={0.02}
-          />
-        </div>
-        <div className="festival-gallery-copy">
-          {festivalItems.map((item) => (
-            <article key={item.id}>
-              <h3>{item.title}</h3>
-              <p>{item.copy}</p>
-            </article>
-          ))}
-        </div>
+      <div className="festival-grid">
+        {festivalItems.map((item) => (
+          <article
+            key={item.id}
+            className="festival-card"
+            style={{
+              '--festival-card-bg': item.color,
+              '--festival-card-text': item.textColor,
+            }}
+          >
+            <h3>{item.title}</h3>
+            <p>{item.copy}</p>
+          </article>
+        ))}
       </div>
     </section>
 
@@ -245,12 +268,9 @@ const modalConfigs = {
     heading: 'Buy Ticket',
     blurb:
       'Lock your pass to MADOOZA and dive into neon nights, food explosions, and genre-bending performances.',
-    payment: 20,
-    fields: [
-      { name: 'name', label: 'Full Name', type: 'text', required: true },
-      { name: 'email', label: 'Email', type: 'email', required: true },
-      { name: 'phone', label: 'Phone', type: 'tel', required: true },
-    ],
+    payment: 30,
+    paymentScriptId: 'pl_RVIYQFpD1UhxMg',
+    fields: [],
   },
   stall: {
     heading: 'Book a Stall',
@@ -496,7 +516,8 @@ const App = () => {
     if (!activeModal) return null;
     const config = modalConfigs[activeModal];
     if (!config) return null;
-    const status = paymentState[activeModal] || 'idle';
+    const hasPaymentScript = Boolean(config.paymentScriptId);
+    const status = hasPaymentScript ? 'idle' : paymentState[activeModal] || 'idle';
 
     return (
       <div className="modal-backdrop" role="dialog" aria-modal="true">
@@ -506,9 +527,15 @@ const App = () => {
           </button>
           <h3>{config.heading}</h3>
           <p className="modal-blurb">{config.blurb}</p>
-          {status === 'success' ? (
+          {hasPaymentScript ? (
+            <div className="modal-payment">
+              {config.payment ? <p className="modal-price">Festival Pass: ₹{config.payment}</p> : null}
+              <RazorpayButton paymentButtonId={config.paymentScriptId} />
+              <p className="modal-note">Secure checkout opens in a Razorpay window.</p>
+            </div>
+          ) : status === 'success' ? (
             <div className="modal-success">
-              <h4>We\'ve got your details!</h4>
+              <h4>We've got your details!</h4>
               <p>Our crew will reach out shortly with the next steps. Stay tuned for the madness.</p>
               <button className="neon-button" type="button" onClick={closeModal}>
                 Close
@@ -579,7 +606,7 @@ const App = () => {
             </a>
           </div>
           <button className="neon-button nav-ticket" type="button" onClick={() => openModal('tickets')}>
-            Buy Ticket ₹20
+            Buy Ticket ₹30
           </button>
         </div>
       </nav>
@@ -590,7 +617,7 @@ const App = () => {
             <h1 className="hero-title">MADOOZA – THE SOUND OF PURE MADNESS</h1>
             <p className="hero-subtext">Hazaribagh's first youth cultural carnival.</p>
             <button className="neon-button button-pulse" type="button" onClick={() => openModal('tickets')}>
-              Book Your Pass
+              Book Your Pass ₹30
             </button>
           </div>
         </header>
