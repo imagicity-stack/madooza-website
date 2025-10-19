@@ -584,23 +584,383 @@ const App = () => {
       </main>
 
       <footer className="site-footer">
-        <p>© 2025 MADOOZA | Organized by IMAGICITY</p>
-        <div className="footer-socials">
-          <a href="https://instagram.com" aria-label="Instagram">
-            <svg viewBox="0 0 24 24" role="img" aria-hidden="true">
-              <path d="M7 3h10a4 4 0 0 1 4 4v10a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V7a4 4 0 0 1 4-4zm0 2a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2H7zm5 3.5A3.5 3.5 0 1 1 8.5 12 3.5 3.5 0 0 1 12 8.5zm0 2A1.5 1.5 0 1 0 13.5 12 1.5 1.5 0 0 0 12 10.5zm5.25-3.75a1 1 0 1 1-1 1 1 1 0 0 1 1-1z" />
-            </svg>
-          </a>
-          <a href="https://facebook.com" aria-label="Facebook">
-            <svg viewBox="0 0 24 24" role="img" aria-hidden="true">
-              <path d="M13.5 9H15V6h-1.5C11.57 6 10 7.57 10 9.5V11H8v3h2v7h3v-7h2.25l.75-3H13v-1.5A.5.5 0 0 1 13.5 9Z" />
-            </svg>
-          </a>
-          <a href="mailto:info@madooza.com" aria-label="Email">
-            <svg viewBox="0 0 24 24" role="img" aria-hidden="true">
-              <path d="M4 5h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2zm0 2v.21l8 5.33 8-5.33V7H4zm16 10V9.79l-7.47 4.98a1 1 0 0 1-1.06 0L4 9.79V17h16z" />
-            </svg>
-          </a>
+        <div className="footer-meta">
+          <p>© 2025 MADOOZA | Organized by IMAGICITY</p>
+          <div className="footer-socials">
+            <a href="https://instagram.com" aria-label="Instagram">
+              <svg viewBox="0 0 24 24" role="img" aria-hidden="true">
+                <path d="M7 3h10a4 4 0 0 1 4 4v10a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V7a4 4 0 0 1 4-4zm0 2a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2H7zm5 3.5A3.5 3.5 0 1 1 8.5 12 3.5 3.5 0 0 1 12 8.5zm0 2A1.5 1.5 0 1 0 13.5 12 1.5 1.5 0 0 0 12 10.5zm5.25-3.75a1 1 0 1 1-1 1 1 1 0 0 1 1-1z" />
+              </svg>
+            </a>
+            <a href="https://facebook.com" aria-label="Facebook">
+              <svg viewBox="0 0 24 24" role="img" aria-hidden="true">
+                <path d="M13.5 9H15V6h-1.5C11.57 6 10 7.57 10 9.5V11H8v3h2v7h3v-7h2.25l.75-3H13v-1.5A.5.5 0 0 1 13.5 9Z" />
+              </svg>
+            </a>
+            <a href="mailto:info@madooza.com" aria-label="Email">
+              <svg viewBox="0 0 24 24" role="img" aria-hidden="true">
+                <path d="M4 5h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2zm0 2v.21l8 5.33 8-5.33V7H4zm16 10V9.79l-7.47 4.98a1 1 0 0 1-1.06 0L4 9.79V17h16z" />
+              </svg>
+            </a>
+          </div>
+        </div>
+
+        <div className="footer-legals">
+          <details>
+            <summary>Privacy Policy – Madooza</summary>
+            <div className="legal-content">
+              <p>
+                <strong>Last Updated:</strong> October 2025
+              </p>
+              <ol>
+                <li>
+                  <h4>Introduction</h4>
+                  <p>
+                    Welcome to Madooza, organized by IMAGICITY. We value your privacy and are committed to protecting your
+                    personal information. This Privacy Policy explains how we collect, use, and safeguard your data when you
+                    visit our website or register for the event.
+                  </p>
+                </li>
+                <li>
+                  <h4>Information We Collect</h4>
+                  <p>We may collect the following types of information:</p>
+                  <ul>
+                    <li>Personal details such as name, email address, phone number, and age when you register or buy tickets.</li>
+                    <li>Payment information processed securely through our payment gateway. We do not store card or banking details.</li>
+                    <li>Usage data including device information, browser type, pages visited, and interaction logs collected via cookies or analytics tools.</li>
+                  </ul>
+                </li>
+                <li>
+                  <h4>How We Use Your Information</h4>
+                  <p>We use your information to:</p>
+                  <ul>
+                    <li>Process event registrations and payments.</li>
+                    <li>Communicate updates, confirmations, and event-related details.</li>
+                    <li>Improve our website’s performance and user experience.</li>
+                    <li>Ensure event security and regulatory compliance.</li>
+                  </ul>
+                </li>
+                <li>
+                  <h4>Data Protection</h4>
+                  <p>
+                    Your personal information is stored on secure servers. We use encryption and limited-access protocols to prevent
+                    unauthorized use or disclosure.
+                  </p>
+                </li>
+                <li>
+                  <h4>Sharing of Information</h4>
+                  <p>We do not sell or rent your personal data. We may share limited information only with:</p>
+                  <ul>
+                    <li>Payment gateways for processing transactions.</li>
+                    <li>Event partners or vendors who assist in operations under confidentiality agreements.</li>
+                    <li>Law enforcement if required by law.</li>
+                  </ul>
+                </li>
+                <li>
+                  <h4>Cookies</h4>
+                  <p>
+                    We use cookies to enhance website performance and understand user behavior. You can disable cookies through your
+                    browser settings, but certain features may not function properly.
+                  </p>
+                </li>
+                <li>
+                  <h4>Third-Party Links</h4>
+                  <p>
+                    Our site may contain links to third-party websites. We are not responsible for their privacy practices or
+                    content.
+                  </p>
+                </li>
+                <li>
+                  <h4>Your Rights</h4>
+                  <p>You have the right to:</p>
+                  <ul>
+                    <li>Request access, correction, or deletion of your data.</li>
+                    <li>Withdraw consent for communications by emailing <a href="mailto:contact@imagicity.in">contact@imagicity.in</a>.</li>
+                  </ul>
+                </li>
+                <li>
+                  <h4>Children’s Privacy</h4>
+                  <p>
+                    We do not knowingly collect information from individuals under 13 years of age. If such data is discovered, it
+                    will be deleted promptly.
+                  </p>
+                </li>
+                <li>
+                  <h4>Updates to This Policy</h4>
+                  <p>
+                    We may revise this Privacy Policy from time to time. Updates will be posted on this page with a new “Last
+                    Updated” date.
+                  </p>
+                </li>
+                <li>
+                  <h4>Contact Us</h4>
+                  <p>
+                    For any questions or concerns regarding this Privacy Policy, contact us at <a href="mailto:contact@imagicity.in">contact@imagicity.in</a>,
+                    IMAGICITY, Hazaribagh, Jharkhand, India.
+                  </p>
+                </li>
+              </ol>
+            </div>
+          </details>
+
+          <details>
+            <summary>Terms and Conditions – Madooza</summary>
+            <div className="legal-content">
+              <p>
+                <strong>Last Updated:</strong> October 2025
+              </p>
+              <ol>
+                <li>
+                  <h4>Acceptance of Terms</h4>
+                  <p>
+                    By visiting the Madooza website, registering, or attending the event, you agree to these Terms and Conditions. If
+                    you do not agree, please refrain from participating.
+                  </p>
+                </li>
+                <li>
+                  <h4>Event Organizer</h4>
+                  <p>Madooza is conceptualized and managed by IMAGICITY, headquartered in Hazaribagh, Jharkhand.</p>
+                </li>
+                <li>
+                  <h4>Ticket Policy</h4>
+                  <ul>
+                    <li>Tickets once purchased are non-refundable and non-transferable.</li>
+                    <li>Entry will be granted only to valid ticket holders.</li>
+                    <li>Lost or damaged tickets will not be reissued.</li>
+                    <li>Unauthorized resale of tickets is prohibited.</li>
+                  </ul>
+                </li>
+                <li>
+                  <h4>Payments</h4>
+                  <ul>
+                    <li>All ticket prices are in INR (Indian Rupees).</li>
+                    <li>Payments are processed securely via third-party gateways.</li>
+                    <li>IMAGICITY is not responsible for payment failures or delays due to user error or technical issues.</li>
+                  </ul>
+                </li>
+                <li>
+                  <h4>Entry and Security</h4>
+                  <ul>
+                    <li>Attendees must comply with on-ground security checks.</li>
+                    <li>Outside food, alcohol, drugs, sharp objects, or hazardous materials are strictly banned.</li>
+                    <li>IMAGICITY reserves the right to deny entry to any person for safety or disciplinary reasons.</li>
+                  </ul>
+                </li>
+                <li>
+                  <h4>Event Rules</h4>
+                  <ul>
+                    <li>Timings, artists, and schedules are subject to change without notice.</li>
+                    <li>Any damage to property or venue caused by an attendee will result in liability and compensation.</li>
+                    <li>The event may be recorded; by entering, you consent to being photographed or filmed for marketing use.</li>
+                  </ul>
+                </li>
+                <li>
+                  <h4>Vendor and Exhibitor Policy</h4>
+                  <p>
+                    Vendors, performers, or collaborators must adhere to the event’s operational guidelines and safety instructions. Non-
+                    compliance may result in removal without refund.
+                  </p>
+                </li>
+                <li>
+                  <h4>Cancellation or Postponement</h4>
+                  <p>
+                    In case of cancellation due to weather, unforeseen circumstances, or government orders, IMAGICITY will not be
+                    liable for refunds beyond what is feasible.
+                  </p>
+                </li>
+                <li>
+                  <h4>Limitation of Liability</h4>
+                  <p>
+                    IMAGICITY and its affiliates are not responsible for any injury, loss, or damage occurring at or during the event.
+                    Entry and participation are at your own risk.
+                  </p>
+                </li>
+                <li>
+                  <h4>Intellectual Property</h4>
+                  <p>
+                    All event content, designs, and branding are owned by IMAGICITY. Reproduction or misuse is prohibited without
+                    written consent.
+                  </p>
+                </li>
+                <li>
+                  <h4>Privacy</h4>
+                  <p>Personal data collected during ticket purchase or registration is managed under our Privacy Policy.</p>
+                </li>
+                <li>
+                  <h4>Governing Law</h4>
+                  <p>All disputes are subject to the jurisdiction of Hazaribagh, Jharkhand, India.</p>
+                </li>
+                <li>
+                  <h4>Contact</h4>
+                  <p>
+                    Reach us at <a href="mailto:contact@imagicity.in">contact@imagicity.in</a>, IMAGICITY, Hazaribagh, Jharkhand, India.
+                  </p>
+                </li>
+              </ol>
+            </div>
+          </details>
+
+          <details>
+            <summary>Cancellation and Refund Policy – Madooza</summary>
+            <div className="legal-content">
+              <p>
+                <strong>Last Updated:</strong> October 2025
+              </p>
+              <ol>
+                <li>
+                  <h4>Overview</h4>
+                  <p>
+                    This Cancellation and Refund Policy governs all payments made for participation in Madooza, organized by IMAGICITY,
+                    Hazaribagh, Jharkhand. It applies to all ticket holders, stall vendors, and cosplay event participants. By making a
+                    payment or registering for Madooza, you agree to these terms.
+                  </p>
+                </li>
+                <li>
+                  <h4>Ticket Purchases</h4>
+                  <p>All general entry tickets purchased online through official Madooza platforms are final, non-refundable, and non-transferable.</p>
+                  <ul>
+                    <li>Once a ticket is booked, no cancellation or refund will be permitted for any reason, including change of plans, travel delays, or non-attendance.</li>
+                    <li>Tickets cannot be transferred, exchanged, or used for any other event.</li>
+                    <li>Any ticket obtained through unauthorized sources will be considered invalid.</li>
+                    <li>Lost, stolen, or damaged tickets will not be replaced.</li>
+                  </ul>
+                  <p>
+                    <strong>Reason:</strong> All infrastructure, venue arrangements, artist coordination, and event logistics are confirmed based on advance ticket sales. Hence,
+                    refunds or cancellations are not feasible once the booking is completed.
+                  </p>
+                </li>
+                <li>
+                  <h4>Stall and Vendor Cancellations</h4>
+                  <p>
+                    Vendors or exhibitors who book stalls but later decide not to participate before the day of the event may be eligible for a partial refund, depending on the timing and reason for withdrawal.
+                  </p>
+                  <h5>Eligibility for Refund</h5>
+                  <ul>
+                    <li>A written cancellation request must be sent to <a href="mailto:madooza@imagicity.in">madooza@imagicity.in</a> from the registered email ID used during booking.</li>
+                    <li>The email must include stall details, payment proof, and a valid reason for cancellation.</li>
+                    <li>Requests made on or after the event day will not be eligible for refunds.</li>
+                  </ul>
+                  <h5>Refund Structure</h5>
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Time of Cancellation</th>
+                        <th>Refund Percentage</th>
+                        <th>Condition</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>3 or more days before the event</td>
+                        <td>70%</td>
+                        <td>Subject to deduction of setup and promotion costs.</td>
+                      </tr>
+                      <tr>
+                        <td>2 days before the event</td>
+                        <td>50%</td>
+                        <td>Partial refund, depending on preparation stage.</td>
+                      </tr>
+                      <tr>
+                        <td>1 day before or on event day</td>
+                        <td>0%</td>
+                        <td>No refund, as allocations and logistics are finalized.</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <p>
+                    Administrative and processing charges will be deducted from the refund amount. Final approval of any refund remains at the discretion of IMAGICITY management.
+                  </p>
+                  <h5>Refund Process</h5>
+                  <ul>
+                    <li>Approved refunds will be processed within 10–15 working days using the same payment method.</li>
+                    <li>IMAGICITY will not be responsible for external bank or gateway delays.</li>
+                  </ul>
+                </li>
+                <li>
+                  <h4>Cosplay Event Participants</h4>
+                  <p>Participants registering for the Cosplay Competition follow the same cancellation and refund terms as stall vendors.</p>
+                  <h5>Cancellation and Refund Eligibility</h5>
+                  <ul>
+                    <li>Cancellation requests must be emailed to <a href="mailto:madooza@imagicity.in">madooza@imagicity.in</a> from the registered email ID.</li>
+                    <li>The email should clearly mention the participant’s full name, registration ID, and valid reason for withdrawal.</li>
+                    <li>Cancellations will only be accepted before the event day. Once the event day begins, no refund will be applicable.</li>
+                  </ul>
+                  <h5>Refund Structure</h5>
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Time of Cancellation</th>
+                        <th>Refund Percentage</th>
+                        <th>Condition</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>3 or more days before event</td>
+                        <td>70%</td>
+                        <td>Refund possible after deduction of admin and processing costs.</td>
+                      </tr>
+                      <tr>
+                        <td>2 days before event</td>
+                        <td>50%</td>
+                        <td>Refund may be partially approved based on preparation stage.</td>
+                      </tr>
+                      <tr>
+                        <td>1 day before or on event day</td>
+                        <td>0%</td>
+                        <td>No refund. Participation fee will be forfeited.</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <p>
+                    Refunds, if approved, will be processed within 10–15 working days. Management reserves full rights to deny refund requests made after deadlines or without valid justification.
+                  </p>
+                </li>
+                <li>
+                  <h4>Event Cancellation or Postponement</h4>
+                  <p>
+                    If Madooza is postponed or cancelled due to unavoidable situations such as government orders, extreme weather, or safety concerns:
+                  </p>
+                  <ul>
+                    <li>All tickets, stall bookings, and cosplay registrations will automatically be carried forward to the rescheduled date.</li>
+                    <li>If rescheduling is not possible, partial refunds may be processed after deducting unavoidable setup and marketing costs.</li>
+                  </ul>
+                  <p>
+                    IMAGICITY will not be liable for travel, accommodation, or personal expenses incurred by participants or visitors.
+                  </p>
+                </li>
+                <li>
+                  <h4>No-Show Policy</h4>
+                  <ul>
+                    <li>Ticket holders, stall vendors, or cosplay participants who fail to attend the event on the scheduled day will be considered no-shows.</li>
+                    <li>No-shows are not eligible for any refund or transfer of their booking.</li>
+                  </ul>
+                </li>
+                <li>
+                  <h4>Force Majeure</h4>
+                  <p>
+                    If Madooza is disrupted by events beyond IMAGICITY’s control (for example, natural calamities, power failures, lockdowns, or government restrictions), the organizers will not be obligated to issue refunds. Every effort will be made to provide alternative dates or arrangements.
+                  </p>
+                </li>
+                <li>
+                  <h4>Misuse and Refund Abuse Prevention</h4>
+                  <p>IMAGICITY reserves the right to reject any refund request that appears fraudulent, repetitive, or unreasonable.</p>
+                </li>
+                <li>
+                  <h4>Agreement</h4>
+                  <p>
+                    By purchasing a ticket, booking a stall, or registering for the cosplay event, you acknowledge that you have read, understood, and agreed to this Cancellation and Refund Policy.
+                  </p>
+                </li>
+                <li>
+                  <h4>Contact</h4>
+                  <p>
+                    For any queries regarding cancellations or refunds, email <a href="mailto:madooza@imagicity.in">madooza@imagicity.in</a> or write to IMAGICITY, Hazaribagh, Jharkhand, India.
+                  </p>
+                </li>
+              </ol>
+            </div>
+          </details>
         </div>
       </footer>
 

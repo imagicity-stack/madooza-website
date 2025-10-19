@@ -713,15 +713,23 @@ p {
 }
 
 /* Footer */
+
 .site-footer {
-  padding: 3rem 6vw;
+  padding: 3rem 6vw 4rem;
   border-top: 1px solid rgba(255, 255, 255, 0.12);
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 2.5rem;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.9) 0%, rgba(3, 16, 42, 0.92) 100%);
+}
+
+.footer-meta {
   display: flex;
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
-  gap: 1rem;
-  background: rgba(0, 0, 0, 0.9);
+  gap: 1.5rem;
 }
 
 .footer-socials {
@@ -750,6 +758,146 @@ p {
   width: 1.1rem;
   height: 1.1rem;
   fill: currentColor;
+}
+
+.footer-legals {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.footer-legals details {
+  border: 1px solid rgba(0, 207, 255, 0.2);
+  border-radius: 18px;
+  background: rgba(10, 24, 58, 0.75);
+  overflow: hidden;
+  transition: border-color 0.3s ease, background 0.3s ease;
+}
+
+.footer-legals details[open] {
+  border-color: rgba(255, 106, 0, 0.45);
+  background: rgba(17, 32, 72, 0.92);
+}
+
+.footer-legals summary {
+  list-style: none;
+  cursor: pointer;
+  padding: 1.2rem 1.6rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  position: relative;
+}
+
+.footer-legals summary::after {
+  content: '+';
+  font-size: 1.4rem;
+  transition: transform 0.3s ease;
+}
+
+.footer-legals details[open] summary::after {
+  transform: rotate(45deg);
+}
+
+.footer-legals summary::-webkit-details-marker {
+  display: none;
+}
+
+.legal-content {
+  padding: 0 1.6rem 1.8rem;
+  display: grid;
+  gap: 1rem;
+  color: #d7e5ff;
+}
+
+.legal-content p,
+.legal-content li {
+  color: #c7d9ff;
+  line-height: 1.65;
+}
+
+.legal-content a {
+  color: #7ef3ff;
+  text-decoration: underline;
+}
+
+.legal-content ol {
+  display: grid;
+  gap: 1.1rem;
+  padding-left: 1.2rem;
+}
+
+.legal-content ul {
+  display: grid;
+  gap: 0.5rem;
+  padding-left: 1.2rem;
+}
+
+.legal-content h4,
+.legal-content h5 {
+  font-size: 0.95rem;
+  letter-spacing: 0.16em;
+  color: #ffffff;
+}
+
+.legal-content h5 {
+  font-size: 0.85rem;
+  opacity: 0.85;
+}
+
+.legal-content table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(5, 15, 36, 0.7);
+}
+
+.legal-content th,
+.legal-content td {
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 0.75rem;
+  text-align: left;
+  font-size: 0.85rem;
+  color: #dfe9ff;
+}
+
+.legal-content thead {
+  background: rgba(255, 106, 0, 0.2);
+}
+
+.legal-content tbody tr:nth-child(odd) {
+  background: rgba(0, 0, 0, 0.15);
+}
+
+.legal-content tbody tr:nth-child(even) {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+@media (max-width: 768px) {
+  .footer-legals summary {
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+  }
+
+  .legal-content {
+    padding: 0 1.1rem 1.4rem;
+  }
+
+  .legal-content table {
+    font-size: 0.8rem;
+    overflow-x: auto;
+    display: block;
+  }
+
+  .legal-content table tbody,
+  .legal-content table thead,
+  .legal-content table tr {
+    display: table;
+    width: 100%;
+  }
 }
 
 /* Cosplay page */
