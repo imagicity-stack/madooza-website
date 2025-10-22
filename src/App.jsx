@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import CosplayPage from './pages/CosplayPage';
 import PrivacyPolicyPage from './pages/PrivacyPolicyPage';
 import TermsConditionsPage from './pages/TermsConditionsPage';
@@ -6,6 +6,65 @@ import CancellationRefundPage from './pages/CancellationRefundPage';
 import MagicBento from './components/MagicBento';
 import StaggeredMenu from './components/StaggeredMenu';
 import Ribbons from './components/effects/Ribbons';
+
+const API_BASE_URL = 'https://madooza-back-production.up.railway.app';
+
+let razorpayScriptPromise = null;
+
+const loadRazorpayCheckout = () => {
+  if (typeof window === 'undefined') {
+    return Promise.reject(new Error('Razorpay is only available in the browser.'));
+  }
+
+  if (razorpayScriptPromise) {
+    return razorpayScriptPromise;
+  }
+
+  razorpayScriptPromise = new Promise((resolve, reject) => {
+    const existingScript = document.querySelector('script[src="https://checkout.razorpay.com/v1/checkout.js"]');
+
+    if (existingScript) {
+      if (window.Razorpay) {
+        resolve(window.Razorpay);
+        return;
+      }
+      existingScript.addEventListener('load', () => resolve(window.Razorpay));
+      existingScript.addEventListener('error', () => {
+        razorpayScriptPromise = null;
+        reject(new Error('Failed to load Razorpay SDK.'));
+      });
+      return;
+    }
+
+    const script = document.createElement('script');
+    script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+    script.async = true;
+    script.onload = () => {
+      if (window.Razorpay) {
+        resolve(window.Razorpay);
+      } else {
+        razorpayScriptPromise = null;
+        reject(new Error('Razorpay SDK did not initialise as expected.'));
+      }
+    };
+    script.onerror = () => {
+      razorpayScriptPromise = null;
+      reject(new Error('Failed to load Razorpay SDK.'));
+    };
+    document.body.appendChild(script);
+  });
+
+  return razorpayScriptPromise;
+};
+
+const getPrefillDetails = (formData = {}) => ({
+  name: formData.name || formData.brand || formData.stageName || '',
+  email: formData.email || '',
+  contact:
+    (typeof formData.phone === 'number' ? formData.phone.toString() : formData.phone) ||
+    (typeof formData.contact === 'number' ? formData.contact.toString() : formData.contact) ||
+    '',
+});
 
 const involveItems = [
   {
@@ -102,30 +161,6 @@ const festivalItems = [
     textColor: '#053317',
   },
 ];
-
-const RazorpayButton = ({ paymentButtonId }) => {
-  const containerRef = useRef(null);
-
-  useEffect(() => {
-    const container = containerRef.current;
-    if (!container || !paymentButtonId) return;
-
-    container.innerHTML = '';
-    const form = document.createElement('form');
-    const script = document.createElement('script');
-    script.src = 'https://checkout.razorpay.com/v1/payment-button.js';
-    script.async = true;
-    script.dataset.payment_button_id = paymentButtonId;
-    form.appendChild(script);
-    container.appendChild(form);
-
-    return () => {
-      container.innerHTML = '';
-    };
-  }, [paymentButtonId]);
-
-  return <div className="razorpay-button" ref={containerRef} />;
-};
 
 const HomeSections = ({ openModal, onNavigate }) => (
   <>
@@ -273,7 +308,7 @@ const modalConfigs = {
     blurb:
       'Lock your pass to MADOOZA and dive into neon nights, food explosions, and genre-bending performances.',
     payment: 30,
-    paymentScriptId: 'pl_RVIYQFpD1UhxMg',
+    formType: 'ticket',
     fields: [],
   },
   stall: {
@@ -281,6 +316,7 @@ const modalConfigs = {
     blurb:
       "Tell us what you're bringing to the chaos and confirm your ₹2500 slot. Only the boldest experiences make it in.",
     payment: 2500,
+    formType: 'stall',
     fields: [
       { name: 'brand', label: 'Brand / Project', type: 'text', required: true },
       { name: 'contact', label: 'Primary Contact', type: 'text', required: true },
@@ -329,6 +365,7 @@ const modalConfigs = {
     blurb:
       'Secure your slot in the MADOOZA Cosplay Arena. ₹299 gets you parade access, pro photography, and a shot at neon glory.',
     payment: 299,
+    formType: 'cosplay',
     fields: [
       { name: 'stageName', label: 'Performer / Stage Name', type: 'text', required: true },
       { name: 'email', label: 'Email', type: 'email', required: true },
@@ -497,7 +534,10 @@ const App = () => {
 
   const openModal = useCallback((id) => {
     setActiveModal(id);
-    setPaymentState((prev) => ({ ...prev, [id]: 'idle' }));
+    setPaymentState((prev) => ({
+      ...prev,
+      [id]: { status: 'idle', error: null },
+    }));
   }, []);
 
   const closeModal = useCallback(() => {
@@ -511,16 +551,143 @@ const App = () => {
     }));
   };
 
-  const handleSubmit = (modalId, event) => {
+  const handleSubmit = async (modalId, event) => {
     event.preventDefault();
     if (!modalId) return;
-    if (modalConfigs[modalId]?.payment) {
-      setPaymentState((prev) => ({ ...prev, [modalId]: 'processing' }));
-      setTimeout(() => {
-        setPaymentState((prev) => ({ ...prev, [modalId]: 'success' }));
-      }, 1400);
-    } else {
-      setPaymentState((prev) => ({ ...prev, [modalId]: 'success' }));
+
+    const config = modalConfigs[modalId];
+    if (!config) return;
+
+    if (!config.payment) {
+      setPaymentState((prev) => ({
+        ...prev,
+        [modalId]: { status: 'success', error: null },
+      }));
+      return;
+    }
+
+    const formData = formValues[modalId] || {};
+
+    setPaymentState((prev) => ({
+      ...prev,
+      [modalId]: { status: 'processing', error: null },
+    }));
+
+    try {
+      const preferredOrderType = config.formType || modalId;
+      const orderTypesToTry =
+        config.formType && config.formType !== modalId
+          ? [config.formType, modalId]
+          : [preferredOrderType];
+
+      let payload = null;
+      let selectedOrderType = preferredOrderType;
+      let lastError = null;
+
+      for (const orderType of orderTypesToTry) {
+        try {
+          const response = await fetch(`${API_BASE_URL}/api/orders/${orderType}`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              amount: Number(config.payment),
+              formData,
+            }),
+          });
+
+          let data;
+          try {
+            data = await response.json();
+          } catch (jsonError) {
+            data = null;
+          }
+
+          if (!response.ok) {
+            lastError = new Error(data?.message || 'Unable to initiate payment. Please try again.');
+            continue;
+          }
+
+          if (!data?.orderId || !data?.razorpayKeyId) {
+            lastError = new Error('Payment configuration missing from server response.');
+            continue;
+          }
+
+          payload = data;
+          selectedOrderType = orderType;
+          break;
+        } catch (networkError) {
+          lastError = networkError instanceof Error ? networkError : new Error('Network error while initiating payment.');
+          break;
+        }
+      }
+
+      if (!payload) {
+        throw lastError || new Error('Unable to initiate payment. Please try again.');
+      }
+
+      await loadRazorpayCheckout();
+
+      const prefill = getPrefillDetails(formData);
+      const orderAmount =
+        typeof payload.amount === 'number' ? payload.amount : Number(payload.amount) || config.payment * 100;
+      const currency = payload.currency || 'INR';
+      const razorpay = new window.Razorpay({
+        key: payload.razorpayKeyId,
+        amount: orderAmount,
+        currency,
+        name: 'Madooza',
+        description: config.heading,
+        order_id: payload.orderId,
+        prefill,
+        notes: {
+          ...formData,
+          formType: selectedOrderType,
+        },
+        handler: () => {
+          setPaymentState((prev) => ({
+            ...prev,
+            [modalId]: { status: 'success', error: null },
+          }));
+        },
+        modal: {
+          ondismiss: () => {
+            setPaymentState((prev) => {
+              const current = prev[modalId];
+              if (current?.status === 'success') {
+                return prev;
+              }
+              return {
+                ...prev,
+                [modalId]: { status: 'idle', error: null },
+              };
+            });
+          },
+        },
+      });
+
+      razorpay.on('payment.failed', (errorResponse) => {
+        setPaymentState((prev) => ({
+          ...prev,
+          [modalId]: {
+            status: 'error',
+            error:
+              errorResponse?.error?.description ||
+              'Payment failed or was cancelled. Please try again.',
+          },
+        }));
+      });
+
+      razorpay.open();
+    } catch (error) {
+      setPaymentState((prev) => ({
+        ...prev,
+        [modalId]: {
+          status: 'error',
+          error: error.message || 'Something went wrong. Please try again.',
+        },
+      }));
     }
   };
 
@@ -572,8 +739,9 @@ const App = () => {
     if (!activeModal) return null;
     const config = modalConfigs[activeModal];
     if (!config) return null;
-    const hasPaymentScript = Boolean(config.paymentScriptId);
-    const status = hasPaymentScript ? 'idle' : paymentState[activeModal] || 'idle';
+    const state = paymentState[activeModal] || { status: 'idle', error: null };
+    const status = state.status;
+    const errorMessage = state.error;
 
     return (
       <div className="modal-backdrop" role="dialog" aria-modal="true">
@@ -583,13 +751,7 @@ const App = () => {
           </button>
           <h3>{config.heading}</h3>
           <p className="modal-blurb">{config.blurb}</p>
-          {hasPaymentScript ? (
-            <div className="modal-payment">
-              {config.payment ? <p className="modal-price">Festival Pass: ₹{config.payment}</p> : null}
-              <RazorpayButton paymentButtonId={config.paymentScriptId} />
-              <p className="modal-note">Secure checkout opens in a Razorpay window.</p>
-            </div>
-          ) : status === 'success' ? (
+          {status === 'success' ? (
             <div className="modal-success">
               <h4>We've got your details!</h4>
               <p>Our crew will reach out shortly with the next steps. Stay tuned for the madness.</p>
@@ -632,6 +794,7 @@ const App = () => {
                   Submit Details
                 </button>
               )}
+              {errorMessage ? <p className="modal-error">{errorMessage}</p> : null}
             </form>
           )}
         </div>

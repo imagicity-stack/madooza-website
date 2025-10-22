@@ -750,6 +750,14 @@ p {
   border-color: #ff6a00;
 }
 
+.modal-error {
+  margin: 0;
+  font-size: 0.85rem;
+  line-height: 1.4;
+  color: #ff8a8a;
+  text-align: center;
+}
+
 .modal-success {
   display: flex;
   flex-direction: column;
